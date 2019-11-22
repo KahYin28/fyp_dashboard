@@ -46,7 +46,7 @@ class LessonController extends Controller
 ////data => $request -> $user -> param
 //        ];
         Lesson::create([
-            'user_id' => '1',
+
             'starting_date_time' => $request ->starting_date_time,
             'ending_date_time' => $request ->ending_date_time,
             'course_code' => $request ->course_code,

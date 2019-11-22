@@ -165,7 +165,8 @@
 
                 Date: new Date(),
                 options: {
-                    format: 'DD/MM/YYYY hh:mm LT',
+                    format: 'YYYY/MM/DD hh:mm',
+                    // format: 'DD/MM/YYYY hh:mm LT', //AM PM
                     useCurrent: false,
                     daysOfWeekDisabled: [0, 6],
                     showClear: true,
@@ -200,7 +201,6 @@
             },
             onCreateClass(){
                 const formData = {
-                    lesson_id:1,
                     semester: this.selectedSemester,
                     course_code: this.selectedCourse,
                     starting_date_time:this.startingDateTime,

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lesson extends BaseModel
 {
     protected $fillable =[
-        'schedule_day','venue_id','user_id','course_code','semester','lesson_type_id','starting_date_time','ending_date_time'
+        'course_code','semester','lesson_type_id','starting_date_time','ending_date_time'
     ];
 
     protected $table = 'lessons';
