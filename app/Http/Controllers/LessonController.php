@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Filters\LessonFilter;
 use App\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -39,18 +40,19 @@ class LessonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $data = [
-//            'id' => $request -> id,
+    public function store(Request $request){
+//        $data = [
+//
+////data => $request -> $user -> param
+//        ];
+        Lesson::create([
+            'user_id' => '1',
             'starting_date_time' => $request ->starting_date_time,
             'ending_date_time' => $request ->ending_date_time,
             'course_code' => $request ->course_code,
             'lesson_type_id' => $request ->lesson_type_id,
             'semester' => $request ->semester,
-//data => $request -> $user -> param
-        ];
-        Lesson::create($data);
+        ]);
     }
 
     /**

@@ -18,10 +18,9 @@ $factory->define(Lesson::class, function (Faker $faker) {
         'starting_date_time' => $faker->dateTime->format('Y-m-d H:i:s'),
         'ending_date_time' => $faker->dateTime->format('Y-m-d H:i:s'),
         'schedule_day' => $faker->dayOfWeek,
-        'course_code' => $faker->bothify('???####'),
-        'course_name' => $faker->text(10),
+        'course_code' => $faker->bothify('???#### ?????'),
         'group' => $faker->numberBetween(1, 10),
-        'lesson_type_id' => $faker->numberBetween(1, 3),
-        'semester' => $faker->numberBetween(16, 20) . $faker->numberBetween(17, 21) . $faker->numberBetween(1, 3),
+        'lesson_type_id' => $faker->numberBetween(1, 2),
+        'semester' => $faker->numberBetween(18, 20) . $faker->numberBetween(19, 21) . $faker->numberBetween(1, 3),
     ];
 });

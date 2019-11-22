@@ -15,18 +15,17 @@ class CreateLessonsTable extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id');
-            $table->integer('venue_id');
+            $table->integer('user_id')->nullable();
+            $table->integer('venue_id')->nullable();
             $table->dateTime('starting_date_time');
             $table->dateTime('ending_date_time');
-            $table->string('schedule_day');
+            $table->string('schedule_day')->nullable();
             $table->string('course_code');
-            $table->string('course_name');
-            $table->integer('group');
+            $table->integer('group')->nullable();
             $table->integer('lesson_type_id');
             $table->integer('semester');
             $table->timestamps();
-            $table->unique(['starting_date_time','ending_date_time','schedule_day', 'course_code','course_name', 'group', 'lesson_type_id', 'semester'],'unique_key');
+            $table->unique(['starting_date_time','ending_date_time','schedule_day', 'course_code', 'group', 'lesson_type_id', 'semester'],'unique_key');
         });
     }
 

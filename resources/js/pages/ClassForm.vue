@@ -55,16 +55,14 @@
                     <b-card-body>
                         <b-card-text>
                             <div class="container">
-                                <form action="http://127.0.0.1:8000/#/">
-
+                                <form>
                                     <div class="form-group row">
                                         <!-- input for semester-->
                                         <label for="semester">Semesters:</label>
                                         <div class="col-sm-10">
-                                            <select id="semester" class="form-control">
+                                            <select id="semester" class="form-control" v-model="selectedSemester">
                                                 <option v-for="lesson in lessonCollection"
-                                                        :value="lesson.id"
-                                                        v-model="selectedSemester">
+                                                        :value="lesson.semester">
                                                     {{ lesson.semester }}
                                                 </option>
                                             </select>
@@ -74,17 +72,17 @@
                                     <p>{{selectedSemester}}</p>
                                     <!-- input for Course Name and Code-->
                                     <div class="form-group row">
-                                        <label>Course:</label>
+                                        <label for="course_code">Course:</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control"  v-model="selectedCourse">
+                                            <select id="course_code" class="form-control" v-model="selectedCourse">
                                                 <option v-for="lesson in lessonCollection"
-                                                        :value="lesson.id"
-                                                       >
+                                                        :value="lesson.course_code">
                                                     {{ lesson.course_code }}
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
+                                    <p>{{selectedCourse}}</p>
                                     <!-- input for Course Type-->
                                     <div class="form-group row">
                                         <label>Type:</label>
@@ -93,7 +91,7 @@
                                                 <option v-for="lesson in lessonCollection"
                                                         :value="lesson.id">
 
-                                                    {{ lesson.lesson_type.name }}
+                                                    {{ lesson.lesson_type.id }}
                                                     <!--                                                use predefined input-->
                                                 </option>
                                             </select>
@@ -153,6 +151,8 @@
         data() {
             return {
                 selected: '',
+
+
                 selectedSemester: '',
                 selectedCourse: '',
                 selectedType: '',
@@ -193,25 +193,24 @@
                         console.log(response.data.data[0])
                         this.selected = "1";
                         //Need to do condition check current time match to data lesson time
-
                     });
             },
             getAttendance() {
                 this.$router.push({path: '/register', query: {lesson_id: this.selected}});
-
             },
             onCreateClass(){
                 const formData = {
+                    lesson_id:1,
                     semester: this.selectedSemester,
-                    course_code: this.selectedCourseCode,
+                    course_code: this.selectedCourse,
                     starting_date_time:this.startingDateTime,
                     ending_date_time:this.endingDateTime,
                     lesson_type_id:this.selectedType,
-
+                    // user_id:1,
                     // hobbies: this.hobbyInputs.map(hobby => hobby.value),
                 }
                console.log(formData);
-                this.user_id = 1;
+                // this.user_id = 1;
                 axios.post('lesson', formData)
                     .then(res => console.log(res))
                     .catch(error => console.log(error))
