@@ -16,9 +16,8 @@ class RegisterController extends Controller
     public function index(Request $request , RegisterFilter $filter) {
         $registers = Register::filter($filter)
             ->with(['students'])
-            ->with(['attendances'])
-            ->paginate($filter->perPage());
-
+            ->with(['lessons'])
+            ->paginate(5);
 
         return $registers;
     }
@@ -50,8 +49,13 @@ class RegisterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        //
+    public function show($id, RegisterFilter $filter) {
+        $result = Register::filter($filter)
+            ->with(['students'])
+            ->with(['lessons'])
+            ->where('lesson_id', $id)->get();
+        //   ->paginate(5);
+        return $result;
     }
 
     /**

@@ -14,6 +14,7 @@
                             <b-th>Matric No</b-th>
                             <b-th>Name</b-th>
                             <b-th>Programme</b-th>
+
                             <b-th>Attend</b-th>
                         </b-tr>
                     </b-thead>
