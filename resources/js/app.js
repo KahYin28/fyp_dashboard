@@ -50,7 +50,7 @@ Vue.use(pagination);
 Vue.use({
     // this is the required "install" method for Vue plugins
     install (Vue) {
-        Vue.jQuery = jQuery
+        Vue.jQuery = jQuery;
         Vue.prototype.$jQuery = jQuery
     }
 });
@@ -62,6 +62,20 @@ const router = new VueRouter({
 axios.defaults.baseURL = "http://localhost:8000/api/";
 
 // axios.defaults.baseURL = "https://pure-headland-78653.herokuapp.com/api/resources/"
+
+jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
+    icons: {
+        time: 'far fa-clock',
+        date: 'far fa-calendar',
+        up: 'fas fa-arrow-up',
+        down: 'fas fa-arrow-down',
+        previous: 'fas fa-chevron-left',
+        next: 'fas fa-chevron-right',
+        today: 'fas fa-calendar-check',
+        clear: 'far fa-trash-alt',
+        close: 'far fa-times-circle'
+    }
+});
 
 new Vue({
     el:'#app',
