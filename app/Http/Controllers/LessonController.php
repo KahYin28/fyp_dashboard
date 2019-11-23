@@ -6,6 +6,7 @@ use App\Http\Filters\LessonFilter;
 use App\Lesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LessonController extends Controller
 {
@@ -14,6 +15,9 @@ class LessonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+
+
     public function index(Request $request, LessonFilter $filter){
         $lessons = Lesson::filter($filter)
             ->with(['students'=>function($query){
@@ -45,14 +49,39 @@ class LessonController extends Controller
 //
 ////data => $request -> $user -> param
 //        ];
-        Lesson::create([
+        try {
+            DB::beginTransaction();
+            Lesson::create([
+                'starting_date_time' => $request->starting_date_time,
+                'ending_date_time' => $request->ending_date_time,
+                'course_code' => $request->course_code,
+                'lesson_type_id' => $request->lesson_type_id,
+                'semester' => $request->semester,
+            ]);
 
-            'starting_date_time' => $request ->starting_date_time,
-            'ending_date_time' => $request ->ending_date_time,
-            'course_code' => $request ->course_code,
-            'lesson_type_id' => $request ->lesson_type_id,
-            'semester' => $request ->semester,
-        ]);
+            DB::commit();
+
+            return $this->withnoob([
+                'success' => [
+                    'code' => 'success',
+                    'http_code' => 200,
+                    'message' => 'Transaction success'
+                ]
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+//            $this->logger->errorLog($request, $e, _CLASS_, _FUNCTION_);
+          //  return $this->response->errorInternalError('Internal Server Error');
+            return $this->withnoob([
+                'error' => [
+                    'code' => 'error',
+                    'http_code' => 400,
+                    'message' => 'Transaction failed'
+                ]
+            ]
+
+            );
+        }
     }
 
     /**
@@ -99,4 +128,6 @@ class LessonController extends Controller
     {
         //
     }
+
+
 }

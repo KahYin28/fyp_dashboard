@@ -198,7 +198,9 @@
             },
             getAttendance() {
                 this.$router.push({path: '/register', query: {lesson_id: this.selected}});
+
             },
+
             onCreateClass(){
                 const formData = {
                     semester: this.selectedSemester,
@@ -209,13 +211,27 @@
                     // user_id:1,
                     // hobbies: this.hobbyInputs.map(hobby => hobby.value),
                 }
-               console.log(formData);
+             //  console.log(formData);
                 // this.user_id = 1;
                 axios.post('lesson', formData)
-                    .then(res => console.log(res))
+                    .then(res => {
+                        console.log(res);
+                                if(res['data']['success']){
+                                    console.log("alert success")
+                                }
+
+                        if(res['data']['error']){
+                            console.log("alert error")
+                        }
+                      //  this.$router.push({path: '/register', query: {lesson_id: this.selected}})
+                        }
+                    )
                     .catch(error => console.log(error))
 
+
             },
+
+
 
 
         }

@@ -10,4 +10,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function withnoob(array $array, array $headers = [])
+    {
+        return response()->json($array,200, $headers);
+    }
 }
