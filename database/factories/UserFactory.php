@@ -20,7 +20,7 @@ use Faker\Generator as Faker;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'id' => $faker->randomNumber(6),
+        'id' => $faker->randomNumber(3),
         'faculty_id' => $faker->numberBetween(Faculty::all()->first()->id, Faculty::all()->last()->id),
         'name' => $faker->text(10),
         'email' => $faker->unique()->safeEmail,

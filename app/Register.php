@@ -12,11 +12,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Register extends PivotBaseModel{
     protected $fillable =[
-
     ];
 
     protected $table = 'registers';
-
 
     public function students(){
         return $this->belongsTo('App\Student','student_id','student_id');

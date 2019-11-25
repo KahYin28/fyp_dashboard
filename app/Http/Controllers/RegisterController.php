@@ -18,8 +18,8 @@ class RegisterController extends Controller
             ->with(['students'])
             ->with(['lessons'])
             ->paginate(5);
-
-        return $registers;
+//dd($registers[0]->students);
+       return $registers;
     }
 
     /**

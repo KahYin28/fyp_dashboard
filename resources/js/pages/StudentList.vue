@@ -9,31 +9,32 @@
                                 :current-page="currentPage"
                                 small>
                     <b-thead head-variant="dark">
+
                         <b-tr>
                             <b-th>No</b-th>
                             <b-th>Matric No</b-th>
                             <b-th>Name</b-th>
                             <b-th>Programme</b-th>
-
                             <b-th>Attend</b-th>
                         </b-tr>
                     </b-thead>
-                    <b-tbody>
-                        <b-tr v-for="(register , index) in registers.data"
+                    <b-tbody >
+                        <b-tr v-for="(register,index) in registers.data"
                               :key="register.id">
-                            <b-td>{{ index+1 }}</b-td>
-                            <b-td>{{ register.student_id }}</b-td>
+                            <b-td >{{ index+1 }}</b-td>
                             <router-link :to="{path:'/emotion',query:{id:register.student_id}}">
-                                <b-td>{{ register.students.name }}</b-td>
+                            <b-td >{{register.student_id}}</b-td>
                             </router-link>
-                            <b-td>{{register.students.programme}}</b-td>
-
+                            <b-td >{{register.students.name}}</b-td>
+                            <b-td >{{register.students.programme}}</b-td>
                             <b-td>
                                 <label class="form-checkbox">
                                     <input type="checkbox" :value="register.students" v-model="checkAttend">
                                 </label>
                             </b-td>
+
                         </b-tr>
+
                     </b-tbody>
                 </b-table-simple>
                 <pagination :data="registers"
@@ -43,11 +44,9 @@
         </div>
     </div>
 </template>
-
 <script>
     import NavBar from "../components/NavBar.vue";
     import pagination from 'laravel-vue-pagination'
-
     export default {
         components: {
             'app-navbar': NavBar,
@@ -61,6 +60,8 @@
                 now: new Date(),
                 checkAttend: [],
                 lesson_id:null,
+                // loading:false,
+                error:'',
             }
         },
         mounted() {
@@ -74,8 +75,10 @@
                 axios.get('register?lesson_id=' + this.lesson_id)
                     .then(data => {
                         console.log(data)
+
                         this.registers = data.data;
                         console.log(this.registers)
+                        // console.log(this.registers.data[0].students.programme)
                     })
             },
             getResults(page = 1) {
@@ -84,19 +87,15 @@
                     .then(response => {
                         this.registers = response.data;
                         console.log("asd" + this.registers)
-                    });
+                    })
+                    .catch(err => {
+                        this.loading = false;
+                        this.error = err;
+                    });;
             },
         },
 
-        computed: {
-            // rows() {
-            //     return this.students.length
-            // },
-        },
     }
-
 </script>
-
 <style scoped>
-
 </style>

@@ -12,6 +12,16 @@
                                 <div class="container">
                                     <div class="col-sm">
                                         <h4>Lessons</h4>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                            <label class="form-check-label" for="defaultCheck1">
+                                                Default checkbox
+                                            </label>
+                                        </div>
+
+
+
                                         <select v-model="selected" name="lesson" class="form-control"
                                                 @change="onChange($event)">
                                             <option :value="null" disabled>-- Please select an option --</option>
@@ -19,19 +29,20 @@
                                                     :value="lesson.id">
                                                 Course Code: {{ lesson.course_code }};
                                                 Day: {{lesson.schedule_day}};
-                                                Time: {{lesson.schedule_time}};
+                                                Start: {{lesson.starting_date_time }};
+                                                End: {{lesson.ending_date_time }};
                                                 Group{{lesson.group}}
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <div>Selected: <strong>{{this.selected }}</strong></div>
+                            <div>Selected: <strong>{{this.selected.lessonCollection }}</strong></div>
+
                             <b-card title="Class" sub-title="Card subtitle">
                                 <b-card-text>
-                                    <b-card-text>Course : {{this.selected }}</b-card-text>
-<!--                                    <b-card-text>Day : {{this.selected }}</b-card-text>-->
-<!--                                    <b-card-text>Time : {{}}</b-card-text>-->
+                                    <b-card-text>Course : {{this.selected}}</b-card-text>
+                                    <b-card-text>Time : {{}}</b-card-text>
                                 </b-card-text>
                             </b-card>
                         </b-card-text>
@@ -201,10 +212,14 @@
 
             },
 
+
+
             onCreateClass(){
                 const formData = {
                     semester: this.selectedSemester,
                     course_code: this.selectedCourse,
+
+                    schedule_day:this.schedule_day,
                     starting_date_time:this.startingDateTime,
                     ending_date_time:this.endingDateTime,
                     lesson_type_id:this.selectedType,
