@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Filters\StudentFilter;
 use App\Http\Filters\VenueFilter;
+use App\Http\UpdateSocket\TemperatureUpdate;
 use App\Venue;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Redis;
 
 class VenueController extends Controller
 {
@@ -76,9 +79,13 @@ class VenueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        Venue::findOrFail($id)->update($request->all());
+    public function update(Request $request, $id)    {
+
+
+        $update = Venue::findOrFail($id);
+        $update ->update($request->all());
+//        Redis::publish('temperature.update', $update);
+        Event:: dispatch(new TemperatureUpdate($update));
     }
 
     /**

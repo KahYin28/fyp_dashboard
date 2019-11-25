@@ -6,7 +6,6 @@
 use App\Lesson;
 use App\User;
 use App\Venue;
-use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 

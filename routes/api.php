@@ -37,3 +37,5 @@ Route::resource('/user', 'UserController');
 Route::resource('/venue', 'VenueController');
 
 Route::resource('/register', 'RegisterController');
+
+Route::resource('/replacement', 'ReplacementController');

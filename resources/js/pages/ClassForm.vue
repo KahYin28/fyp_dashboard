@@ -140,6 +140,8 @@
     import datePicker from 'vue-bootstrap-datetimepicker';
     import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
     import axios from 'axios';
+
+
     export default {
         components: {
             'datePicker': datePicker,
@@ -151,8 +153,6 @@
         data() {
             return {
                 selected: '',
-
-
                 selectedSemester: '',
                 selectedCourse: '',
                 selectedType: '',

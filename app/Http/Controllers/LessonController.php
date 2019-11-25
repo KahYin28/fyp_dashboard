@@ -61,7 +61,7 @@ class LessonController extends Controller
 
             DB::commit();
 
-            return $this->withnoob([
+            return $this->withArray([
                 'success' => [
                     'code' => 'success',
                     'http_code' => 200,
@@ -72,7 +72,7 @@ class LessonController extends Controller
             DB::rollback();
 //            $this->logger->errorLog($request, $e, _CLASS_, _FUNCTION_);
           //  return $this->response->errorInternalError('Internal Server Error');
-            return $this->withnoob([
+            return $this->withArray([
                 'error' => [
                     'code' => 'error',
                     'http_code' => 400,

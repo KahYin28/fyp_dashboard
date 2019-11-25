@@ -40,6 +40,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import ToggleButton from 'vue-js-toggle-button'
 import VueSlideBar from 'vue-slide-bar'
 import pagination from 'laravel-vue-pagination'
+// import io from "socket.io-client";
+// var socket = io.connect("http://localhost:4000");
 
 Vue.use(require('vue-moment'));
 Vue.use(VueRouter);
@@ -47,6 +49,7 @@ Vue.use(BootstrapVue);
 Vue.use(ToggleButton);
 Vue.use(VueSlideBar);
 Vue.use(pagination);
+
 Vue.use({
     // this is the required "install" method for Vue plugins
     install (Vue) {
