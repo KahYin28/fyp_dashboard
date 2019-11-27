@@ -94,4 +94,6 @@ class LightingController extends Controller
         $lighting = Lighting::findOrFail($id);
         $lighting->delete();
     }
+
+
 }

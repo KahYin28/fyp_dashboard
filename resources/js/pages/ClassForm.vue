@@ -40,7 +40,7 @@
                         <b-card-text>
                             <div class="col-sm">
                                 <!--  <router-link :to="{path:'/attend',query:{id:user_id}}">-->
-                                <button class="btn btn-primary" @click="getAttendance">Start Class</button>
+                                <button class="btn btn-primary" @click="getAttendance(this.selectedLesson)">Start Class</button>
                                 <!--   </router-link>-->
                             </div>
                         </b-card-text>
@@ -216,8 +216,8 @@
                     })
             },
             /**pass params lesson_id to get Student Register List **/
-            getAttendance() {
-                this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson}});
+            getAttendance(haha) {
+                this.$router.push({path: '/register', query: {lesson_id: haha}});
             },
 
             getReplacementAttendance() {
@@ -225,12 +225,13 @@
             },
             /**create replacement class**/
             onCreateClass(){
-                this.user_id = 1;
-                axios.get('lesson?user_id=' + this.user_id)
-                    .then(response => {
-                        this.lessonCollection = response.data.data;
-                        console.log(response.data.data[0])
-                        this.selectedLesson = "1";
+                // this.user_id = 1;
+                // axios.get('lesson?user_id=' + this.user_id)
+                //     .then(response => {
+                //         this.lessonCollection = response.data.data;
+                //         console.log(response.data.data[0])
+                //         // this.selectedLesson = "1";
+
 
                         const formData = {
                             user_id: this.user_id,
@@ -242,25 +243,25 @@
                             status:1
                         };
                         console.log(formData);
+                        // this.update();
                         axios.post('replacement', formData)
                             .then(res => {
                                     console.log(res);
-
-                                    // if(res['data']['success']){
-                                    //     console.log("alert success")
-                                    // }
-                                    //
-                                    // if(res['data']['error']){
-                                    //     console.log("alert error")
-                                    // }
-                                    //  this.$router.push({path: '/register', query: {lesson_id: this.selected}})
+                                    if(res['data']['success']){
+                                        console.log("alert success")
+                                        this.getAttendance(this.selectedLesson);
+                                        //this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson}})
+                                    }
+                                    if(res['data']['error']){
+                                        console.log("alert error")
+                                    }
                                 }
                             )
                             .catch(error => console.log(error))
 
 
-                    });
-                this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson}});
+                    // });
+
             },
         }
     }
