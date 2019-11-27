@@ -20,16 +20,17 @@
                     </b-thead>
                     <b-tbody >
                         <b-tr v-for="(register,index) in registers.data"
-                              :key="register.id">
+                              :key="register.id"
+                           >
                             <b-td >{{ index+1 }}</b-td>
                             <router-link :to="{path:'/emotion',query:{id:register.student_id}}">
-                            <b-td >{{register.student_id}}</b-td>
+                            <b-td>{{register.student_id}}</b-td>
                             </router-link>
-                            <b-td >{{register.students.name}}</b-td>
+                            <b-td>{{register.students.name}}</b-td>
                             <b-td >{{register.students.programme}}</b-td>
                             <b-td>
                                 <label class="form-checkbox">
-                                    <input type="checkbox" :value="register.students" v-model="checkAttend">
+                                    <input type="checkbox" :value="register.student" v-model="checkAttend">
                                 </label>
                             </b-td>
 
@@ -75,7 +76,6 @@
                 axios.get('register?lesson_id=' + this.lesson_id)
                     .then(data => {
                         console.log(data)
-
                         this.registers = data.data;
                         console.log(this.registers)
                         // console.log(this.registers.data[0].students.programme)
@@ -91,7 +91,7 @@
                     .catch(err => {
                         this.loading = false;
                         this.error = err;
-                    });;
+                    });
             },
         },
 

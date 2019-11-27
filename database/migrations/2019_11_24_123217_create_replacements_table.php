@@ -16,10 +16,12 @@ class CreateReplacementsTable extends Migration
         Schema::create('replacements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id');
-            $table->integer('venue_id')->nullable();
+            $table->integer('lesson_id');
+            $table->integer('venue_id');
             $table->dateTime('starting_date_time');
             $table->dateTime('ending_date_time');
-            $table->string('schedule_day')->nullable();
+            $table->string('schedule_day');
+            $table->boolean('status');
             $table->timestamps();
         });
     }

@@ -24,6 +24,7 @@ class CreateLessonsTable extends Migration
             $table->integer('group')->nullable();
             $table->integer('lesson_type_id');
             $table->integer('semester');
+            $table->boolean('status');
             $table->timestamps();
             $table->unique(['starting_date_time','ending_date_time','schedule_day', 'course_code', 'group', 'lesson_type_id', 'semester'],'unique_key');
         });

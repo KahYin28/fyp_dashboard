@@ -20,6 +20,7 @@ $factory->define(Lesson::class, function (Faker $faker) {
         'course_code' => $faker->bothify('???#### ?????'),
         'group' => $faker->numberBetween(1, 10),
         'lesson_type_id' => $faker->numberBetween(1, 2),
+        'status'=>$faker->boolean,
         'semester' => $faker->numberBetween(18, 20) . $faker->numberBetween(19, 21) . $faker->numberBetween(1, 3),
     ];
 });

@@ -9,6 +9,8 @@ class Replacement extends BaseModel{
 
     protected $table = 'replacements';
 
+    protected $fillable = ['user_id','lesson_id','venue_id','starting_date_time','ending_date_time','schedule_day','status'];
+
     public function user(){
         return $this->belongsTo('App\User');
     }

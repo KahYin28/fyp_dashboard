@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Filters\ReplacementFilter;
 use App\Replacement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReplacementController extends Controller
 {
@@ -39,9 +40,42 @@ class ReplacementController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        try {
+            DB::beginTransaction();
+            Replacement::create([
+                'user_id' => $request -> user_id,
+                'lesson_id' => $request -> lesson_id,
+                'venue_id' => $request -> venue_id,
+                'schedule_day' => $request -> schedule_day,
+                'starting_date_time' => $request->starting_date_time,
+                'ending_date_time' => $request->ending_date_time,
+                'status' => $request -> status,
+            ]);
+
+            DB::commit();
+
+            return $this->withArray([
+                'success' => [
+                    'code' => 'success',
+                    'http_code' => 200,
+                    'message' => 'Transaction success'
+                ]
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+//            $this->logger->errorLog($request, $e, _CLASS_, _FUNCTION_);
+            //  return $this->response->errorInternalError('Internal Server Error');
+            return $this->withArray([
+                    'error' => [
+                        'code' => 'error',
+                        'http_code' => 400,
+                        'message' => 'Transaction failed'
+                    ]
+                ]
+
+            );
+        }
     }
 
     /**

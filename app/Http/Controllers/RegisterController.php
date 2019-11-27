@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Filters\RegisterFilter;
 use App\Register;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -38,9 +39,8 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request){
+
     }
 
     /**
