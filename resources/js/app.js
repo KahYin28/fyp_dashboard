@@ -10,6 +10,14 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Vue = require('jquery');
 
+import Echo from "laravel-echo"
+
+window.io = require('socket.io-client');
+
+window.Echo = new Echo({
+    broadcaster: 'socket.io',
+    host: window.location.hostname + ':6001'
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -40,8 +48,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import ToggleButton from 'vue-js-toggle-button'
 import VueSlideBar from 'vue-slide-bar'
 import pagination from 'laravel-vue-pagination'
-// import io from "socket.io-client";
-// var socket = io.connect("http://localhost:4000");
+
 
 Vue.use(require('vue-moment'));
 Vue.use(VueRouter);

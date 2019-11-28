@@ -34,9 +34,6 @@
     import lineChart from "../chart.js";
     import ClassEmotions from "./ClassEmotions";
 
-    // import io from "socket.io-client";
-    // var socket = io.connect("http://localhost:4000");
-
     export default {
 
         components: {
@@ -44,9 +41,9 @@
             "line-chart": lineChart,
             "doughnut-chart" : doughnutChart,
         },
-        // created() {
-        //     this.getRealtimeData()
-        // },
+        created() {
+
+        },
 
         data() {
             return {
@@ -70,6 +67,7 @@
         mounted() {
             this.requestNumOfStd();
             this.requestData();
+            this.getRealtimeData();
         },
         methods: {
             requestNumOfStd(){
@@ -126,15 +124,18 @@
 
                 });
             },
-            // getRealtimeData() {
-            //     console.log('getRealtimeData');
-            //     socket.on("temperature.update", fetchedData => {
-            //         // this.fillData(fetchedData)
-            //         console.log(fetchedData)
-            //     })
-            // },
+
+            getRealtimeData() {
+                window.Echo.channel('TemperatureChannel.')
+                    .listen('TemperatureUpdateEvent', (e) => {
+                        console.log(e.key);
+                        console.log(e.abc);
+                    });
+
+            }
+            },
         }
-    }
+
 </script>
 
 <style scoped>

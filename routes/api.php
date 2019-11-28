@@ -1,6 +1,8 @@
 <?php
 
+use App\Events\TemperatureUpdateEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 
 /*
@@ -39,3 +41,10 @@ Route::resource('/venue', 'VenueController');
 Route::resource('/register', 'RegisterController');
 
 Route::resource('/replacement', 'ReplacementController');
+
+//Route::get('/venue', function (Request $request)
+//{
+//   $temperature = $request->input('temperature');
+//    event(new TemperatureUpdateEvent($temperature));
+//    return Response::make('Updated!');
+//});

@@ -34,8 +34,6 @@
         },
         mounted() {
             this.requestNumOfStd();
-
-
         },
         methods: {
             requestNumOfStd() {

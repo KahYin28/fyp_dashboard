@@ -18,10 +18,10 @@ io.listen(server).on('connection', function (client) {
     console.log(redisClient);
     console.log("Redis server running.....");
 
-   redisClient.on("message", function (channel, message) {
+  // redisClient.on("message", function (channel, message) {
       //  console.log(message);
         client.emit('temperature.update', ['sadasdasdsad']);
-   });
+  // });
 
     client.on('disconnect', function () {
         redisClient.quit();

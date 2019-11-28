@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TemperatureUpdateEvent;
 use App\Http\Filters\StudentFilter;
 use App\Http\Filters\VenueFilter;
-use App\Http\UpdateSocket\TemperatureUpdate;
+
 use App\Venue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -21,6 +22,9 @@ class VenueController extends Controller
     {
         $venue = Venue::filter($filter)
             ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
+
+        event(new TemperatureUpdateEvent($venue));
+
         return $venue;
     }
 
@@ -46,7 +50,12 @@ class VenueController extends Controller
             'temperature' => $request -> temperature,
             'name' => $request -> name,
         ];
+
+       event(new TemperatureUpdateEvent($data));
+
         Venue::create($data);
+
+
     }
 
     /**
@@ -85,7 +94,7 @@ class VenueController extends Controller
         $update = Venue::findOrFail($id);
         $update ->update($request->all());
 //        Redis::publish('temperature.update', $update);
-        Event:: dispatch(new TemperatureUpdate($update));
+//        Event:: dispatch(new TemperatureUpdateEvent($update));
     }
 
     /**

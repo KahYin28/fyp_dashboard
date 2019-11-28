@@ -9,8 +9,8 @@
             <hr class="my-0">
 
             <div class="mt-3" data-controls="switch-lights-in">
-                <b-button data-action="all-on" type="button" class="btn btn-primary">All <strong>ON</strong></b-button>
-                <b-button data-action="all-off" type="button" class="btn btn-secondary">All <strong>OFF</strong>
+                <b-button data-action="all-on"  @click="switchOnLight" type="button" class="btn btn-primary">All <strong>ON</strong></b-button>
+                <b-button data-action="all-off" @click="switchOffLight"type="button" class="btn btn-secondary">All <strong>OFF</strong>
                 </b-button>
             </div>
         </b-card>
@@ -21,7 +21,6 @@
             title="Lights A"
             style="max-width: 30rem;"
             class="mb-3-float-left"
-
         >
          <div>
                 <toggle-button class="float-right-lg" @change="onChange" v-model="checked" :labels="true"/>
@@ -78,6 +77,18 @@
         methods: {
             onChange() {
                 this.$emit('input', this.checked)
+            },
+            switchOnLight(){
+                axios.get('http://192.168.31.92/api/lightControl?on=Turn On')
+                    .then(res=>{
+                        console.log(res);
+                    });
+            },
+            switchOffLight(){
+                axios.get('http://192.168.31.92/api/lightControl?off=Turn On')
+                    .then(res=>{
+                        console.log(res);
+                    });
             }
         }
     }
