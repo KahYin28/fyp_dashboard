@@ -21,6 +21,7 @@ class LessonController extends Controller
                 $query->with('faculty');
             }])
             ->with(['lesson_type'])
+            ->with(['venue'])
 
             ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
         return $lessons;

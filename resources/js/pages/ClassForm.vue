@@ -1,6 +1,7 @@
 <template>
     <div>
         <div role="tablist">
+            <!-- Class Tab -->
             <b-card no-body class="mb-1">
                 <b-card-header header-tag="header" class="p-1" role="tab">
                     <b-button block href="#" v-b-toggle.accordion-1 variant="info">Class</b-button>
@@ -12,47 +13,57 @@
                                 <div class="container">
                                     <div class="col-sm">
                                         <h4>Lessons</h4>
-                                        <select v-model="selectedLesson" name="lesson" class="form-control"
-                                                @change="onChange()">
-                                            <option :value="null" disabled>-- Please select an option --</option>
-                                            <option v-for="lesson in lessonCollection"
-                                                    :value="lesson">
-                                                Course Code:{{ lesson.course_code }};
-                                                Group{{lesson.group}};
-                                                Day: {{lesson.schedule_day}};
-                                                Start: {{lesson.starting_date_time}};
-                                                End: {{lesson.ending_date_time }} ;
+                                        <!-- Dropdown to select lesson -->
+                                        <div class="form-group row">
+                                            <label class="col-sm-6 col-form-label">
+                                                Course Code and Group:
+                                            </label>
+                                            <div class="col-sm-8">
+                                                <select v-model="selectedLesson" name="lesson" class="form-control"
+                                                        @change="onChange()">
+                                                    <option :value="null" disabled>-- Please select an option --
+                                                    </option>
+                                                    <option v-for="lesson in lessonCollection"
+                                                            :value="lesson">
+                                                        {{ lesson.course_code }}
+                                                        ( Group {{lesson.group}} )
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Display selected lesson details -->
+                                    <div class="mt-3">
+                                        <b-card>
+                                            <b-card-text>
+                                                <div class="container">
+                                                    <div>Semester:<strong>{{this.selectedLesson['semester']}}</strong></div>
+                                                    <div>Course:<strong>{{this.selectedLesson['course_code']}}</strong></div>
+                                                    <div>Lesson Type:<strong>{{this.selectedLesson['lesson_type']}}</strong></div>
+                                                    <div>Group: <strong>{{this.selectedLesson['group']}}</strong></div>
+                                                    <div>Venue: <strong>{{this.selectedLesson['venue']}}</strong></div>
+                                                    <div>Schedule Day:<strong>{{this.selectedLesson['schedule_day']}}</strong></div>
+                                                    <div>Start Time:<strong>{{this.selectedLesson['starting_date_time']}}</strong></div>
+                                                    <div>End Time: <strong>{{this.selectedLesson['ending_date_time']}}</strong></div>
+                                                </div>
 
-                                            </option>
-                                        </select>
+                                            </b-card-text>
+                                        </b-card>
                                     </div>
                                 </div>
                             </div>
-                            <b-card-text>
-                            <div>Course Code : <strong>{{this.selectedLesson['course_code']}}</strong></div>
-                            <div>Schedule Day : <strong>{{this.selectedLesson['schedule_day']}}</strong></div>
-                            <div> Start : <strong>{{this.selectedLesson['starting_date_time']}}</strong></div>
-                                <div> Start : <strong>{{this.selectedLesson['starting_date_time']}}</strong></div>
-
-<!--                            <div>Selected: <strong>{{this.selectedLesson }}</strong></div>-->
-                            </b-card-text>
                         </b-card-text>
 
                         <b-card-text>
                             <div class="col-sm">
-
-<!--                                <router-link :to="{path: '/register', query: {lesson_id: this.selectedLesson}-->
-<!--                                                     path:'/temperature', query: {venue_id: this.venueID}}" >-->
-<!--                                    <button class="btn btn-primary">Start</button>-->
-<!--                                </router-link>-->
                                 <button class="btn btn-primary" @click="getAttendance">Start Class</button>
-
                             </div>
                         </b-card-text>
                     </b-card-body>
                 </b-collapse>
             </b-card>
 
+            <!-- Replacement Class Tab -->
             <b-card no-body class="mb-1">
                 <b-card-header header-tag="header" class="p-1" role="tab">
                     <b-button block href="#" v-b-toggle.accordion-2 variant="info">Replacement Class</b-button>
@@ -63,40 +74,37 @@
                             <div class="container">
                                 <form>
                                     <div class="form-group row">
+                                        <!-- Dropdown for Replacement Class -->
                                         <label>Lesson:</label>
                                         <div class="col-sm-10">
-                                    <select v-model="selectedLesson" name="lesson" class="form-control"
-                                            @change="onChange($event)">
-                                        <option :value="null" disabled>-- Please select an lesson --</option>
-                                        <option v-for="lesson in lessonCollection"
-                                                :value="lesson.id">
-                                            Semester : {{lesson.semester}} ;
-                                            Course Code: {{ lesson.course_code }} ;
-                                            Group{{lesson.group}};
-                                        </option>
-                                    </select>
-                                    </div>
+                                            <select v-model="selectedLesson" name="lesson" class="form-control"
+                                                    @change="onChange($event)">
+                                                <option :value="null" disabled>-- Please select an lesson --</option>
+                                                <option v-for="lesson in lessonCollection"
+                                                        :value="lesson">
+                                                    Course Code: {{ lesson.course_code }}
+                                                    ( Group {{lesson.group}} )
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <!-- input for venue-->
                                     <div class="form-group row">
                                         <label>Venue:</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control"  v-model="selectedVenue">
+                                            <select class="form-control" v-model="selectedReplacementVenue">
                                                 <option v-for="venue in venueCollection"
                                                         :value="venue.id">
                                                     {{ venue.name }}
                                                 </option>
                                             </select>
-                                            <p>
-                                                Venue: {{selectedVenue}}
-                                            </p>
                                         </div>
                                     </div>
                                     <!-- input for days-->
                                     <div class="form-group row">
                                         <label>Day:</label>
                                         <div class="col-sm-10">
-                                            <select class="form-control"  v-model="selectedDay">
+                                            <select class="form-control" v-model="selectedReplacementDay">
                                                 <option v-for="day in days"
                                                         :value="day">
                                                     {{ day }}
@@ -104,16 +112,11 @@
                                             </select>
                                         </div>
                                     </div>
-
-
                                     <!-- input for Start Time-->
                                     <div class="form-group row">
                                         <label>Start Time:</label>
                                         <div class="col-sm-10">
                                             <date-picker v-model="startingDateTime" :config="options"></date-picker>
-                                            <p>
-                                                Start Time: {{startingDateTime}}
-                                            </p>
                                         </div>
                                     </div>
                                     <!-- input for End Time-->
@@ -121,16 +124,28 @@
                                         <label>End Time:</label>
                                         <div class="col-sm-10">
                                             <date-picker v-model="endingDateTime" :config="options"></date-picker>
-                                            <p>
-                                                End Time: {{endingDateTime}}
-                                            </p>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="mt-3">
+                                        <b-card>
+                                            <b-card-text>
+                                                <div class="container">
+                                                    <div>Semester:<strong>{{this.selectedLesson['semester']}}</strong></div>
+                                                    <div>Course:<strong>{{this.selectedLesson['course_code']}}</strong></div>
+                                                    <div>Group: <strong>{{this.selectedLesson['group']}}</strong></div>
+<!--                                                    <div>Lesson Type: <strong>{{this.selectedLesson['group']}}</strong></div>-->
+                                                    <div>Venue :<strong>{{selectedReplacementVenue}}</strong></div>
+                                                    <div>Day :<strong>{{selectedReplacementDay}}</strong></div>
+                                                    <div>Start Time :<strong>{{startingDateTime}}</strong></div>
+                                                    <div>End Time :<strong>{{endingDateTime}}</strong></div>
+                                                </div>
+                                            </b-card-text>
+                                        </b-card>
+                                    </div>
 
-<!--                                        <input type="button" value="Create Class" class="btn btn-info" @click="onCreateClass">-->
-                                  <button class="btn btn-primary" @click="onCreateClass">Create Class</button>
+                                    <div class="mt-3">
+                                        <button class="btn btn-primary" @click="onCreateClass">Create Class</button>
                                     </div>
                                 </form>
                             </div>
@@ -155,34 +170,31 @@
             'datePicker': datePicker,
         },
         mounted() {
-            this.requestLessonCollection();
+            this.getLessonCollection();
             this.getVenue();
-            console.log('1');
         },
         data() {
-            console.log('2');
             return {
+                lessonCollection: null,
+                venueCollection: null,
                 selectedLesson: '',
                 selectedSemester: '',
                 selectedCourse: '',
-                venueID:'',
-
                 selectedType: '',
-                selectedVenue:'',
-                selectedDay: 'Monday',
-                days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                typeName:['Lecture','Lab'],
-                lessonCollection: null,
-                venueCollection:null,
-                startingDateTime:null,
-                endingDateTime:null,
 
-                lesson_id:null,
+                selectedReplacementVenue: '',
+                selectedReplacementDay: '',
+                days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                typeName: ['Lecture', 'Lab','Test'],
+                startingDateTime: null,
+                endingDateTime: null,
+                venueID: '',
+                lesson_id: null,
                 Date: new Date(),
                 options: {
-                    format: 'YYYY/MM/DD hh:mm',
+                    format: 'YYYY/MM/DD H:mm',
                     // format: 'DD/MM/YYYY hh:mm LT', //AM PM
-                    useCurrent: false,
+                    useCurrent: true,
                     daysOfWeekDisabled: [0, 6],
                     showClear: true,
                     showClose: true,
@@ -191,12 +203,11 @@
         },
         methods: {
             onChange() {
-               // console.log(this.selectedLesson['id'] );
-               // console.log(this.selectedLesson['venue_id'] );
-               // console.log('noob');
+                // console.log(this.selectedLesson['id'] );
+                // console.log(this.selectedLesson['venue_id'] );
             },
             /**request lesson to start class**/
-            requestLessonCollection() {
+            getLessonCollection() {
                 this.user_id = 1;
                 axios.get('lesson?user_id=' + this.user_id)
                 // ,{
@@ -207,79 +218,69 @@
                     .then(response => {
                         this.lessonCollection = response.data.data;
                         console.log(response.data.data);
-                        // this.selectedLesson = "1";
-
                     });
             },
 
-            getVenueID() {
-
-                this.user_id = 1;
-                axios.get('lesson?user_id=' + this.user_id + '&id=' + this.selectedLesson)
-                    .then(response => {
-                        this.lessonCollection = response.data.data;
-                        console.log(response.data.data);
-                        for (let i = 0; i < this.lessonCollection.length; i++) {
-                            this.venueID = this.lessonCollection[i]['venue_id'];
-                        }
-                      console.log(this.venueID)
-                    });
-
-            },
+            // getVenueID() {
+            //
+            //     this.user_id = 1;
+            //     axios.get('lesson?user_id=' + this.user_id + '&id=' + this.selectedLesson)
+            //         .then(response => {
+            //             this.lessonCollection = response.data.data;
+            //             console.log(response.data.data);
+            //             for (let i = 0; i < this.lessonCollection.length; i++) {
+            //                 this.venueID = this.lessonCollection[i]['venue_id'];
+            //             }
+            //             console.log(this.venueID)
+            //         });
+            //
+            // },
 
             /**pass params lesson_id to get Student Register List **/
             getAttendance() {
                 console.log(this.selectedLesson);
-                 console.log(this.selectedLesson['id'] );
-                 console.log(this.selectedLesson['venue_id'] );
-                 console.log('noob');
-                this.$session.set('noob', this.selectedLesson);
+                console.log(this.selectedLesson['id']);
+                console.log(this.selectedLesson['venue_id']);
+                this.$session.set('abcd', this.selectedLesson);
 
                 this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}});
-               //  this.$router.push({path: '/dashboard', query: {venue_id: this.venueID}});
-
+                //  this.$router.push({path: '/dashboard', query: {venue_id: this.venueID}});
             },
 
-
-
-
-
             /** get venue for replacement class.**/
-            getVenue(){
+            getVenue() {
                 axios.get('venue')
-                    .then(res=>{
+                    .then(res => {
                         this.venueCollection = res.data.data;
                         console.log(this.venueCollection);
                     })
             },
             /**create replacement class**/
-            onCreateClass(){
+            onCreateClass() {
                 const formData = {
                     user_id: this.user_id,
-                    lesson_id:this.selectedLesson,
-                    venue_id:this.selectedVenue,
-                    schedule_day:this.selectedDay,
-                    starting_date_time:this.startingDateTime,
-                    ending_date_time:this.endingDateTime,
-                    status:1
+                    lesson_id: this.selectedLesson.id,
+                    venue_id: this.selectedReplacementVenue,
+                    schedule_day: this.selectedReplacementDay,
+                    starting_date_time: this.startingDateTime,
+                    ending_date_time: this.endingDateTime,
+                    status: 1
                 };
                 console.log(formData);
-                // this.update();
+
                 axios.post('replacement', formData)
                     .then(res => {
-                            console.log(res);
-                            if(res['data']['success']){
-                                console.log("alert success")
-                                this.getAttendance();
-                                this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson}})
-                            }
-                            if(res['data']['error']){
-                                console.log("alert error")
-                            }
-                        })
+                        console.log(res);
+                        if (res['data']['success']) {
+                            console.log("alert success")
+                            this.getAttendance();
+                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                        }
+                        if (res['data']['error']) {
+                            console.log("alert error")
+                        }
+                    })
                     .catch(error => console.log(error))
-
-
             },
         }
     }
