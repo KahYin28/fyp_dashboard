@@ -19,9 +19,10 @@ class StudentController extends Controller
        $students = Student::filter($filter)
                     ->with(['faculty'])
                     ->with(['lessons'])
-                    ->paginate(5);
+                    ->with(['emotions'])
+//                    ->paginate(5);
 
-//       ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
+      ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
 
    //    pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
         // dd($students);//return collection of students as a resource

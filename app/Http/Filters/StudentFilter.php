@@ -29,6 +29,10 @@ class StudentFilter extends QueryFilter
     {
         return $this->builder->where('lesson_id', $value);
     }
+    public function emotions($value)
+    {
+        return $this->builder->where('id', $value);
+    }
 
 
 }

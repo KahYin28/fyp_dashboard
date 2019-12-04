@@ -1,22 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Aircon;
-use App\Http\Filters\AirconFilter;
+
+use App\Events\TemperatureUpdateEvent;
+use App\Temperature;
+use App\Http\Filters\TemperatureFilter;
 use Illuminate\Http\Request;
 use App\Http\Resources\Aircon as AirConResource;
 
-class AirconController extends Controller
+class TemperatureController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, AirconFilter $filter)
+    public function index(Request $request, TemperatureFilter $filter)
     {
-        $aircon = Aircon::filter($filter)->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
+        $aircon = Temperature::filter($filter)
+            ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
+
+
         return $aircon;
+    //    event(new TemperatureUpdateEvent($data));
+
     }
 
     /**
@@ -44,7 +51,7 @@ class AirconController extends Controller
             'created_at' => $request -> created_at,
             'updated_at' => $request ->updated_at
         ];
-        Aircon::create($data);
+        Temperature::create($data);
     }
 
     /**
@@ -55,7 +62,7 @@ class AirconController extends Controller
      */
     public function show($id)
     {
-        $aircon = Aircon::findOrFail($id);
+        $aircon = Temperature::findOrFail($id);
         return $aircon;
     }
 
@@ -78,7 +85,10 @@ class AirconController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Aircon::findOrFail($id)->update($request->all());
+        //var_dump($request->all());
+       // event(new TemperatureUpdateEvent($request->all()));
+        event(new TemperatureUpdateEvent([33, 24, 45, 45, 27, 32, 30, 19, 22, 25]));
+        Temperature::findOrFail($id)->update($request->all());
 
     }
 
@@ -90,7 +100,7 @@ class AirconController extends Controller
      */
     public function destroy($id)
     {
-        $aircon = Aircon::findOrFail($id);
+        $aircon = Temperature::findOrFail($id);
         $aircon->delete();
     }
 }

@@ -4,14 +4,14 @@ namespace App;
 use App\Model\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
-class Aircon extends BaseModel
+class Temperature extends BaseModel
 {
     protected $fillable =[
         'venue_id',
-        'set_point'
+        'value'
     ];
 
-    protected $table = 'aircons';
+    protected $table = 'temperatures';
 
     public function venue(){
         return $this->belongsTo('App\Venue');

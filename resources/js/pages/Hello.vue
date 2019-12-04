@@ -22,11 +22,8 @@
 
           "doughnutChart":testChart
         },
-
-
-        data() {
+      data() {
             return {
-
                 me: '',
                 abc: true,
                 studentCollection: null,
@@ -64,11 +61,6 @@
                             this.me= this.info['data']['data'][0].name,
                             console.log(this.info['data'])
                     ))
-
-
-
-
-
         }
     }
 </script>

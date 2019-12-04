@@ -4,9 +4,7 @@ namespace App;
 use App\Model\BaseModel;
 use Illuminate\Database\Eloquent\Model;
 
-
-class Student extends BaseModel
-{
+class Student extends BaseModel{
     protected $fillable =[
         'student_id',
         'name',
@@ -18,6 +16,7 @@ class Student extends BaseModel
     public function faculty(){
         return $this->belongsTo('App\Faculty');
     }
+
     public function emotions(){
         return $this->hasMany('App\Emotion');
     }
@@ -25,6 +24,4 @@ class Student extends BaseModel
     public function lessons(){
         return $this->belongsToMany('App\Lesson','registers', 'student_id', 'lesson_id','student_id');
     }
-
-
 }

@@ -21,8 +21,8 @@ class VenueFilter extends QueryFilter
         return $this->builder->where('name', $value);
     }
 
-    public function temperature($value)
+    public function lessons($value)
     {
-        return $this->builder->where('temperature', $value);
+        return $this->builder->where('id', $value);
     }
 }

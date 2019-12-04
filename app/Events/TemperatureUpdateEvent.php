@@ -25,6 +25,7 @@ class TemperatureUpdateEvent implements ShouldBroadcast
     public function __construct($temperature)
     {
         $this->temperature = $temperature;
+        var_dump($this->temperature);
     }
 
     /**
@@ -40,6 +41,6 @@ class TemperatureUpdateEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return ['key' => $this->temperature,
-                    'abc' => 123];
+                'abc' => 123];
     }
 }

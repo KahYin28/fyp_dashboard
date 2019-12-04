@@ -81,4 +81,8 @@ class AttendanceController extends Controller
     {
         //
     }
+
+    public function isAttend(){
+
+    }
 }

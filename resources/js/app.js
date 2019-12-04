@@ -48,8 +48,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import ToggleButton from 'vue-js-toggle-button'
 import VueSlideBar from 'vue-slide-bar'
 import pagination from 'laravel-vue-pagination'
+import VueSessionStorage from 'vue-sessionstorage'
 
-
+Vue.use(VueSessionStorage);
 Vue.use(require('vue-moment'));
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
@@ -67,6 +68,7 @@ Vue.use({
 
 const router = new VueRouter({
     routes,
+    // mode:'history',
 });
 
 axios.defaults.baseURL = "http://localhost:8000/api/";

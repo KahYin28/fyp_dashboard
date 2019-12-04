@@ -18,7 +18,6 @@ class EmotionController extends Controller
         $emotions = Emotion::filter($filter)
                     ->with(['student'])
                     ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
-//        dd($emotions);
         return $emotions;
     }
 

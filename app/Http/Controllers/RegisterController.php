@@ -16,10 +16,13 @@ class RegisterController extends Controller
      */
     public function index(Request $request , RegisterFilter $filter) {
         $registers = Register::filter($filter)
+//            ->with(['students'=>function($query){
+//                $query->with('emotions');
+//            }])
             ->with(['students'])
             ->with(['lessons'])
-            ->paginate(5);
-//dd($registers[0]->students);
+            ->paginate(10);
+
        return $registers;
     }
 

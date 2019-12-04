@@ -9,7 +9,6 @@
                                 :current-page="currentPage"
                                 small>
                     <b-thead head-variant="dark">
-
                         <b-tr>
                             <b-th>No</b-th>
                             <b-th>Matric No</b-th>
@@ -60,18 +59,24 @@
                 currentPage: 1,
                 now: new Date(),
                 checkAttend: [],
-                lesson_id:null,
+                // lesson_id:null,
                 // loading:false,
                 error:'',
+                lesson_id : this.$route.query.lesson_id
             }
         },
         mounted() {
             this.getStudentList();
         },
+        watch:{
+            '$route'(to,from){
+                to.query.lesson_id;
+            }
+        },
         methods: {
             getStudentList() {
                 //get lesson id from register table to query student list
-                this.lesson_id = this.$route.query.lesson_id;
+                // this.lesson_id = this.$route.query.lesson_id;
                 console.log(this.lesson_id);
                 axios.get('register?lesson_id=' + this.lesson_id)
                     .then(data => {

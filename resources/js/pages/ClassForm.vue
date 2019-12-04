@@ -13,35 +13,40 @@
                                     <div class="col-sm">
                                         <h4>Lessons</h4>
                                         <select v-model="selectedLesson" name="lesson" class="form-control"
-                                                @change="onChange($event)">
+                                                @change="onChange()">
                                             <option :value="null" disabled>-- Please select an option --</option>
                                             <option v-for="lesson in lessonCollection"
-                                                    :value="lesson.id">
-                                                Course Code: {{ lesson.course_code }} ;
-                                                Group{{lesson.group}} ;
-                                                Day: {{lesson.schedule_day}} ;
-                                                Start: {{lesson.starting_date_time }} ;
-                                                End: {{lesson.ending_date_time }}
+                                                    :value="lesson">
+                                                Course Code:{{ lesson.course_code }};
+                                                Group{{lesson.group}};
+                                                Day: {{lesson.schedule_day}};
+                                                Start: {{lesson.starting_date_time}};
+                                                End: {{lesson.ending_date_time }} ;
+
                                             </option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
-                            <div>Selected: <strong>{{this.selectedLesson }}</strong></div>
+                            <b-card-text>
+                            <div>Course Code : <strong>{{this.selectedLesson['course_code']}}</strong></div>
+                            <div>Schedule Day : <strong>{{this.selectedLesson['schedule_day']}}</strong></div>
+                            <div> Start : <strong>{{this.selectedLesson['starting_date_time']}}</strong></div>
+                                <div> Start : <strong>{{this.selectedLesson['starting_date_time']}}</strong></div>
 
-<!--                            <b-card title="Class" sub-title="Card subtitle">-->
-<!--                                <b-card-text>-->
-<!--                                    <b-card-text>Course : {{this.selected}}</b-card-text>-->
-<!--                                    <b-card-text>Time : {{}}</b-card-text>-->
-<!--                                </b-card-text>-->
-<!--                            </b-card>-->
+<!--                            <div>Selected: <strong>{{this.selectedLesson }}</strong></div>-->
+                            </b-card-text>
                         </b-card-text>
 
                         <b-card-text>
                             <div class="col-sm">
-                                <!--  <router-link :to="{path:'/attend',query:{id:user_id}}">-->
-                                <button class="btn btn-primary" @click="getAttendance(this.selectedLesson)">Start Class</button>
-                                <!--   </router-link>-->
+
+<!--                                <router-link :to="{path: '/register', query: {lesson_id: this.selectedLesson}-->
+<!--                                                     path:'/temperature', query: {venue_id: this.venueID}}" >-->
+<!--                                    <button class="btn btn-primary">Start</button>-->
+<!--                                </router-link>-->
+                                <button class="btn btn-primary" @click="getAttendance">Start Class</button>
+
                             </div>
                         </b-card-text>
                     </b-card-body>
@@ -67,13 +72,11 @@
                                                 :value="lesson.id">
                                             Semester : {{lesson.semester}} ;
                                             Course Code: {{ lesson.course_code }} ;
-                                            Group{{lesson.group}} ;
-
+                                            Group{{lesson.group}};
                                         </option>
                                     </select>
                                     </div>
                                     </div>
-
                                     <!-- input for venue-->
                                     <div class="form-group row">
                                         <label>Venue:</label>
@@ -89,7 +92,6 @@
                                             </p>
                                         </div>
                                     </div>
-
                                     <!-- input for days-->
                                     <div class="form-group row">
                                         <label>Day:</label>
@@ -153,18 +155,20 @@
             'datePicker': datePicker,
         },
         mounted() {
-            this.requestLesson();
+            this.requestLessonCollection();
             this.getVenue();
+            console.log('1');
         },
-
         data() {
+            console.log('2');
             return {
                 selectedLesson: '',
                 selectedSemester: '',
                 selectedCourse: '',
+                venueID:'',
 
                 selectedType: '',
-                selectedVenue:'bk1',
+                selectedVenue:'',
                 selectedDay: 'Monday',
                 days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
                 typeName:['Lecture','Lab'],
@@ -174,7 +178,6 @@
                 endingDateTime:null,
 
                 lesson_id:null,
-
                 Date: new Date(),
                 options: {
                     format: 'YYYY/MM/DD hh:mm',
@@ -187,11 +190,13 @@
             }
         },
         methods: {
-            onChange(event) {
-                console.log(event.target.value)
+            onChange() {
+               // console.log(this.selectedLesson['id'] );
+               // console.log(this.selectedLesson['venue_id'] );
+               // console.log('noob');
             },
             /**request lesson to start class**/
-            requestLesson() {
+            requestLessonCollection() {
                 this.user_id = 1;
                 axios.get('lesson?user_id=' + this.user_id)
                 // ,{
@@ -201,11 +206,43 @@
                 // }
                     .then(response => {
                         this.lessonCollection = response.data.data;
-                        console.log(response.data.data[0]);
-                        this.selectedLesson = "1";
-                        //Need to do condition check current time match to data lesson time
+                        console.log(response.data.data);
+                        // this.selectedLesson = "1";
+
                     });
             },
+
+            getVenueID() {
+
+                this.user_id = 1;
+                axios.get('lesson?user_id=' + this.user_id + '&id=' + this.selectedLesson)
+                    .then(response => {
+                        this.lessonCollection = response.data.data;
+                        console.log(response.data.data);
+                        for (let i = 0; i < this.lessonCollection.length; i++) {
+                            this.venueID = this.lessonCollection[i]['venue_id'];
+                        }
+                      console.log(this.venueID)
+                    });
+
+            },
+
+            /**pass params lesson_id to get Student Register List **/
+            getAttendance() {
+                console.log(this.selectedLesson);
+                 console.log(this.selectedLesson['id'] );
+                 console.log(this.selectedLesson['venue_id'] );
+                 console.log('noob');
+                this.$session.set('noob', this.selectedLesson);
+
+                this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}});
+               //  this.$router.push({path: '/dashboard', query: {venue_id: this.venueID}});
+
+            },
+
+
+
+
 
             /** get venue for replacement class.**/
             getVenue(){
@@ -215,52 +252,33 @@
                         console.log(this.venueCollection);
                     })
             },
-            /**pass params lesson_id to get Student Register List **/
-            getAttendance(haha) {
-                this.$router.push({path: '/register', query: {lesson_id: haha}});
-            },
-
-            getReplacementAttendance() {
-
-            },
             /**create replacement class**/
             onCreateClass(){
-                // this.user_id = 1;
-                // axios.get('lesson?user_id=' + this.user_id)
-                //     .then(response => {
-                //         this.lessonCollection = response.data.data;
-                //         console.log(response.data.data[0])
-                //         // this.selectedLesson = "1";
+                const formData = {
+                    user_id: this.user_id,
+                    lesson_id:this.selectedLesson,
+                    venue_id:this.selectedVenue,
+                    schedule_day:this.selectedDay,
+                    starting_date_time:this.startingDateTime,
+                    ending_date_time:this.endingDateTime,
+                    status:1
+                };
+                console.log(formData);
+                // this.update();
+                axios.post('replacement', formData)
+                    .then(res => {
+                            console.log(res);
+                            if(res['data']['success']){
+                                console.log("alert success")
+                                this.getAttendance();
+                                this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson}})
+                            }
+                            if(res['data']['error']){
+                                console.log("alert error")
+                            }
+                        })
+                    .catch(error => console.log(error))
 
-
-                        const formData = {
-                            user_id: this.user_id,
-                            lesson_id:this.selectedLesson,
-                            venue_id:this.selectedVenue,
-                            schedule_day:this.selectedDay,
-                            starting_date_time:this.startingDateTime,
-                            ending_date_time:this.endingDateTime,
-                            status:1
-                        };
-                        console.log(formData);
-                        // this.update();
-                        axios.post('replacement', formData)
-                            .then(res => {
-                                    console.log(res);
-                                    if(res['data']['success']){
-                                        console.log("alert success")
-                                        this.getAttendance(this.selectedLesson);
-                                        //this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson}})
-                                    }
-                                    if(res['data']['error']){
-                                        console.log("alert error")
-                                    }
-                                }
-                            )
-                            .catch(error => console.log(error))
-
-
-                    // });
 
             },
         }

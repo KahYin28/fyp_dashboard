@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAirconsTable extends Migration
+class CreateTemperaturesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateAirconsTable extends Migration
      */
     public function up()
     {
-        Schema::create('aircons', function (Blueprint $table) {
+        Schema::create('temperatures', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('venue_id');
-            $table->double('set_point');
+            $table->double('value');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateAirconsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('aircons');
+        Schema::dropIfExists('temperatures');
     }
 }

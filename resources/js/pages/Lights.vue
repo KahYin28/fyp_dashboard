@@ -46,10 +46,7 @@
                         <p class="specs float-left">Power Consumption</p>
                         <p class="ml-auto mb-0 float-right">24W</p>
                     </b-list-group-item>
-                    <b-list-group-item>
-                        <p class="specs float-left">Voltage range</p>
-                        <p class="ml-auto mb-0 float-right">110-130V</p>
-                    </b-list-group-item>
+
                 </b-list-group>
                 <!-- light details END -->
             </div>

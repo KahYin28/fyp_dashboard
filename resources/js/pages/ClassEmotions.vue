@@ -39,7 +39,6 @@
                     var DISGUSTED=[];
                     var SURPRISED=[];
                     var CALM=[];
-                    var UNKNOWN=[];
                     var FEAR=[];
 
                     for (let i = 0; i < this.emotionsCollection.length; i++) {
@@ -50,7 +49,6 @@
                         let disgusted = this.emotionsCollection[i]['disgusted'] ;
                         let surprised = this.emotionsCollection[i]['surprised'] ;
                         let calm = this.emotionsCollection[i]['calm'] ;
-                        let unknown = this.emotionsCollection[i]['unknown'] ;
                         let fear = this.emotionsCollection[i]['fear'] ;
 
                         HAPPY.push(happy);
@@ -60,14 +58,13 @@
                         DISGUSTED.push(disgusted);
                         SURPRISED.push(surprised);
                         CALM.push(calm);
-                        UNKNOWN.push(unknown);
                         FEAR.push(fear);
 
                         function calcSum(arr){
                             var sum = 0;
                              sum = arr.reduce(function (a, b) {
                                 return a + b;
-                            })
+                            });
                             return sum;
                         };
 
@@ -85,37 +82,27 @@
                         var percent_suprised =((total_suprised/(SURPRISED.length * 100)*100).toFixed(2));
                         var total_calm = calcSum(CALM);
                         var percent_calm =((total_calm/(CALM.length * 100)*100).toFixed(2));
-                        var total_unknown = calcSum(UNKNOWN);
-                        var percent_unknown =((total_unknown/(UNKNOWN.length * 100)*100).toFixed(2));
                         var total_fear = calcSum(FEAR);
                         var percent_fear =((total_fear/(FEAR.length * 100)*100).toFixed(2));
 
                     }
 
                     this.emotionsCollection = {
-                        labels: ['Happy','Sad','Angry','Confused','Disgusted','Surprised','Calm','Unknown','Fear'],
+                        labels: ['Happy','Sad','Angry','Confused','Disgusted','Surprised','Calm','Fear'],
 
-                        datasets: [
-                            {
+                        datasets: [{
                                 label: "Emotions",
                                 backgroundColor: "#3c8af8",
                                 borderColor: "#3c8af0",
                                 borderWidth: 2,
                                 fill: false,
                                 data:[percent_happy,percent_sad,percent_angry,percent_confused,
-                                    percent_disgusted,percent_suprised,percent_calm,percent_unknown,percent_fear]
+                                    percent_disgusted,percent_suprised,percent_calm,percent_fear]
 
-                            }
-                        ]
+                            }]
                     };
-
                 });
-
-
-
             },
-
-
         }
     }
 </script>

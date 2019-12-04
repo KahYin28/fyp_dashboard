@@ -2,17 +2,27 @@
     <div>
     <h1>Facial Expression</h1>
         <div class="chart-container" style="width: 700px">
-    <radar-chart v-if="loaded"
-                 :chart-data="dataCollection">
+        <radar-chart v-if="loaded"
+                     :chart-data="dataCollection">
+        </radar-chart>
+        </div>
 
-    </radar-chart>
+
+
+        <div>
+            <b-card class="mt-3"  title="Card Title">
+
+            </b-card>
+        </div>
+
+
+
     </div>
-    </div>
+
 </template>
 
 <script>
     import RadarChart from "../radarChart";
-
 
     export default {
         name: "Emotions",
@@ -23,25 +33,20 @@
             return {
                 loaded: true,
                 dataCollection: null,
-
             };
         },
-        created(){
 
-
-        },
         mounted() {
             this.requestData();
         },
         methods:{
             requestData(){
                 this.std = this.$route.query.id;
-                console.log(this.std + 'sd');
-                axios.get('emotion/'+ this.std).then(response => {
+                console.log(this.std);
+                axios.get('emotion/'+ this.std).then(response =>{
                     this.dataCollection = response.data;
                     console.log(this.dataCollection);
                     var EMO = [];
-
                  //   for (let i = 0; i < this.dataCollection.length; i++) {
                         // var keys = Object.keys(this.dataCollection[i]);
                         // for(var j=0; j<keys.length; j++) {
@@ -55,13 +60,12 @@
                         let disgusted = this.dataCollection['disgusted'] ;
                         let surprised = this.dataCollection['surprised'] ;
                         let calm = this.dataCollection['calm'] ;
-                        let unknown = this.dataCollection['unknown'] ;
                         let fear = this.dataCollection['fear'] ;
-                        EMO.push(angry,sad,happy,confused,disgusted,surprised,calm,unknown,fear);
+                        EMO.push(angry,sad,happy,confused,disgusted,surprised,calm,fear);
                         // console.log(EMO);
                 //    }
                     this.dataCollection = {
-                        labels: ['Happy','Sad','Angry','Confused','Disgusted','Surprised','Calm','Unknown','Fear'],
+                        labels: ['Happy','Sad','Angry','Confused','Disgusted','Surprised','Calm','Fear'],
                         datasets: [
                             {
                                 label: "Emotions",

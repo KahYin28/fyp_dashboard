@@ -16,7 +16,6 @@ $factory->define(Emotion::class, function (Faker $faker) {
         'disgusted' => $faker->randomFloat(2, 0, 100),
         'surprised' => $faker->randomFloat(2, 0, 100),
         'calm' => $faker->randomFloat(2, 0, 100),
-        'unknown' => $faker->randomFloat(2, 0, 100),
         'fear' => $faker->randomFloat(2, 0, 100),
     ];
 });

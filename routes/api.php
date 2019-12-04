@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/aircon', 'AirconController');
+Route::resource('/temperature', 'TemperatureController');
 
 Route::resource('/student', 'StudentController');
 
@@ -28,17 +28,17 @@ Route::resource('/faculty', 'FacultyController');
 
 Route::resource('/user', 'UserController');
 
+Route::resource('/register', 'RegisterController');
+
 Route::resource('/lesson', 'LessonController');
 
-Route::resource('/lighting', 'LightingController');
+Route::resource('/lights', 'LightingController');
 
 Route::resource('/emotion', 'EmotionController');
 
 Route::resource('/user', 'UserController');
 
 Route::resource('/venue', 'VenueController');
-
-Route::resource('/register', 'RegisterController');
 
 Route::resource('/replacement', 'ReplacementController');
 
@@ -48,3 +48,4 @@ Route::resource('/replacement', 'ReplacementController');
 //    event(new TemperatureUpdateEvent($temperature));
 //    return Response::make('Updated!');
 //});
+

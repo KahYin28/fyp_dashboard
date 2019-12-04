@@ -39,7 +39,7 @@ export const routes = [
         component: Lights
     },
     {
-        path: '/temperature',
+        path: '/temperature/:venue_id',
         name: 'Temperature',
         component: Temperature
     },

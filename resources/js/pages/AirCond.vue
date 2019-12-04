@@ -2,7 +2,7 @@
     <div>
         <!-- ON/OFF all interior AC  START -->
         <b-card
-            title="Air Conditioners"
+            title="Temperature"
             style="max-width: 30rem;"
             class="mb-3"
         >
@@ -18,40 +18,37 @@
 
         <!-- ON/OFF each interior AC  START -->
         <b-card
-            title="Air Conditioner A"
+            title="Current Temperature"
             style="max-width: 25rem;"
             class="mb-3"
         >
             <hr class="my-0">
             <b-card-text>
-               Desired Temperature
-            </b-card-text>
-            <b-card-text>
-                24 &#8451;
+                <h1>24 &#8451;</h1>
             </b-card-text>
             <b-card-text>
                 71 &#8457;
             </b-card-text>
 
-            <VueSlideBar
-                v-model="sliderValue"
-                class="demo-demo"
-                :min="16"
-                :max="31"
-                :showTooltip="true"
-                :lineHeight="13"
-                :tooltipStyles="{ backgroundColor: 'blue', borderColor: 'blue' }"
-            />
+<!--            <VueSlideBar-->
+<!--                v-model="sliderValue"-->
+<!--                class="demo-demo"-->
+<!--                :min="16"-->
+<!--                :max="31"-->
+<!--                :showTooltip="true"-->
+<!--                :lineHeight="13"-->
+<!--                :tooltipStyles="{ backgroundColor: 'blue', borderColor: 'blue' }"-->
+<!--            />-->
 
-            <div>
-                <h6>Degree: {{ sliderValue }}</h6>
-                <div class="center">
+<!--            <div>-->
+<!--                <h6>Degree: {{ sliderValue }}</h6>-->
+<!--                <div class="center">-->
 
-                    <b-button variant="outline-primary"  @click="sliderValue--"><b> - </b></b-button>
-                    <b-button variant="outline-primary"  @click="sliderValue++"><b> + </b></b-button>
+<!--                    <b-button variant="outline-primary"  @click="sliderValue&#45;&#45;"><b> - </b></b-button>-->
+<!--                    <b-button variant="outline-primary"  @click="sliderValue++"><b> + </b></b-button>-->
 
-                </div>
-            </div>
+<!--                </div>-->
+<!--            </div>-->
             <div>
 
             </div>
@@ -84,6 +81,7 @@
                 sliderValue: 24
             };
         },
+
 
 
 

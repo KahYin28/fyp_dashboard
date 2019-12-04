@@ -15,15 +15,13 @@ class LessonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-
-
     public function index(Request $request, LessonFilter $filter){
         $lessons = Lesson::filter($filter)
             ->with(['students'=>function($query){
                 $query->with('faculty');
             }])
             ->with(['lesson_type'])
+
             ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
         return $lessons;
     }

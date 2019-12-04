@@ -23,7 +23,6 @@ class CreateEmotionsTable extends Migration
             $table->double('disgusted');
             $table->double('surprised');
             $table->double('calm');
-            $table->double('unknown');
             $table->double('fear');
             $table->timestamps();
         });

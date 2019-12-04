@@ -17,8 +17,8 @@ class Venue extends BaseModel
     public function lightings(){
         return $this->hasMany('App\Lighting');
     }
-    public function aircons(){
-        return $this->hasMany('App\Aircon');
+    public function temperatures(){
+        return $this->hasMany('App\Temperature');
     }
 
     public function lessons(){
