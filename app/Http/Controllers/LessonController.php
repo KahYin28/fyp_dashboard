@@ -44,43 +44,8 @@ class LessonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-//        $data = [
-//
-////data => $request -> $user -> param
-//        ];
-        try {
-            DB::beginTransaction();
-            Lesson::create([
-                'starting_date_time' => $request->starting_date_time,
-                'ending_date_time' => $request->ending_date_time,
-                'course_code' => $request->course_code,
-                'lesson_type_id' => $request->lesson_type_id,
-                'semester' => $request->semester,
-            ]);
 
-            DB::commit();
 
-            return $this->withArray([
-                'success' => [
-                    'code' => 'success',
-                    'http_code' => 200,
-                    'message' => 'Transaction success'
-                ]
-            ]);
-        } catch (\Exception $e) {
-            DB::rollback();
-//            $this->logger->errorLog($request, $e, _CLASS_, _FUNCTION_);
-          //  return $this->response->errorInternalError('Internal Server Error');
-            return $this->withArray([
-                'error' => [
-                    'code' => 'error',
-                    'http_code' => 400,
-                    'message' => 'Transaction failed'
-                ]
-            ]
-
-            );
-        }
     }
 
     /**
@@ -114,7 +79,36 @@ class LessonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Lesson::findOrFail($id)->update($request->all());
+        try {
+        DB::beginTransaction();
+//        $input = $request->all();
+//        $input['status']= 1;
+        Lesson::findOrFail($id)
+         -> update(['status' => 1]);
+
+        DB::commit();
+        return $this->withArray([
+            'success' => [
+                'code' => 'success',
+                'http_code' => 200,
+                'message' => 'Transaction success'
+            ]
+        ]);
+    } catch (\Exception $e) {
+        DB::rollback();
+//            $this->logger->errorLog($request, $e, _CLASS_, _FUNCTION_);
+        //  return $this->response->errorInternalError('Internal Server Error');
+        return $this->withArray([
+                'error' => [
+                    'code' => 'error',
+                    'http_code' => 400,
+                    'message' => 'Transaction failed'
+                ]
+            ]
+
+        );
+    }
+
     }
 
     /**

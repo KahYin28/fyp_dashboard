@@ -16,7 +16,7 @@
                                         <!-- Dropdown to select lesson -->
                                         <div class="form-group row">
                                             <label class="col-sm-6 col-form-label">
-                                                Course Code and Group:
+                                                Course and Group:
                                             </label>
                                             <div class="col-sm-8">
                                                 <select v-model="selectedLesson" name="lesson" class="form-control"
@@ -145,7 +145,7 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <button class="btn btn-primary" @click="onCreateClass">Create Class</button>
+                                        <button class="btn btn-primary" @click="onCreateReplacementClass">Create Class</button>
                                     </div>
                                 </form>
                             </div>
@@ -219,6 +219,7 @@
                         this.lessonCollection = response.data.data;
                         console.log(response.data.data);
                     });
+
             },
 
             // getVenueID() {
@@ -241,10 +242,25 @@
                 console.log(this.selectedLesson);
                 console.log(this.selectedLesson['id']);
                 console.log(this.selectedLesson['venue_id']);
-                this.$session.set('abcd', this.selectedLesson);
-
-                this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}});
+                this.$session.set('data', this.selectedLesson);
+                // this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}});
                 //  this.$router.push({path: '/dashboard', query: {venue_id: this.venueID}});
+                const formData = {
+                    status: 1
+                };
+                console.log(formData);
+                axios.put('lesson/'+ this.selectedLesson['id'], formData)
+                    .then(res => {
+                        console.log(res);
+                        if (res['data']['success']) {
+                            console.log("alert success")
+                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                        }
+                        if (res['data']['error']) {
+                            console.log("alert error")
+                        }
+                    })
+                    .catch(error => console.log(error))
             },
 
             /** get venue for replacement class.**/
@@ -256,7 +272,7 @@
                     })
             },
             /**create replacement class**/
-            onCreateClass() {
+            onCreateReplacementClass() {
                 const formData = {
                     user_id: this.user_id,
                     lesson_id: this.selectedLesson.id,

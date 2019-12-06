@@ -4,12 +4,15 @@
 
 use App\Attendance;
 use App\Register;
+use App\Student;
 use Faker\Generator as Faker;
 
 $factory->define(Attendance::class, function (Faker $faker) {
     return [
         'register_id' => $faker->unique()->numberBetween(Register::all()->first()->id, Register::all()->last()->id),
+        'student_id' => $faker->numberBetween(Student::all()->first()->student_id, Student::all()->last()->student_id),
         'starting_date_time' => $faker->dateTime,
         'ending_date_time' => $faker->dateTime,
+        'status'=> $faker->boolean
     ];
 });

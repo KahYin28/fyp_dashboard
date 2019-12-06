@@ -19,9 +19,11 @@ class RegisterController extends Controller
 //            ->with(['students'=>function($query){
 //                $query->with('emotions');
 //            }])
-            ->with(['students'])
+            ->with(['students'=>function($query){
+                $query->with('faculty');
+            }])
             ->with(['lessons'])
-            ->paginate(10);
+            ->paginate(5);
 
        return $registers;
     }

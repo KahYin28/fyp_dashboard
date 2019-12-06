@@ -39,7 +39,6 @@ Vue.component('app', require('./App.vue').default);
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {routes} from "./routes";
-import {store} from "./store/store";
 import axios from 'axios';
 import jQuery from 'jquery';
 import BootstrapVue from 'bootstrap-vue'
@@ -92,7 +91,7 @@ jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
 new Vue({
     el:'#app',
     router,
-    store
+
 });
 
 

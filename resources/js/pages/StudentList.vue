@@ -14,6 +14,7 @@
                             <b-th>Matric No</b-th>
                             <b-th>Name</b-th>
                             <b-th>Programme</b-th>
+                            <b-th>Faculty</b-th>
                             <b-th>Attend</b-th>
                         </b-tr>
                     </b-thead>
@@ -27,6 +28,8 @@
                             </router-link>
                             <b-td>{{register.students.name}}</b-td>
                             <b-td >{{register.students.programme}}</b-td>
+                            <b-td >{{register.students.faculty.name}}</b-td>
+
                             <b-td>
                                 <label class="form-checkbox">
                                     <input type="checkbox" :value="register.student" v-model="checkAttend">
@@ -74,8 +77,8 @@
             }
         },
         methods: {
+            /**get lesson id from register table to query student list**/
             getStudentList() {
-                //get lesson id from register table to query student list
                 // this.lesson_id = this.$route.query.lesson_id;
                 console.log(this.lesson_id);
                 axios.get('register?lesson_id=' + this.lesson_id)
@@ -83,23 +86,31 @@
                         console.log(data)
                         this.registers = data.data;
                         console.log(this.registers)
-                        // console.log(this.registers.data[0].students.programme)
                     })
             },
+            /**pagination for student list result**/
             getResults(page = 1) {
                 this.lesson_id = this.$route.query.lesson_id;
                 axios.get('register?lesson_id=' + this.lesson_id + '&page=' + page)
                     .then(response => {
                         this.registers = response.data;
-                        console.log("asd" + this.registers)
+                        console.log(this.registers)
                     })
                     .catch(err => {
                         this.loading = false;
                         this.error = err;
                     });
             },
-        },
 
+            isAttend() {
+                axios.get('attend?student_id=' + this.lesson_id + '&page=' + page)
+                    .then(response => {
+                        this.registers = response.data;
+                        console.log(this.registers)
+                    })
+
+            },
+        }
     }
 </script>
 <style scoped>

@@ -7,6 +7,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Faculty::class, function (Faker $faker) {
     return [
-        'name' =>$faker-> bothify('Faculty of ???????')
+        'name' =>$faker-> bothify('Faculty of ??????????')
     ];
 });

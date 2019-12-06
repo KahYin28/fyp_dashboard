@@ -3,7 +3,7 @@ import Dashboard from "./pages/Dashboard.vue";
 import StudentList from "./pages/StudentList";
 import Emotions from "./pages/Emotions";
 import Lights from "./pages/Lights.vue"
-import Temperature from "./pages/AirCond";
+import Temperature from "./pages/Temperature";
 import Hello from "./pages/Hello";
 import ClassEmotions from "./pages/ClassEmotions";
 
@@ -39,7 +39,7 @@ export const routes = [
         component: Lights
     },
     {
-        path: '/temperature/:venue_id',
+        path: '/temperature/',
         name: 'Temperature',
         component: Temperature
     },

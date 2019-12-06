@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Attendance;
+use App\Http\Filters\AttendanceFilter;
+use App\Register;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -11,9 +14,13 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, AttendanceFilter $filter)
     {
-        //
+        $attend = Attendance::filter($filter)
+            ->with(['register'])
+            ->with(['student'])
+            ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
+        return $attend;
     }
 
     /**
@@ -68,7 +75,8 @@ class AttendanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+//        Register::
+
     }
 
     /**

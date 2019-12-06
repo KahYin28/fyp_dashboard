@@ -22,15 +22,21 @@
             style="max-width: 30rem;"
             class="mb-3-float-left"
         >
-         <div>
-                <toggle-button class="float-right-lg" @change="onChange" v-model="checked" :labels="true"/>
-                <!--            <toggle-button-->
-                <!--                :value="false" :color="color" :sync="true"   :labels="true"-->
-                <!--            />-->
-                <!--            <toggle-button-->
-                <!--                :value="true" :labels="{checked: 'Active', uncheked: 'What now?'}"-->
-                <!--            />-->
+<!--         <div>-->
+<!--                <toggle-button class="float-right-lg" @change="onChange" v-model="checked" :labels="true"/>-->
+<!--                &lt;!&ndash;            <toggle-button&ndash;&gt;-->
+<!--                &lt;!&ndash;                :value="false" :color="color" :sync="true"   :labels="true"&ndash;&gt;-->
+<!--                &lt;!&ndash;            />&ndash;&gt;-->
+<!--                &lt;!&ndash;            <toggle-button&ndash;&gt;-->
+<!--                &lt;!&ndash;                :value="true" :labels="{checked: 'Active', uncheked: 'What now?'}"&ndash;&gt;-->
+<!--                &lt;!&ndash;            />&ndash;&gt;-->
 
+<!--            </div>-->
+
+            <div class="mb-3" data-controls="switch-lights-in">
+                <b-button data-action="all-on"  @click="switchOnLight" type="button" class="btn btn-primary">All <strong>ON</strong></b-button>
+                <b-button data-action="all-off" @click="switchOffLight"type="button" class="btn btn-secondary">All <strong>OFF</strong>
+                </b-button>
             </div>
 
             <hr class="my-0">
