@@ -39,9 +39,9 @@
                                                 <div class="container">
                                                     <div>Semester:<strong>{{this.selectedLesson['semester']}}</strong></div>
                                                     <div>Course:<strong>{{this.selectedLesson['course_code']}}</strong></div>
-                                                    <div>Lesson Type:<strong>{{this.selectedLesson['lesson_type']}}</strong></div>
+                                                    <div>Lesson Type:<strong>{{this.selectedLesson['lesson_type_id']}}</strong></div>
                                                     <div>Group: <strong>{{this.selectedLesson['group']}}</strong></div>
-                                                    <div>Venue: <strong>{{this.selectedLesson['venue']}}</strong></div>
+                                                    <div>Venue: <strong>{{this.selectedLesson['venue_id']}}</strong></div>
                                                     <div>Schedule Day:<strong>{{this.selectedLesson['schedule_day']}}</strong></div>
                                                     <div>Start Time:<strong>{{this.selectedLesson['starting_date_time']}}</strong></div>
                                                     <div>End Time: <strong>{{this.selectedLesson['ending_date_time']}}</strong></div>
@@ -218,25 +218,8 @@
                     .then(response => {
                         this.lessonCollection = response.data.data;
                         console.log(response.data.data);
-                    });
-
+                    })
             },
-
-            // getVenueID() {
-            //
-            //     this.user_id = 1;
-            //     axios.get('lesson?user_id=' + this.user_id + '&id=' + this.selectedLesson)
-            //         .then(response => {
-            //             this.lessonCollection = response.data.data;
-            //             console.log(response.data.data);
-            //             for (let i = 0; i < this.lessonCollection.length; i++) {
-            //                 this.venueID = this.lessonCollection[i]['venue_id'];
-            //             }
-            //             console.log(this.venueID)
-            //         });
-            //
-            // },
-
             /**pass params lesson_id to get Student Register List **/
             getAttendance() {
                 console.log(this.selectedLesson);
@@ -244,7 +227,7 @@
                 console.log(this.selectedLesson['venue_id']);
                 this.$session.set('data', this.selectedLesson);
                 // this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}});
-                //  this.$router.push({path: '/dashboard', query: {venue_id: this.venueID}});
+                 // this.$router.push({path: '/dashboard', query: {venue_id: this.venueID}});
                 const formData = {
                     status: 1
                 };
@@ -258,6 +241,7 @@
                         }
                         if (res['data']['error']) {
                             console.log("alert error")
+                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
                         }
                     })
                     .catch(error => console.log(error))
@@ -294,6 +278,8 @@
                         }
                         if (res['data']['error']) {
                             console.log("alert error")
+                            this.getAttendance();
+                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
                         }
                     })
                     .catch(error => console.log(error))

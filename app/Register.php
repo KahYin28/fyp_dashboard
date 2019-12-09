@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 
-
 class Register extends PivotBaseModel{
     protected $fillable =[
     ];
@@ -22,6 +21,7 @@ class Register extends PivotBaseModel{
     public function lessons(){
         return $this->belongsTo('App\Lesson','id','id');
     }
+
     public function attendances(){
         return $this->hasMany('App\Attendance');
     }

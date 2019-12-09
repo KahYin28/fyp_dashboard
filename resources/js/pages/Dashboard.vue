@@ -16,7 +16,7 @@
         </div>
 
         <div class="mt-3">
-        <div class="card" style="width: 600px;">
+        <div class="card" style="width: 700px;">
 <!--            <div class="chart-container" style="width: 700px">-->
                 <line-chart v-if="loaded"
                             :chart-data="dataCollection">
@@ -26,7 +26,7 @@
         </div>
 
             <div class="mt-3">
-                <div class="card" style="width: 600px ;">
+                <div class="card" style="width: 700px ;">
                 <app-class-emotions></app-class-emotions>
             </div>
             </div>
@@ -35,22 +35,16 @@
 </template>
 
 <script>
-
     import doughnutChart from "../doughnutChart.js";
     import lineChart from "../chart.js";
     import ClassEmotions from "./ClassEmotions";
 
     export default {
-
         components: {
             "app-class-emotions": ClassEmotions,
             "line-chart": lineChart,
             "doughnut-chart": doughnutChart,
         },
-        created() {
-
-        },
-
         data() {
             return {
                 loaded: true,
@@ -108,29 +102,31 @@
                 }
             },
             requestData() {
-                this.venue_id = this.$route.query.venue_id;
+                // this.venue_id = this.$route.query.venue_id;
+                if (this.$session.exists('data')) {
+                    this.sessionData = this.$session.get('data');
+                    console.log(this.sessionData['venue_id'])
 
-                axios.get('temperature?venue_id' + this.venue_id)
-                    .then(response => {
-                        this.dataCollection = response.data.data;
-                        //   console.log(this.dataCollection);
-                        var DEG = [];
-                        var DATE = [];
+                    axios.get('temperature?venue_id' + this.sessionData['venue_id'])
+                        .then(response => {
+                            this.dataCollection = response.data.data;
+                            //   console.log(this.dataCollection);
+                            var DEG = [];
+                            var DATE = [];
 
-                        for (let i = 0; i < this.dataCollection.length; i++) {
-                            let degree = this.dataCollection[i]['value'];
-                            let date_time = this.dataCollection[i]['created_at'];
-                            DEG.push(degree);
-                            DATE.push(date_time);
-                        }
-                        console.log(DEG);
-                        // console.log(DATE);
-                        this.chartDate = DATE;
-                        console.log(this.chartDate);
-                        this.setChartData(DEG, DATE);
-
-
-                    });
+                            for (let i = 0; i < this.dataCollection.length; i++) {
+                                let degree = this.dataCollection[i]['value'];
+                                let date_time = this.dataCollection[i]['created_at'];
+                                DEG.push(degree);
+                                DATE.push(date_time);
+                            }
+                            console.log(DEG);
+                            // console.log(DATE);
+                            this.chartDate = DATE;
+                            console.log(this.chartDate);
+                            this.setChartData(DEG, DATE);
+                        });
+                }
             },
             setChartData(DEG, DATE) {
                 this.dataCollection = {

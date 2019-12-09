@@ -18,17 +18,17 @@
                             <b-th>Attend</b-th>
                         </b-tr>
                     </b-thead>
-                    <b-tbody >
+                    <b-tbody>
                         <b-tr v-for="(register,index) in registers.data"
                               :key="register.id"
-                           >
-                            <b-td >{{ index+1 }}</b-td>
+                        >
+                            <b-td>{{ index+1 }}</b-td>
                             <router-link :to="{path:'/emotion',query:{id:register.student_id}}">
-                            <b-td>{{register.student_id}}</b-td>
+                                <b-td>{{register.student_id}}</b-td>
                             </router-link>
                             <b-td>{{register.students.name}}</b-td>
-                            <b-td >{{register.students.programme}}</b-td>
-                            <b-td >{{register.students.faculty.name}}</b-td>
+                            <b-td>{{register.students.programme}}</b-td>
+                            <b-td>{{register.students.faculty.name}}</b-td>
 
                             <b-td>
                                 <label class="form-checkbox">
@@ -50,6 +50,7 @@
 <script>
     import NavBar from "../components/NavBar.vue";
     import pagination from 'laravel-vue-pagination'
+
     export default {
         components: {
             'app-navbar': NavBar,
@@ -62,48 +63,50 @@
                 currentPage: 1,
                 now: new Date(),
                 checkAttend: [],
-                // lesson_id:null,
-                // loading:false,
-                error:'',
-                lesson_id : this.$route.query.lesson_id
+                error: '',
             }
         },
         mounted() {
             this.getStudentList();
         },
-        watch:{
-            '$route'(to,from){
-                to.query.lesson_id;
-            }
-        },
+
         methods: {
             /**get lesson id from register table to query student list**/
             getStudentList() {
-                // this.lesson_id = this.$route.query.lesson_id;
-                console.log(this.lesson_id);
-                axios.get('register?lesson_id=' + this.lesson_id)
-                    .then(data => {
-                        console.log(data)
-                        this.registers = data.data;
-                        console.log(this.registers)
-                    })
+                if (this.$session.exists('data')) {
+                    this.sessionData = this.$session.get('data');
+                    console.log(this.sessionData['id']);
+                    // this.lesson_id = this.$route.query.lesson_id;
+                    console.log(this.lesson_id);
+                    axios.get('register?lesson_id=' + this.sessionData['id'])
+                        .then(data => {
+                            console.log(data)
+                            this.registers = data.data;
+                            console.log(this.registers)
+                        })
+                }
             },
             /**pagination for student list result**/
             getResults(page = 1) {
-                this.lesson_id = this.$route.query.lesson_id;
-                axios.get('register?lesson_id=' + this.lesson_id + '&page=' + page)
-                    .then(response => {
-                        this.registers = response.data;
-                        console.log(this.registers)
-                    })
-                    .catch(err => {
-                        this.loading = false;
-                        this.error = err;
-                    });
-            },
+                if (this.$session.exists('data')) {
+                    this.sessionData = this.$session.get('data');
+                    console.log(this.sessionData['id']);
 
+                    this.lesson_id = this.$route.query.lesson_id;
+                    axios.get('register?lesson_id=' + this.sessionData['id'] + '&page=' + page)
+                        .then(response => {
+                            this.registers = response.data;
+                            console.log(this.registers)
+                        })
+                        .catch(err => {
+                            this.loading = false;
+                            this.error = err;
+                        });
+                }
+
+            },
             isAttend() {
-                axios.get('attend?student_id=' + this.lesson_id + '&page=' + page)
+                axios.get('attend?student_id=' + this.sessionData['id']+ '&page=' + page)
                     .then(response => {
                         this.registers = response.data;
                         console.log(this.registers)

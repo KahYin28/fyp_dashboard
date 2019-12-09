@@ -31,7 +31,9 @@ Route::resource('/faculty', 'FacultyController');
 
 Route::resource('/user', 'UserController');
 
-Route::resource('/register', 'RegisterController');
+Route::resource('/register', 'RegisterController')->except([
+    'edit'
+]);;
 
 Route::resource('/lesson', 'LessonController');
 
@@ -44,6 +46,8 @@ Route::resource('/user', 'UserController');
 Route::resource('/venue', 'VenueController');
 
 Route::resource('/replacement', 'ReplacementController');
+
+Route::get('/test', 'RegisterController@checkAttend');
 
 //Route::get('/venue', function (Request $request)
 //{
