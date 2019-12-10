@@ -41,14 +41,6 @@ class User extends Authenticatable
         return $this->belongsTo('App\Faculty');
     }
 
-    public function lightings(){
-        return $this->hasMany('App\Lighting');
-    }
-
-    public function temperatures(){
-        return $this->hasMany('App\Temperature');
-    }
-
     public function lessons(){
         return $this->hasMany('App\Lesson');
     }

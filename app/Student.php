@@ -18,7 +18,7 @@ class Student extends BaseModel{
     }
 
     public function emotions(){
-        return $this->hasMany('App\Emotion');
+        return $this->hasMany('App\Emotion','student_id','student_id');
     }
 
     public function lessons(){

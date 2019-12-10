@@ -13,7 +13,6 @@ class Lesson extends BaseModel
 
     protected $table = 'lessons';
 
-
     public function users(){
         return $this->belongsTo('App\User');
     }

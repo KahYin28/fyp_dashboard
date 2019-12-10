@@ -13,7 +13,6 @@ use Faker\Generator as Faker;
 
 $factory->define(Replacement::class, function (Faker $faker) {
     return [
-//        'id'=>$faker->randomNumber(6),
         'user_id' => $faker->numberBetween(User::all()->first()->id, User::all()->last()->id),
         'lesson_id' =>$faker -> numberBetween(Lesson::all()->first()->id, Lesson::all()->last()->id),
         'venue_id' => $faker->numberBetween(Venue::all()->first()->id, Venue::all()->last()->id),

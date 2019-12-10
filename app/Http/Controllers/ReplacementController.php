@@ -18,7 +18,7 @@ class ReplacementController extends Controller
         $replace = Replacement::filter($filter)
             ->with(['lessons'])
 //            ->with(['venue'])
-//            ->with(['user'])
+
             ->paginate(5);
 
         return $replace;

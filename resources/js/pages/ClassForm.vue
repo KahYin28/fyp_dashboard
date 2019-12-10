@@ -226,6 +226,7 @@
                 console.log(this.selectedLesson['id']);
                 console.log(this.selectedLesson['venue_id']);
                 this.$session.set('data', this.selectedLesson);
+
                 // this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}});
                  // this.$router.push({path: '/dashboard', query: {venue_id: this.venueID}});
                 const formData = {

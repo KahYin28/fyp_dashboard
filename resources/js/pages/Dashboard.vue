@@ -102,19 +102,18 @@
                 }
             },
             requestData() {
-                // this.venue_id = this.$route.query.venue_id;
                 if (this.$session.exists('data')) {
                     this.sessionData = this.$session.get('data');
                     console.log(this.sessionData['venue_id'])
 
-                    axios.get('temperature?venue_id' + this.sessionData['venue_id'])
+                    axios.get('sensorData?sensor_id=1&&field=Temperature(C)')
                         .then(response => {
                             this.dataCollection = response.data.data;
-                            //   console.log(this.dataCollection);
+                            console.log(this.dataCollection);
                             var DEG = [];
                             var DATE = [];
 
-                            for (let i = 0; i < this.dataCollection.length; i++) {
+                             for (let i = 0; i < this.dataCollection.length; i++){
                                 let degree = this.dataCollection[i]['value'];
                                 let date_time = this.dataCollection[i]['created_at'];
                                 DEG.push(degree);

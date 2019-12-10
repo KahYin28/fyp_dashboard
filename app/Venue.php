@@ -8,20 +8,19 @@ class Venue extends BaseModel
 {
     protected $fillable =[
       'name',
-      'temperature'
     ];
 
     protected $table = 'venues';
 
-
-    public function lightings(){
-        return $this->hasMany('App\Lighting');
-    }
-    public function temperatures(){
-        return $this->hasMany('App\Temperature');
+    public function sensors(){
+        return $this->hasMany('App\Sensor');
     }
 
     public function lessons(){
         return $this->hasMany('App\Lesson');
+    }
+
+    public function replacements(){
+        return $this->hasMany('App\Replacement');
     }
 }

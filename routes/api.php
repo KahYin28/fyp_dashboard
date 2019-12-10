@@ -23,8 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::resource('/attend', 'AttendanceController');
 
-Route::resource('/temperature', 'TemperatureController');
-
 Route::resource('/student', 'StudentController');
 
 Route::resource('/faculty', 'FacultyController');
@@ -37,8 +35,6 @@ Route::resource('/register', 'RegisterController')->except([
 
 Route::resource('/lesson', 'LessonController');
 
-Route::resource('/lights', 'LightingController');
-
 Route::resource('/emotion', 'EmotionController');
 
 Route::resource('/user', 'UserController');
@@ -47,12 +43,11 @@ Route::resource('/venue', 'VenueController');
 
 Route::resource('/replacement', 'ReplacementController');
 
+
+Route::resource('/sensor', 'SensorController');
+
+Route::resource('/sensorData', 'SensorDataController');
+
 Route::get('/test', 'RegisterController@checkAttend');
 
-//Route::get('/venue', function (Request $request)
-//{
-//   $temperature = $request->input('temperature');
-//    event(new TemperatureUpdateEvent($temperature));
-//    return Response::make('Updated!');
-//});
 

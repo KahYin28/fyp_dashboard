@@ -22,12 +22,4 @@ class Register extends PivotBaseModel{
         return $this->belongsTo('App\Lesson','id','id');
     }
 
-    public function attendances(){
-        return $this->hasMany('App\Attendance');
-    }
-//
-//    public function students(){
-//        return $this->belongsToMany('App\Student','students', 'student_id','student_id');
-//    }
-
 }

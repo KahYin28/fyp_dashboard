@@ -39,6 +39,14 @@
                         </b-tr>
 
                     </b-tbody>
+                    <b-tfoot>
+                        <b-tr>
+                            <b-td colspan="7" variant="secondary" class="text-right">
+                                Total Students: <b>{{registers.total}}</b>
+                            </b-td>
+                        </b-tr>
+                    </b-tfoot>
+
                 </b-table-simple>
                 <pagination :data="registers"
                             @pagination-change-page="getResults">

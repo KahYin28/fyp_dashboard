@@ -46,6 +46,7 @@ class LessonController extends Controller
         $lessons = Lesson::filter($filter)
             ->with(['students'=>function($query) {
                 $query->with('faculty');
+                $query->with('emotions');
               }])
             ->with(['lesson_type'])
             ->with(['venue'])

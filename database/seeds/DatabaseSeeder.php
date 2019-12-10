@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
         factory(App\Lesson::class, 10)->create();
         factory(App\Register::class, 10)->create();
         factory(App\Attendance::class, 10)->create();
-        factory(App\Temperature::class, 10)->create();
-        factory(App\Lighting::class, 10)->create();
         factory(App\Replacement::class, 10)->create();
+        factory(App\Sensor::class, 10)->create();
+       factory(App\SensorData::class, 10)->create();
     }
 }

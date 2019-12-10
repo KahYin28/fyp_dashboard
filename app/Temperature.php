@@ -13,9 +13,7 @@ class Temperature extends BaseModel
 
     protected $table = 'temperatures';
 
-    public function venue(){
-        return $this->belongsTo('App\Venue');
-    }
+
 
 
 

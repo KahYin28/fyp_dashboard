@@ -16,7 +16,6 @@ class Emotion extends BaseModel
         'surprised',
         'calm',
         'fear',
-        'unknown',
     ];
 
     protected $table= 'emotions';
