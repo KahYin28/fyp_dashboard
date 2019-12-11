@@ -48,6 +48,6 @@ Route::resource('/sensor', 'SensorController');
 
 Route::resource('/sensorData', 'SensorDataController');
 
-Route::get('/test', 'RegisterController@checkAttend');
+Route::post('/updateAttendance', 'RegisterController@updateAttendance');
 
 

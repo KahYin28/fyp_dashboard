@@ -35,7 +35,7 @@ class TemperatureUpdateEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('TemperatureChannel.');
+        return new Channel('TemperatureChannel');
     }
 
     public function broadcastWith()

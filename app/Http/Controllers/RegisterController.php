@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AttendanceUpdateEvent;
 use App\Register;
 use App\Attendance;
 use App\Http\Filters\RegisterFilter;
@@ -85,16 +86,22 @@ class RegisterController extends Controller{
     }
 
     /**api to check attendance**/
-    public function checkAttend(Request $request){
-//        $id = $request->input("student_id");
-        $id = "188111";
+    public function updateAttendance(Request $request){
+        $id = $request->input("student_id");
+        $id = "188811";
         $time = $request ->input("time");
         $date1 = "2019-09-18 18:05:00";
 
+//       $inputs = $request->all();
+//        $list = Attendance::
+//            where('lesson_id', $inputs['lesson_id'])
+//            ->paginate(5);
+//
+//        event(new AttendanceUpdateEvent($list));
+
         $d1 = Carbon::parse($date1)->format('Y-m-d H:i:s');
-//        echo $d1->addMinutes(10);
-//        echo $d1->subMinutes(10);
-        $registration_attempts = Register::where('student_id', 188111)->get();
+
+        $registration_attempts = Register::where('student_id', $id)->get();
 //       $registered_lessons = $registration_attempts->lessons;
 //        return $registration_attempts;
         foreach ($registration_attempts as $registration_attempt) {
@@ -126,9 +133,18 @@ class RegisterController extends Controller{
                             $attendance->save();
                             return response()->json(true);
                         }
-                        else {
-                            return response()->json(false);
-                        }
+//                        if($id != $student) {
+//                            $attendance = new Attendance([
+//                                'student_id' => $id,
+//                                'lesson_id' => $lesson_id,
+//                                'starting_date_time' => $d1,
+//                                'ending_date_time'=> $d1,
+//                                'status'=>0
+//                            ]);
+//                            $attendance->save();
+//                            return response()->json(false);
+//                        }
+
                     }
                 }
             }

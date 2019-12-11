@@ -23,16 +23,16 @@
                               :key="register.id"
                         >
                             <b-td>{{ index+1 }}</b-td>
-                            <router-link :to="{path:'/emotion',query:{id:register.student_id}}">
-                                <b-td>{{register.student_id}}</b-td>
-                            </router-link>
-                            <b-td>{{register.students.name}}</b-td>
-                            <b-td>{{register.students.programme}}</b-td>
-                            <b-td>{{register.students.faculty.name}}</b-td>
+<!--                            <router-link :to="{path:'/emotion',query:{id:register.student_id}}">-->
+<!--                                <b-td>{{register.student_id}}</b-td>-->
+<!--                            </router-link>-->
+<!--                            <b-td>{{register.students.name}}</b-td>-->
+<!--                            <b-td>{{register.students.programme}}</b-td>-->
+<!--                            <b-td>{{register.students.faculty.name}}</b-td>-->
 
                             <b-td>
                                 <label class="form-checkbox">
-                                    <input type="checkbox" :value="register.student" v-model="checkAttend">
+                                    <input type="checkbox" :value="register.status" v-model="register.status">
                                 </label>
                             </b-td>
 
@@ -76,6 +76,7 @@
         },
         mounted() {
             this.getStudentList();
+            this.getRealtimeData();
         },
 
         methods: {
@@ -88,8 +89,13 @@
                     console.log(this.lesson_id);
                     axios.get('register?lesson_id=' + this.sessionData['id'])
                         .then(data => {
-                            console.log(data)
+
                             this.registers = data.data;
+                            this.registers['data'][0]['status'] = 0 ;
+                            this.registers['data'][1]['status'] = 0 ;
+                            this.registers['data'][2]['status'] = 0 ;
+                            this.registers['data'][3]['status'] = 0 ;
+                            this.registers['data'][4]['status'] = 1 ;
                             console.log(this.registers)
                         })
                 }
@@ -121,6 +127,23 @@
                     })
 
             },
+            getRealtimeData() {
+                console.log("sdsd");
+                window.Echo.channel('AttendanceChannel')
+                    .listen('AttendanceUpdateEvent', (e) => {
+                    //    console.log(e.attendance_list['data']);
+                        this.registers = e.attendance_list;
+                        console.log(this.registers);
+                     //   console.log(e.key['value']);
+                        //  this.chartArray=[e.key['value'], 21, 16, 32, 27, 32, 30, 19, 22, 25];
+                        // this.chartArray = [e.key['value']];
+                        // //  lineChart.render();
+                        // console.log(this.chartDate);
+                        // this.setChartData(this.chartArray, this.chartDate);
+                        // console.log(e.abc);
+                    });
+
+            }
         }
     }
 </script>

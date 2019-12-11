@@ -21,9 +21,9 @@ class SensorDataController extends Controller
                 $query->with('venue');
             }])
             ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
-
+//        event(new TemperatureUpdateEvent($data));
         return $data;
-       event(new TemperatureUpdateEvent($data));
+
 
     }
 

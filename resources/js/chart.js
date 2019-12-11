@@ -18,6 +18,7 @@ export default {
                           display: true,
                           labelString:'Degree'
                         },
+
                         ticks: {
                             beginAtZero: true
                         },
