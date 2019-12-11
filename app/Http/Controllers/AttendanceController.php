@@ -41,7 +41,17 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'id' => $request -> id,
+            'lesson_id'=> $request -> lesson_id,
+            'student_id'=> $request -> student_id,
+            'status' => $request -> status,
+            'starting_date_time'=>$request -> starting_date_time,
+            'ending_date_time'=>$request -> ending_date_time,
+            'created_at' => $request -> created_at,
+            'updated_at' => $request ->updated_at
+        ];
+        Attendance::create($data);
     }
 
     /**

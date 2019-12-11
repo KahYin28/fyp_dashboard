@@ -77,9 +77,11 @@
         mounted() {
             this.getStudentList();
             this.getRealtimeData();
+
         },
 
         methods: {
+
             /**get lesson id from register table to query student list**/
             getStudentList() {
                 if (this.$session.exists('data')) {
@@ -119,14 +121,7 @@
                 }
 
             },
-            isAttend() {
-                axios.get('attend?student_id=' + this.sessionData['id']+ '&page=' + page)
-                    .then(response => {
-                        this.registers = response.data;
-                        console.log(this.registers)
-                    })
 
-            },
             getRealtimeData() {
                 console.log("sdsd");
                 window.Echo.channel('AttendanceChannel')

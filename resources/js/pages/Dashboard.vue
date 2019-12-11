@@ -72,7 +72,6 @@
             }
             this.requestNumOfStd();
             this.requestTemperatureData();
-            // this.requestHumidityData();
             this.getRealtimeData();
         },
         methods: {
@@ -121,43 +120,31 @@
                                 DATE.push(date_time);
                             }
                             console.log(DEG);
-                            // console.log(DATE);
+                            console.log(DATE);
                             this.chartDate = DATE;
                             console.log(this.chartDate);
-                            this.setChartData(DEG, DATE);
+
+                            axios.get('sensorData?sensor_id=1&&field=Humidity(%)')
+                                .then(response => {
+                                    this.dataCollection = response.data.data;
+                                    console.log(this.dataCollection);
+                                    var HUMID = [];
+
+                                    for (let i = 0; i < this.dataCollection.length; i++) {
+                                        let humid = this.dataCollection[i]['value'];
+                                        HUMID.push(humid);
+                                    }
+                                    console.log(HUMID);
+
+                                    this.setChartData(DEG, HUMID, DATE);
+                                });
+
                         });
                 }
             },
-            // requestHumidityData() {
-            //     if (this.$session.exists('data')) {
-            //         this.sessionData = this.$session.get('data');
-            //         console.log(this.sessionData['venue_id'])
-            //
-            //         axios.get('sensorData?sensor_id=1&&field=Humidity(%)')
-            //             .then(response => {
-            //                 this.dataCollection = response.data.data;
-            //                 console.log(this.dataCollection);
-            //                 var HUMID = [];
-            //                 var DATE = [];
-            //
-            //                 for (let i = 0; i < this.dataCollection.length; i++){
-            //                     let humid = this.dataCollection[i]['value'];
-            //                     let date_time = this.dataCollection[i]['created_at'];
-            //                     HUMID.push(humid);
-            //                     DATE.push(date_time);
-            //                 }
-            //                 console.log(HUMID);
-            //                 // console.log(DATE);
-            //                 this.chartDate = DATE;
-            //                 console.log(this.chartDate);
-            //                 this.setChartData(HUMID, DATE);
-            //             });
-            //     }
-            // },
-            setChartData(DEG, DATE) {
+            setChartData(DEG, HUMID, DATE ) {
                 this.dataCollection = {
                     labels: DATE,
-
                     datasets: [
                         {
                             label: "Degree",
@@ -167,14 +154,14 @@
                             fill: false,
                             data: DEG
                         },
-                        // {
-                        //     label: "Humidity",
-                        //     backgroundColor: "#3c8af8",
-                        //     borderColor: "#3c8af0",
-                        //     borderWidth: 2,
-                        //     fill: false,
-                        //     data: HUMID
-                        // },
+                        {
+                            label: "Humidity",
+                            backgroundColor: "#EB6D22",
+                            borderColor: "#EB6D22",
+                            borderWidth: 2,
+                            fill: false,
+                            data: HUMID
+                        },
 
                     ],
 
