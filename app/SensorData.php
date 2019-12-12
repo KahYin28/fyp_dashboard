@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SensorData extends BaseModel
 {
     protected $fillable =[
-        'value'
-
+        'sensor_id',
+        'field',
+        'value',
     ];
 
     public function sensor(){

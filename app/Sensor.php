@@ -9,9 +9,9 @@ class Sensor extends BaseModel
 {
     protected $fillable =[
         'venue_id',
-        'sensor_id',
-        'field',
-        'value'
+        'name',
+        'sensor_type_id',
+        'pin_number'
     ];
 
     public function venue(){

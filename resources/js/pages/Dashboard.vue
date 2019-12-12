@@ -54,6 +54,8 @@
                 num: null,
                 venue_id: '',
                 chartDate: '',
+                chartDegree:'',
+                chartHumid:'',
                 options: {
                     plugins: {
                         datalabels: {
@@ -89,7 +91,7 @@
 
                             this.studentCollection = {
                                 datasets: [{
-                                    backgroundColor: "#439bf8",
+                                    backgroundColor: "#8C2EEB",
                                     data: numOfStd,
                                 }],
                                 labels: [
@@ -119,9 +121,11 @@
                                 DEG.push(degree);
                                 DATE.push(date_time);
                             }
-                            console.log(DEG);
-                            console.log(DATE);
+                            // console.log(DEG);
+                            // console.log(DATE);
                             this.chartDate = DATE;
+                            this.chartDegree = DEG;
+                            console.log(this.chartDegree);
                             console.log(this.chartDate);
 
                             axios.get('sensorData?sensor_id=1&&field=Humidity(%)')
@@ -129,14 +133,13 @@
                                     this.dataCollection = response.data.data;
                                     console.log(this.dataCollection);
                                     var HUMID = [];
-
                                     for (let i = 0; i < this.dataCollection.length; i++) {
                                         let humid = this.dataCollection[i]['value'];
                                         HUMID.push(humid);
                                     }
-                                    console.log(HUMID);
-
-                                    this.setChartData(DEG, HUMID, DATE);
+                                    this.chartHumid = HUMID;
+                                    console.log(this.chartHumid);
+                                    this.setChartData(this.chartDegree, this.chartHumid, this.chartDate);
                                 });
 
                         });
@@ -172,13 +175,30 @@
                 window.Echo.channel('TemperatureChannel')
                     .listen('TemperatureUpdateEvent', (e) => {
                         console.log(e.key);
-                        console.log(e.key['value']);
-                        //  this.chartArray=[e.key['value'], 21, 16, 32, 27, 32, 30, 19, 22, 25];
-                        this.chartArray = [e.key['value']];
-                        //  lineChart.render();
-                        console.log(this.chartDate);
-                        this.setChartData(this.chartArray, this.chartDate);
-                        console.log(e.abc);
+                        this.chartArray = e.key;
+                      var celsius =[];
+                      var time=[];
+                        for (let i = 0; i < this.chartArray.length; i++) {
+                            let bb = this.chartArray[i]['value'];
+                            let cc = this.chartArray[i]['created_at'];
+
+                            celsius.push(bb);
+                            time.push(cc);
+                        }
+                        window.Echo.channel('HumidityChannel')
+                            .listen('HumidityUpdateEvent', (e) => {
+                                this.arr = e.key;
+                                var hu =[];
+
+                                for (let i = 0; i < this.arr.length; i++) {
+                                    let dd = this.arr[i]['value'];
+                                    hu.push(dd);
+                                }
+                                // console.log(this.chartDate);
+                                this.setChartData(celsius, hu , time);
+                            });
+                        // console.log(this.chartDate);
+                        // this.setChartData(celsius, this.chartHumid, time);
                     });
 
             }

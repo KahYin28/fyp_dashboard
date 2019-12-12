@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Events\TemperatureUpdateEvent;
+use App\Events\HumidityUpdateEvent;
 use App\Http\Filters\SensorDataFilter;
 use App\SensorData;
+use App\Temperature;
 use Illuminate\Http\Request;
 
 class SensorDataController extends Controller
@@ -42,16 +44,22 @@ class SensorDataController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, SensorDataFilter $filter)
     {
         $data = [
-            'id' => $request -> id,
-            'venue_id'=> $request -> venue_id,
-            'name' => $request -> name,
+            'sensor_id'=> $request -> sensor_id,
+            'field' => $request -> field,
+            'value' => $request -> value,
             'created_at' => $request -> created_at,
             'updated_at' => $request ->updated_at
         ];
         SensorData::create($data);
+
+        $temperatureData = SensorData::where('sensor_id',1)->where('field','Temperature(C)')->get();
+        $humidityData = SensorData::where('sensor_id',1)->where('field','Humidity(%)')->get();
+//        var_dump($temperatureData);
+        event(new TemperatureUpdateEvent($temperatureData));
+        event(new HumidityUpdateEvent($humidityData));
     }
 
     /**
@@ -83,12 +91,16 @@ class SensorDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id,SensorDataFilter $filter)
     {
         //var_dump($request->all());
         // event(new TemperatureUpdateEvent($request->all()));
-        event(new TemperatureUpdateEvent([33, 24, 45, 45, 27, 32, 30, 19, 22, 25]));
-        SensorData::findOrFail($id)->update($request->all());
+
+//
+//        event(new TemperatureUpdateEvent([33, 24, 45, 45, 27, 32, 30, 19, 22, 25]));
+        SensorData::findOrFail($id)->where('sensor_id',1)->update($request->all());
+
+
 
     }
 

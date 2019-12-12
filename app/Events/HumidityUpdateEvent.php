@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Events;
 
 use App\Venue;
@@ -11,7 +12,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class TemperatureUpdateEvent implements ShouldBroadcast
+class HumidityUpdateEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -20,12 +21,12 @@ class TemperatureUpdateEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public $temperature;
+    public $humidity;
 
-    public function __construct($temperature)
+    public function __construct($humidity)
     {
-        $this->temperature = $temperature;
-        var_dump($this->temperature);
+        $this->humidity = $humidity;
+        var_dump($this->humidity);
     }
 
     /**
@@ -35,12 +36,12 @@ class TemperatureUpdateEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('TemperatureChannel');
+        return new Channel('HumidityChannel');
     }
 
     public function broadcastWith()
     {
-        return ['key' => $this->temperature];
+        return ['key' => $this->humidity];
 //                'abc' => 123];
     }
 }
