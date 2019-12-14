@@ -3,7 +3,7 @@
 
 namespace App\Http\Filters;
 
-class SensorDataFilter extends QueryFilter
+class SensorFilter extends QueryFilter
 {
 
     public function id($value){
@@ -12,5 +12,9 @@ class SensorDataFilter extends QueryFilter
     public function venue_id($value)
     {
         return $this->builder->where('venue_id', $value);
+    }
+    public function sensor_id($value)
+    {
+        return $this->builder->where('id', $value);
     }
 }

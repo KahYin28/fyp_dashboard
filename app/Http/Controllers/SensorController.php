@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Filters\SensorDataFilter;
+use App\Http\Filters\SensorFilter;
 use App\Sensor;
+use App\SensorType;
 use Illuminate\Http\Request;
 
 class SensorController extends Controller
@@ -13,8 +14,9 @@ class SensorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, SensorDataFilter $filter)
+    public function index(Request $request, SensorFilter $filter)
     {
+
         $data = Sensor::filter($filter)
             ->with(['venue'])
             ->with(['sensorData'])
@@ -40,8 +42,9 @@ class SensorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {}
+    public function store(Request $request){
+
+    }
 
     /**
      * Display the specified resource.
@@ -49,8 +52,14 @@ class SensorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show(Request $request, $id){
+        $value = $request->session()->get('key','default');
+        if ($request->session()->has('key')) {
+            SensorType::where('name','Temperature');
+
+
+        }
+
         $data = Sensor::findOrFail($id);
         return $data;
     }
@@ -61,8 +70,7 @@ class SensorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
     }
 
     /**

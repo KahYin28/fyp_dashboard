@@ -108,10 +108,22 @@
                     this.sessionData = this.$session.get('data');
                     console.log(this.sessionData['venue_id'])
 
-                    axios.get('sensorData?sensor_id=1&&field=Temperature(C)')
+
+                    // axios.get('sensor?venue_id=' + this.sessionData['venue_id'])
+                    //     .then (response => {
+                    //             this.dataCollection = response.data.data;
+                    //             console.log(this.dataCollection);
+                    //
+                    //             var DEG = [];
+                    //             var DATE = [];
+                    //
+                    //             for (let i = 0; i < this.dataCollection.length; i++) {
+
+                    axios.get('sensorData?sensor_id=4&&field=Temperature(C)')
                         .then(response => {
                             this.dataCollection = response.data.data;
                             console.log(this.dataCollection);
+
                             var DEG = [];
                             var DATE = [];
 
@@ -165,10 +177,7 @@
                             fill: false,
                             data: HUMID
                         },
-
                     ],
-
-
                 };
             },
             getRealtimeData() {

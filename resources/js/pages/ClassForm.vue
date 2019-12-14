@@ -231,21 +231,33 @@
                     status: 1
                 };
                 console.log(formData);
-                axios.put('lesson/'+ this.selectedLesson['id'], formData)
+                axios.put('lesson/' + this.selectedLesson['id'], formData)
                     .then(res => {
                         console.log(res);
                         if (res['data']['success']) {
-                            console.log("alert success")
-                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                            console.log("alert success");
+                            this.createAttendancelist(this.selectedLesson['id']);
+                            // this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
                         }
                         if (res['data']['error']) {
                             console.log("alert error")
-                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                           // this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
                         }
                     })
                     .catch(error => console.log(error))
             },
+            createAttendancelist(lesson_id) {
+                console.log('updata_a');
+                this.formdata = {'lesson_id': lesson_id};
+                axios.post('lesson', this.formdata)
+                    .then(res => {
+                        console.log(res);
+                        if (res['data']['success']) {
+                            this.$router.push({path: '/register', query: {lesson_id: lesson_id}})
+                        }
+                    })
 
+            },
             /** get venue for replacement class.**/
             getVenue() {
                 axios.get('venue')

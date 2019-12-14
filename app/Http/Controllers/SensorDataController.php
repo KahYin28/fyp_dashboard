@@ -8,6 +8,7 @@ use App\Http\Filters\SensorDataFilter;
 use App\SensorData;
 use App\Temperature;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class SensorDataController extends Controller
 {
@@ -46,17 +47,21 @@ class SensorDataController extends Controller
      */
     public function store(Request $request, SensorDataFilter $filter)
     {
+
+        $now = Carbon::now();
+
         $data = [
             'sensor_id'=> $request -> sensor_id,
             'field' => $request -> field,
             'value' => $request -> value,
-            'created_at' => $request -> created_at,
-            'updated_at' => $request ->updated_at
+            'created_at' => $now->toDateTimeString(),
+            'updated_at' => $now->toDateTimeString()
         ];
         SensorData::create($data);
 
-        $temperatureData = SensorData::where('sensor_id',1)->where('field','Temperature(C)')->get();
-        $humidityData = SensorData::where('sensor_id',1)->where('field','Humidity(%)')->get();
+        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->first();
+
+        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->first();
 //        var_dump($temperatureData);
         event(new TemperatureUpdateEvent($temperatureData));
         event(new HumidityUpdateEvent($humidityData));

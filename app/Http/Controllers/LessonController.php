@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Attendance;
 use App\Http\Filters\LessonFilter;
 use App\Lesson;
+use App\Register;
+use App\SensorData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -160,6 +163,53 @@ class LessonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+        $input = $request->all();
+        $register = Register::where('lesson_id', $input['lesson_id'])->join('lessons','registers.lesson_id','lessons.id')->get();
+      //  dd($register);
+      //  dd($register[0]['lesson_id']);
+        $now = Carbon::now();
+
+//        $data = [
+//            'lesson_id'=> $request -> sensor_id,
+//            'student_id' => $request -> field,
+//            'starting_date_time' => $request -> value,
+//            'ending_date_time' => $now->toDateTimeString(),
+//            'status' => 0,
+//            'created_at'=> $now->toDateString()
+//        ];
+
+        $finalArray = array();
+        foreach($register as $key=>$value){
+            array_push($finalArray, array(
+                'lesson_id'=> $value['lesson_id'],
+              'student_id' => $value['student_id'],
+              'starting_date_time' => $value['starting_date_time'],
+              'ending_date_time' => $value['ending_date_time'],
+              'status' => 0,
+              'created_at'=> $now->toDateTimeString())
+            );
+        };
+
+       // Model::insert($finalArray);
+        if($register && $finalArray) {
+         //   dd($finalArray);
+            Attendance::insert($finalArray);
+            return $this->withArray([
+                'success' => [
+                    'code' => 'success',
+                    'http_code' => 200,
+                    'message' => ' success'
+                ]
+            ]);
+        }else{
+            return $this->withArray([
+                'error' => [
+                    'code' => 'error',
+                    'http_code' => 400,
+                    'message' => ' fail'
+                ]
+            ]);
+        }
 
 
     }

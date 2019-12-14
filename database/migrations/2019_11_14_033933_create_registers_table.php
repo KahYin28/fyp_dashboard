@@ -17,7 +17,7 @@ class CreateRegistersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('student_id');
             $table->integer('lesson_id');
-//            $table->boolean('status');
+            $table->boolean('status');
             $table->timestamps();
         });
     }

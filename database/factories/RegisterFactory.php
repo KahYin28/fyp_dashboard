@@ -11,5 +11,6 @@ $factory->define(Register::class, function (Faker $faker) {
     return [
         'student_id' => $faker->numberBetween(Student::all()->first()->student_id, Student::all()->last()->student_id),
         'lesson_id' => $faker->numberBetween(Lesson::all()->first()->id, Lesson::all()->last()->id),
+        'status' => $faker->boolean,
     ];
 });

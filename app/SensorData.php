@@ -12,6 +12,7 @@ class SensorData extends BaseModel
         'field',
         'value',
     ];
+    protected $table ='sensor_data';
 
     public function sensor(){
         return $this->belongsTo('App\Sensor');
