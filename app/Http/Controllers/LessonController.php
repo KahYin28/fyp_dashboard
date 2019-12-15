@@ -169,15 +169,6 @@ class LessonController extends Controller
       //  dd($register[0]['lesson_id']);
         $now = Carbon::now();
 
-//        $data = [
-//            'lesson_id'=> $request -> sensor_id,
-//            'student_id' => $request -> field,
-//            'starting_date_time' => $request -> value,
-//            'ending_date_time' => $now->toDateTimeString(),
-//            'status' => 0,
-//            'created_at'=> $now->toDateString()
-//        ];
-
         $finalArray = array();
         foreach($register as $key=>$value){
             array_push($finalArray, array(
@@ -262,9 +253,7 @@ class LessonController extends Controller
             $haha->setAttribute('status', 1);
             $haha->save();
         }
-//            dd($haha);
-//         -> update(['status' => 1]);
-    //    dd($haha + 'sds');
+
         DB::commit();
         return $this->withArray([
             'success' => [

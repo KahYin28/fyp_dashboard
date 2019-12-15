@@ -10,13 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class RegisterController extends Controller{
+class RegisterController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, RegisterFilter $filter){
+    public function index(Request $request, RegisterFilter $filter)
+    {
         $registers = Register::filter($filter)
 //            ->with(['students'=>function($query){
 //                $query->with('emotions');
@@ -35,7 +37,8 @@ class RegisterController extends Controller{
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(){
+    public function create()
+    {
         //
     }
 
@@ -45,7 +48,8 @@ class RegisterController extends Controller{
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
     }
 
@@ -55,7 +59,8 @@ class RegisterController extends Controller{
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, RegisterFilter $filter){
+    public function show($id, RegisterFilter $filter)
+    {
         $result = Register::filter($filter)
             ->with(['students'])
             ->with(['lessons'])
@@ -71,7 +76,8 @@ class RegisterController extends Controller{
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         //
     }
 
@@ -81,20 +87,71 @@ class RegisterController extends Controller{
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         //
     }
 
     /**api to check attendance**/
     public function updateAttendance(Request $request){
         $id = $request->input("student_id");
-        $id = "188111";
-//        $time = $request ->input("time");
-        $date1 = "2019-09-18 18:05:00";
-        $d1 = Carbon::parse($date1)->format('Y-m-d H:i:s');
-//       $inputs = $request->all();
-        $registration_attempts = Attendance::where('student_id', $id)->get();
-        dd($registration_attempts);
+        $datetime = $request->input("starting_date_time");
+        $date = Carbon::parse($datetime)->format('Y-m-d H:i:s');
+
+//        $id = "188111";
+//        $datetime = "2019-12-15 8:05:00";
+
+
+        $students = Attendance::where('student_id', $id)
+            ->orderby(DB::raw('ABS(DATEDIFF(starting_date_time, NOW()))'))->first();
+
+        $aaa = $students->student_id;
+
+        $bbb =$students->starting_date_time;
+
+        $beforeStart = Carbon::parse($students->starting_date_time)->subMinutes(15)->format('Y-m-d H:i:s');
+        $afterStart = Carbon::parse($students->starting_date_time)->addMinutes(15)->format('Y-m-d H:i:s');
+            echo $beforeStart ."<br>";
+            echo $afterStart ."<br>";
+
+        echo $bbb . "<br>";
+
+        try {
+            DB::beginTransaction();
+                if ($students->status == 1) {
+                    DB::commit();
+                    return $this->withArray([
+                        'error' => [
+                            'code' => 'error',
+                            'http_code' => 200,
+                            'message' => 'The attendance has been taken.'
+                        ]
+                    ]);
+
+            }else {
+                if ($beforeStart <= $date && $afterStart >= $date) {
+                    $students->setAttribute('status', 1);
+                    $students->save();
+                }
+                else{
+                    return "late";
+                }
+            }
+
+            DB::commit();
+            return $this->withArray([
+                'success' => [
+                    'code' => 'success',
+                    'http_code' => 200,
+                    'message' => 'Transaction success'
+                ]
+            ]);
+        } catch (\Exception $e) {
+            DB::rollback();
+        }
+
+
+
 
 
 
@@ -103,7 +160,7 @@ class RegisterController extends Controller{
 //        foreach ($registration_attempts as $registration_attempt) {
 //            $lesson_id =  $registration_attempt->lessons->id ."<br>";
 //            echo $lesson_id;
-//
+
 //            $beforeStart = Carbon::parse($registration_attempt->lessons->starting_date_time)->subMinutes(15)->format('Y-m-d H:i:s');
 //            $afterStart = Carbon::parse($registration_attempt->lessons->starting_date_time)->addMinutes(15)->format('Y-m-d H:i:s');
 //            echo $beforeStart ."<br>";
@@ -148,6 +205,7 @@ class RegisterController extends Controller{
 //            }
 
 //        }
+
 
     }
 }
