@@ -22,10 +22,10 @@ class AttendanceUpdateEvent implements ShouldBroadcast
      */
     public $list;
 
-    public function __construct($data)
+    public function __construct($list)
     {
-        $this->list = $data;
-        var_dump($this->list);
+        $this->list = $list;
+//        var_dump($this->list);
     }
 
     /**
@@ -40,8 +40,9 @@ class AttendanceUpdateEvent implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        var_dump($this->list);
-        return ['attendance_list'=>$this->list];
+
+//        var_dump($this->list);
+        return  ['attendance_list'=>$this->list];
 
     }
 }

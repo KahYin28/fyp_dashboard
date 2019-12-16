@@ -14,11 +14,12 @@ class Attendance extends BaseModel
         'ending_date_time',
         'status',
     ];
-    public function register()    {
-        return $this->belongsTo('App\Register','register_id');
+
+    public function students()    {
+        return $this->belongsTo('App\Student','student_id','student_id');
     }
 
-    public function student()    {
-        return $this->belongsTo('App\Student','student_id','student_id');
+    public function lessons(){
+        return $this->belongsTo('App\Lesson','lesson_id','id');
     }
 }

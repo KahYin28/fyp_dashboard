@@ -50,6 +50,6 @@ Route::resource('/sensorData', 'SensorDataController');
 
 Route::resource('/sensorType', 'SensorTypeController');
 
-Route::post('/updateAttendance', 'RegisterController@updateAttendance');
+//Route::post('/updateAttendance', 'RegisterController@updateAttendance');
 
-
+Route::post('/updateAttendance', 'AttendanceController@updateAttendance');

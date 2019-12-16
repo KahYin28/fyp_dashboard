@@ -61,10 +61,15 @@
                         icon: 'fa fa-chart-bar'
 
                     },
+                    // {
+                    //     href: '/register',
+                    //     title: 'Attendance',
+                    //     icon: 'fa fa-id-card'
+                    // },
                     {
-                        href: '/register',
+                        href: '/attend',
                         title: 'Attendance',
-                        icon: 'fa fa-id-card'
+                        icon: 'fa fa-smile'
                     },
                     {
                         href: '/emotion',

@@ -253,7 +253,7 @@
                     .then(res => {
                         console.log(res);
                         if (res['data']['success']) {
-                            this.$router.push({path: '/register', query: {lesson_id: lesson_id}})
+                            this.$router.push({path: '/attend', query: {lesson_id: lesson_id}})
                         }
                     })
 
@@ -285,12 +285,12 @@
                         if (res['data']['success']) {
                             console.log("alert success")
                             this.getAttendance();
-                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                            this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                         if (res['data']['error']) {
                             console.log("alert error")
                             this.getAttendance();
-                            this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                            this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                     })
                     .catch(error => console.log(error))
