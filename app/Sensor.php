@@ -18,7 +18,11 @@ class Sensor extends BaseModel
         return $this->belongsTo('App\Venue');
     }
 
-    public function sensorData(){
+    public function sensor_type_id(){
+        return $this->hasMany('App\SensorType','id','sensor_type_id');
+    }
+
+    public function sensor_data(){
         return $this->hasMany('App\SensorData','sensor_id','id');
     }
 }

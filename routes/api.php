@@ -20,7 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::resource('/attend', 'AttendanceController');
 
 Route::resource('/student', 'StudentController');
@@ -43,13 +42,25 @@ Route::resource('/venue', 'VenueController');
 
 Route::resource('/replacement', 'ReplacementController');
 
-
 Route::resource('/sensor', 'SensorController');
 
 Route::resource('/sensorData', 'SensorDataController');
 
 Route::resource('/sensorType', 'SensorTypeController');
 
-//Route::post('/updateAttendance', 'RegisterController@updateAttendance');
+
+
 
 Route::post('/updateAttendance', 'AttendanceController@updateAttendance');
+
+
+Route::post('/getSensorData', 'SensorController@getSensorData');
+Route::get('/getSensorData', 'SensorController@getSensorData');
+
+
+Route::post('/getStudentEmotion', 'EmotionController@getStudentEmotion');
+
+
+Route::post('/getAttendanceReport', 'LessonController@getAttendanceReport');
+
+

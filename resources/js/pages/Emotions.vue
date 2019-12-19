@@ -1,6 +1,24 @@
 <template>
     <div>
         <h1>Facial Expression</h1>
+
+<!--        <select v-model="selectedStudent" class="custom-select" size="10" >-->
+<!--            <option v-for="attend in attends.data"-->
+<!--                    :value="attend.student_id" :key="attend.id">-->
+<!--           {{attend.student_id}}-->
+<!--            </option>-->
+
+<!--        </select>-->
+<!--        <div class="mt-3">Selected: <strong>{{ selectedStudent }}</strong></div>-->
+
+
+
+
+
+
+
+
+
         <div class="chart-container" style="width: 700px">
             <radar-chart v-if="loaded"
                          :chart-data="dataCollection">
@@ -30,26 +48,42 @@
 
 <script>
     import RadarChart from "../radarChart";
+    import pagination from 'laravel-vue-pagination'
 
     export default {
         name: "Emotions",
         components: {
             RadarChart,
+            'pagination': pagination
         },
         data() {
             return {
                 loaded: true,
                 dataCollection: null,
+
+
+                attends: {},
+                perPage: 5,
+                currentPage: 1,
+                now: new Date(),
+                error: '',
+
+
+
             };
         },
 
         mounted() {
             this.requestData();
+
+            this.getStudentList();
         },
         methods: {
+
             requestData() {
                 this.std = this.$route.query.id;
                 console.log(this.std);
+
                 axios.get('emotion/' + this.std).then(response => {
                     this.dataCollection = response.data;
                     console.log(this.dataCollection);
@@ -78,7 +112,40 @@
                         }]
                     };
                 });
-            }
+            },
+
+
+            getStudentList() {
+                if (this.$session.exists('data')) {
+                    this.sessionData = this.$session.get('data');
+                    console.log(this.sessionData['id']);
+
+                    axios.get('attend?lesson_id=' + this.sessionData['id'])
+                        .then(data => {
+                            this.attends = data.data;
+                            console.log(this.attends)
+                        })
+                }
+            },
+            /**pagination for student list result**/
+            getResults(page = 1) {
+                if (this.$session.exists('data')) {
+                    this.sessionData = this.$session.get('data');
+                    console.log(this.sessionData['id']);
+
+                    // this.lesson_id = this.$route.query.lesson_id;
+                    axios.get('attend?lesson_id=' + this.sessionData['id'] + '&page=' + page)
+                        .then(response => {
+                            this.attends = response.data;
+                            console.log(this.attends)
+                        })
+                        .catch(err => {
+                            this.loading = false;
+                            this.error = err;
+                        });
+                }
+
+            },
         }
     }
 </script>

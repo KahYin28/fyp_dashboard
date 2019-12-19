@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Attendance;
 use App\Events\AttendanceUpdateEvent;
 use App\Http\Filters\AttendanceFilter;
-use App\Register;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -17,8 +16,7 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, AttendanceFilter $filter)
-    {
+    public function index(Request $request, AttendanceFilter $filter){
         $attend = Attendance::filter($filter)
             ->with(['students'=>function($query){
                 $query->with('emotions');
@@ -27,7 +25,7 @@ class AttendanceController extends Controller
                 $query->with('faculty');
             }])
             ->with(['lessons'])
-        ->paginate(5);
+        ->paginate(10);
         return $attend;
     }
 
@@ -36,9 +34,8 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(){
+
     }
 
     /**
@@ -82,9 +79,8 @@ class AttendanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id){
+
     }
 
     /**
@@ -94,9 +90,7 @@ class AttendanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-//        Register::
+    public function update(Request $request, $id){
 
     }
 
@@ -106,12 +100,10 @@ class AttendanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id){
     }
 
-    /**api to check attendance**/
+    /**api to update attendance**/
     public function updateAttendance(Request $request,AttendanceFilter $filter ){
         $id = $request->input("student_id");
         $datetime = $request->input("starting_date_time");
@@ -120,7 +112,6 @@ class AttendanceController extends Controller
 
 //        $id = "188111";
 //        $datetime = "2019-12-15 8:05:00";
-
 
         $students = Attendance::where('student_id', $id)
             ->orderby(DB::raw('ABS(DATEDIFF(starting_date_time, NOW()))'))->first();
@@ -132,20 +123,12 @@ class AttendanceController extends Controller
         $afterStart = Carbon::parse($students->starting_date_time)->addMinutes(60)->format('Y-m-d H:i:s');
 //            echo $beforeStart ."<br>";
 //            echo $afterStart ."<br>";
-//
 //        echo $bbb . "<br>";
-        $ccc = $students->lesson_id;
-        $ddd =$students->starting_date_time;
-//        echo $ccc;
+        $lesson_id = $students->lesson_id;
+        $lesson_date_time =$students->starting_date_time;
 
-        $list = Attendance::where('lesson_id',$ccc)->where('starting_date_time', $ddd)
-            ->with(['students'=>function($query){
-                $query->with('emotions');
-            }])
+        $list = Attendance::where('lesson_id',$lesson_id)->where('starting_date_time', $lesson_date_time)
             ->get();
-//
-//        echo $lesson_id;
-
 
         try {
             DB::beginTransaction();
@@ -186,68 +169,13 @@ class AttendanceController extends Controller
                 'success' => [
                     'code' => 'success',
                     'http_code' => 200,
-                    'message' => 'The attendance has been taken.'
+                    'message' => 'The attendance is taken.'
                 ]
             ]);
 
         } catch (\Exception $e) {
             DB::rollback();
         }
-
-
-
-//       $registered_lessons = $registration_attempts->lessons;
-//        return $registration_attempts;
-//        foreach ($registration_attempts as $registration_attempt) {
-//            $lesson_id =  $registration_attempt->lessons->id ."<br>";
-//            echo $lesson_id;
-
-//            $beforeStart = Carbon::parse($registration_attempt->lessons->starting_date_time)->subMinutes(15)->format('Y-m-d H:i:s');
-//            $afterStart = Carbon::parse($registration_attempt->lessons->starting_date_time)->addMinutes(15)->format('Y-m-d H:i:s');
-//            echo $beforeStart ."<br>";
-//            echo $afterStart ."<br>";
-//
-
-//            if ( $beforeStart <= $d1 && $afterStart >= $d1 ) {
-//                $registered_lesson = Register::where('lesson_id', $lesson_id)->get();
-//                $registered_students = $registered_lesson;
-//
-//                foreach ($registered_students as $registered_student) {
-//                    echo $registered_student->student_id . "<br>";
-//
-//                    $lesson_ID =  $registered_student->lesson_id;
-//                    foreach ($registered_student as $student) {
-//                        if ($id == $student) {
-//                            $attendance = new Attendance([
-//                                'student_id' => $id,
-//                                'lesson_id' => $lesson_ID,
-//                                'starting_date_time' => $d1,
-//                                'ending_date_time'=> $d1,
-//                                'status'=>1
-//                            ]);
-////                            var_dump($attendance);
-//                            $attendance->save();
-//                        } //end if
-//
-//                    }// end foreach
-//
-//
-////                    $list = Attendance::where('lesson_id',$lesson_id);
-////                    event(new AttendanceUpdateEvent($list));
-//                    var_dump('a');
-//                    return response()->json(true);
-//
-//                } //end foreach
-//
-//
-//            } //end if
-//                else {
-//                return response()->json(false);
-//            }
-
-//        }
-
-
     }
 
 }

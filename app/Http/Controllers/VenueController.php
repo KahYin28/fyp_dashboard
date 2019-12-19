@@ -16,8 +16,7 @@ class VenueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request ,VenueFilter $filter)
-    {
+    public function index(Request $request ,VenueFilter $filter){
         $venue = Venue::filter($filter)
             ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
 
@@ -33,8 +32,7 @@ class VenueController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         //
     }
 
@@ -44,8 +42,7 @@ class VenueController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $data = [
             'temperature' => $request -> temperature,
             'name' => $request -> name,
@@ -64,8 +61,7 @@ class VenueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         $venue = Venue::findOrFail($id);
         return $venue;
     }
@@ -76,8 +72,7 @@ class VenueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         //
     }
 
@@ -88,7 +83,7 @@ class VenueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)    {
+    public function update(Request $request, $id){
 
 
         $update = Venue::findOrFail($id);
@@ -103,8 +98,7 @@ class VenueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $venue = Venue::findOrFail($id);
         $venue->delete();
     }

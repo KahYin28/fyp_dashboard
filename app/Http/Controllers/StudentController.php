@@ -20,16 +20,9 @@ class StudentController extends Controller
                     ->with(['faculty'])
                     ->with(['lessons'])
                     ->with(['emotions'])
-//                    ->paginate(5);
 
       ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
 
-   //    pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
-        // dd($students);//return collection of students as a resource
-         // return StudentResource::collection($students);
-//        foreach ($students['data'] as $student){
-//            $student->faculty_name = $student->faculty->faculty_name;
-//        }
         return $students;
     }
 
@@ -38,8 +31,7 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
     }
 
     /**
@@ -48,8 +40,7 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $data = [
             'student_id' => $request -> student_id,
             'faculty_id' => $request -> faculty_id,
@@ -66,8 +57,7 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
 
         $student = Student::findOrFail($id);
         return  $student;
@@ -79,8 +69,7 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
     }
 
     /**
@@ -90,8 +79,7 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         Student::findOrFail($id)->update($request->all());
     }
 
@@ -101,8 +89,7 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $student = Student::findOrFail($id);
         $student->delete();
     }

@@ -53,7 +53,12 @@ class LessonController extends Controller
                 $query->with('emotions');
               }])
             ->with(['lesson_type'])
-            ->with(['venue'])
+            ->with(['venue'=>function($query) {
+                $query->with(['sensors'=>function($query) {
+                    $query->with('sensor_type_id');
+//                    $query->with('sensor_data');
+                }]);
+            }])
            ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
       // $resource =  $this->withCollection($lessons, new LessonTransformer());
 
@@ -165,14 +170,13 @@ class LessonController extends Controller
     public function store(Request $request){
         $input = $request->all();
         $register = Register::where('lesson_id', $input['lesson_id'])->join('lessons','registers.lesson_id','lessons.id')->get();
-      //  dd($register);
-      //  dd($register[0]['lesson_id']);
+
         $now = Carbon::now();
 
         $finalArray = array();
         foreach($register as $key=>$value){
             array_push($finalArray, array(
-                'lesson_id'=> $value['lesson_id'],
+              'lesson_id'=> $value['lesson_id'],
               'student_id' => $value['student_id'],
               'starting_date_time' => $value['starting_date_time'],
               'ending_date_time' => $value['ending_date_time'],
@@ -285,9 +289,24 @@ class LessonController extends Controller
      * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lesson $lesson)
-    {
+    public function destroy(Lesson $lesson){
         //
+    }
+
+    public function getAttendanceReport(Request $request){
+
+     $input = $request->all();
+
+        $lesson = Lesson::where('lessons.id', $input['lesson_id'])
+            ->where()
+            ->join('registers', 'registers.lesson_id','lessons.id')
+            ->get();
+
+        return $this->withArray([
+            'lesson' => $lesson,
+        ]);
+
+
     }
 
 

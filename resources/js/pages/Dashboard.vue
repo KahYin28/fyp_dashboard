@@ -19,7 +19,8 @@
         <div class="card" style="width: 700px;">
 <!--            <div class="chart-container" style="width: 700px">-->
                 <line-chart v-if="loaded"
-                            :chart-data="dataCollection">
+                            :chart-data="dataCollection"
+                         >
                 </line-chart>
 <!--            </div>-->
         </div>
@@ -45,6 +46,7 @@
             "line-chart": lineChart,
             "doughnut-chart": doughnutChart,
         },
+
         data() {
             return {
                 loaded: true,
@@ -52,10 +54,12 @@
                 dataCollection: null,
                 studentCollection: null,
                 num: null,
+                sensor_id_collection: '',
+                sensor_id: '',
                 venue_id: '',
                 chartDate: '',
-                chartDegree:'',
-                chartHumid:'',
+                chartDegree: '',
+                chartHumid: '',
                 options: {
                     plugins: {
                         datalabels: {
@@ -64,6 +68,7 @@
                         }
                     }
                 }
+
 
             };
         },
@@ -75,6 +80,7 @@
             this.requestNumOfStd();
             this.requestTemperatureData();
             this.getRealtimeData();
+            this.getSensorID()
         },
         methods: {
             requestNumOfStd() {
@@ -103,23 +109,23 @@
                         });
                 }
             },
+
+            getSensorID() {
+                this.formdata = {'venue_id': this.sessionData['venue_id']};
+                axios.post('getSensorData', this.formdata)
+                    .then(res => {
+                        console.log(res.data.sensor_id);
+                        this.sensor_id = res.data.sensor_id;
+                        this.$session.set('sensor', this.sensor_id);
+                    });
+            },
+
             requestTemperatureData() {
-                if (this.$session.exists('data')) {
-                    this.sessionData = this.$session.get('data');
-                    console.log(this.sessionData['venue_id'])
+                if (this.$session.exists('sensor')) {
+                    this.sensorData = this.$session.get('sensor');
+                    console.log(this.sensorData)
 
-
-                    // axios.get('sensor?venue_id=' + this.sessionData['venue_id'])
-                    //     .then (response => {
-                    //             this.dataCollection = response.data.data;
-                    //             console.log(this.dataCollection);
-                    //
-                    //             var DEG = [];
-                    //             var DATE = [];
-                    //
-                    //             for (let i = 0; i < this.dataCollection.length; i++) {
-
-                    axios.get('sensorData?sensor_id=4&&field=Temperature(C)')
+                    axios.get('sensorData?sensor_id=' + this.sensorData + '&&field=Temperature(C)')
                         .then(response => {
                             this.dataCollection = response.data.data;
                             console.log(this.dataCollection);
@@ -131,16 +137,19 @@
                                 let degree = this.dataCollection[i]['value'];
                                 let date_time = this.dataCollection[i]['created_at'];
                                 DEG.push(degree);
+
                                 DATE.push(date_time);
+
                             }
                             // console.log(DEG);
                             // console.log(DATE);
                             this.chartDate = DATE;
                             this.chartDegree = DEG;
+
                             console.log(this.chartDegree);
                             console.log(this.chartDate);
 
-                            axios.get('sensorData?sensor_id=1&&field=Humidity(%)')
+                            axios.get('sensorData?sensor_id=' + this.sensorData + '&&field=Humidity(%)')
                                 .then(response => {
                                     this.dataCollection = response.data.data;
                                     console.log(this.dataCollection);
@@ -148,16 +157,20 @@
                                     for (let i = 0; i < this.dataCollection.length; i++) {
                                         let humid = this.dataCollection[i]['value'];
                                         HUMID.push(humid);
+
+
                                     }
                                     this.chartHumid = HUMID;
                                     console.log(this.chartHumid);
+
                                     this.setChartData(this.chartDegree, this.chartHumid, this.chartDate);
                                 });
 
                         });
                 }
             },
-            setChartData(DEG, HUMID, DATE ) {
+
+            setChartData(DEG, HUMID, DATE) {
                 this.dataCollection = {
                     labels: DATE,
                     datasets: [
@@ -179,14 +192,19 @@
                         },
                     ],
                 };
+
+
+
+
             },
+
             getRealtimeData() {
                 window.Echo.channel('TemperatureChannel')
                     .listen('TemperatureUpdateEvent', (e) => {
                         console.log(e.key);
                         this.chartArray = e.key;
-                      var celsius =[];
-                      var time=[];
+                        var celsius = [];
+                        var time = [];
                         for (let i = 0; i < this.chartArray.length; i++) {
                             let bb = this.chartArray[i]['value'];
                             let cc = this.chartArray[i]['created_at'];
@@ -197,14 +215,14 @@
                         window.Echo.channel('HumidityChannel')
                             .listen('HumidityUpdateEvent', (e) => {
                                 this.arr = e.key;
-                                var hu =[];
+                                var hu = [];
 
                                 for (let i = 0; i < this.arr.length; i++) {
                                     let dd = this.arr[i]['value'];
                                     hu.push(dd);
                                 }
                                 // console.log(this.chartDate);
-                                this.setChartData(celsius, hu , time);
+                                this.setChartData(celsius, hu, time);
                             });
                         // console.log(this.chartDate);
                         // this.setChartData(celsius, this.chartHumid, time);
@@ -212,7 +230,6 @@
 
             }
         }
-
     }
 
 

@@ -47,9 +47,7 @@ class SensorDataController extends Controller
      */
     public function store(Request $request, SensorDataFilter $filter)
     {
-
         $now = Carbon::now();
-
         $data = [
             'sensor_id'=> $request -> sensor_id,
             'field' => $request -> field,
@@ -59,10 +57,11 @@ class SensorDataController extends Controller
         ];
         SensorData::create($data);
 
-        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->first();
+        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->get();
 
-        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->first();
-//        var_dump($temperatureData);
+        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->get();
+
+
         event(new TemperatureUpdateEvent($temperatureData));
         event(new HumidityUpdateEvent($humidityData));
     }
@@ -98,14 +97,6 @@ class SensorDataController extends Controller
      */
     public function update(Request $request, $id,SensorDataFilter $filter)
     {
-        //var_dump($request->all());
-        // event(new TemperatureUpdateEvent($request->all()));
-
-//
-//        event(new TemperatureUpdateEvent([33, 24, 45, 45, 27, 32, 30, 19, 22, 25]));
-        SensorData::findOrFail($id)->where('sensor_id',1)->update($request->all());
-
-
 
     }
 
@@ -115,9 +106,21 @@ class SensorDataController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $data = SensorData::findOrFail($id);
         $data->delete();
     }
+
+//    public function updateSensorDataEvent(Request $request){
+//
+//        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->get();
+//
+//        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->get();
+//
+//        event(new TemperatureUpdateEvent($temperatureData));
+//        event(new HumidityUpdateEvent($humidityData));
+//
+//
+//    }
+
 }

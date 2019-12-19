@@ -10,8 +10,6 @@
         </nav>
         <div class="demo">
             <div class="container-fluid">
-                <!--                    <h2> Putra Future Classroom Dashboard </h2>-->
-                <!--                <hr style="margin: 10px 0px ;border: 1px solid #e3e3e3;">-->
 
                 <router-view></router-view>
 
@@ -69,7 +67,16 @@
                     {
                         href: '/attend',
                         title: 'Attendance',
-                        icon: 'fa fa-smile'
+                        icon: 'fa fa-id-card',
+                        //
+                        // child: [
+                        //         {
+                        //             href: '/attend/report',
+                        //             title: 'Attendance Report',
+                        //             icon: 'fa fa-file-alt'
+                        //         },
+                        //
+                        //     ]
                     },
                     {
                         href: '/emotion',

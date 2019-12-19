@@ -87,6 +87,12 @@ class BaseModel extends Model
         return $select ? collect($record->toArray())->only($select)->all() : $record;
     }
 
+//    public function scopeCustomLast($query, $select = [])
+//    {
+//        $record = $query->last();
+//        return $select ? collect($record->toArray())->only($select)->all() : $record;
+//    }
+
     public function scopeCustomFindOrFail($query, $id, $select = [])
     {
         $record = $query->findOrFail($id);

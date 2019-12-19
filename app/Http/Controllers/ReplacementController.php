@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Attendance;
 use App\Http\Filters\ReplacementFilter;
+use App\Register;
 use App\Replacement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ReplacementController extends Controller
@@ -17,7 +20,6 @@ class ReplacementController extends Controller
     public function index(Request $request,ReplacementFilter $filter) {
         $replace = Replacement::filter($filter)
             ->with(['lessons'])
-//            ->with(['venue'])
 
             ->paginate(5);
 
@@ -41,6 +43,8 @@ class ReplacementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
+        $input = $request->all();
+
         try {
             DB::beginTransaction();
             Replacement::create([
@@ -54,7 +58,6 @@ class ReplacementController extends Controller
             ]);
 
             DB::commit();
-
             return $this->withArray([
                 'success' => [
                     'code' => 'success',
@@ -62,20 +65,22 @@ class ReplacementController extends Controller
                     'message' => 'Transaction success'
                 ]
             ]);
+
         } catch (\Exception $e) {
             DB::rollback();
-//            $this->logger->errorLog($request, $e, _CLASS_, _FUNCTION_);
-            //  return $this->response->errorInternalError('Internal Server Error');
+
             return $this->withArray([
                     'error' => [
                         'code' => 'error',
                         'http_code' => 400,
                         'message' => 'Transaction failed'
                     ]
-                ]
-
-            );
+                ]);
         }
+
+
+
+
     }
 
     /**
@@ -122,4 +127,51 @@ class ReplacementController extends Controller
     {
         //
     }
+
+    public function storeReplacement(Request $request){
+        $input = $request->all();
+        $register = Register::where('lesson_id', $input['lesson_id'])->join('lessons','registers.lesson_id','lessons.id')->get();
+
+        //  dd($register);
+        //  dd($register[0]['lesson_id']);
+        $now = Carbon::now();
+
+        $finalArray = array();
+        foreach($register as $key=>$value){
+            array_push($finalArray, array(
+                    'lesson_id'=> $value['lesson_id'],
+                    'student_id' => $value['student_id'],
+                    'starting_date_time' => $value['starting_date_time'],
+                    'ending_date_time' => $value['ending_date_time'],
+                    'status' => 0,
+                    'created_at'=> $now->toDateTimeString())
+            );
+        };
+
+        // Model::insert($finalArray);
+        if($register && $finalArray) {
+            //   dd($finalArray);
+            Attendance::insert($finalArray);
+            return $this->withArray([
+                'success' => [
+                    'code' => 'success',
+                    'http_code' => 200,
+                    'message' => ' success'
+                ]
+            ]);
+        }else{
+            return $this->withArray([
+                'error' => [
+                    'code' => 'error',
+                    'http_code' => 400,
+                    'message' => ' fail'
+                ]
+            ]);
+        }
+
+
+
+    }
+
+
 }

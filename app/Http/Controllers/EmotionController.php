@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Attendance;
 use App\Emotion;
+use App\Events\EmotionUpdateEvent;
 use App\Http\Filters\EmotionFilter;
+use App\Lesson;
+use App\Register;
+use App\SensorType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmotionController extends Controller
 {
@@ -63,8 +69,7 @@ class EmotionController extends Controller
      * @param  \App\Emotion  $emotion
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
 
         $emotion = Emotion::where('student_id', $id)->first();
 
@@ -101,9 +106,30 @@ class EmotionController extends Controller
      * @param  \App\Emotion  $emotion
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         $emotion = Emotion::findOrFail($id);
         $emotion->delete();
     }
+
+
+    public function getStudentEmotion(Request $request){
+        $input = $request->all();
+
+        $students = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')->get();
+
+//        event(new EmotionUpdateEvent($students));
+
+        return $this->withArray([
+            'studentData' => $students,
+        ]);
+
+
+    }
+
+
+
+
 }

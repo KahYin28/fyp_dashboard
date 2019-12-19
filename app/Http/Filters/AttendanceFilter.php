@@ -4,8 +4,7 @@
 namespace App\Http\Filters;
 
 
-class AttendanceFilter  extends QueryFilter
-{
+class AttendanceFilter  extends QueryFilter{
 
     public function lesson_id($value){
         return $this->builder->where('lesson_id', $value);

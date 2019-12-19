@@ -202,9 +202,8 @@
             }
         },
         methods: {
-            onChange() {
-                // console.log(this.selectedLesson['id'] );
-                // console.log(this.selectedLesson['venue_id'] );
+            onChange(){
+
             },
             /**request lesson to start class**/
             getLessonCollection() {
@@ -220,7 +219,7 @@
                         console.log(response.data.data);
                     })
             },
-            /**pass params lesson_id to get Student Register List **/
+            /**pass params lesson_id to get Attendance List **/
             getAttendance() {
                 console.log(this.selectedLesson);
                 console.log(this.selectedLesson['id']);
@@ -237,15 +236,32 @@
                         if (res['data']['success']) {
                             console.log("alert success");
                             this.createAttendancelist(this.selectedLesson['id']);
-                            // this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                            this.postVenue(this.selectedLesson['venue_id']);
+                            // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                         if (res['data']['error']) {
                             console.log("alert error")
-                           // this.$router.push({path: '/register', query: {lesson_id: this.selectedLesson['id']}})
+                           // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                     })
                     .catch(error => console.log(error))
             },
+
+            /**pass venue_id to get Sensor Data**/
+            postVenue(venue_id) {
+                console.log('update venue');
+                    this.formdata = {'venue_id': venue_id};
+                    axios.post('getSensorData', this.formdata)
+                        .then(res => {
+                            console.log(res);
+                            if (res['data']['success']) {
+                                // this.$router.push({path: '/attend', query: {lesson_id: lesson_id}})
+                            }
+                        })
+
+            },
+
+            /**get lesson_id and route to attendance page**/
             createAttendancelist(lesson_id) {
                 console.log('updata_a');
                 this.formdata = {'lesson_id': lesson_id};
@@ -258,6 +274,8 @@
                     })
 
             },
+
+            /**<---Replacement Class --->**/
             /** get venue for replacement class.**/
             getVenue() {
                 axios.get('venue')
@@ -268,6 +286,8 @@
             },
             /**create replacement class**/
             onCreateReplacementClass() {
+                this.$session.set('data', this.selectedLesson);
+
                 const formData = {
                     user_id: this.user_id,
                     lesson_id: this.selectedLesson.id,
@@ -284,13 +304,14 @@
                         console.log(res);
                         if (res['data']['success']) {
                             console.log("alert success")
-                            this.getAttendance();
-                            this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
+                            this.createAttendancelist(this.selectedLesson['id']);
+                            // this.getAttendance();
+                            // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                         if (res['data']['error']) {
                             console.log("alert error")
-                            this.getAttendance();
-                            this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
+                            // this.getAttendance();
+                            // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                     })
                     .catch(error => console.log(error))
