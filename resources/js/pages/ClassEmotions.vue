@@ -28,8 +28,8 @@
 
         mounted() {
             this.requestEmotionData();
-            // this.requestStudent();
             this.getStudent();
+            this.getRealtimeData();
 
         },
         methods: {
@@ -46,115 +46,48 @@
                         });
                 }
             },
-
-
-            // requestStudent(){
-            //     if (this.$session.exists('data')) {
-            //         this.sessionData = this.$session.get('data');
-            //         console.log(this.sessionData['id']);
-            //
-            //         axios.get('lesson?=id' + this.sessionData).then(response => {
-            //             this.std = response.data.data;
-            //             console.log(this.std);
-            //
-            //             for (let i = 0; i < this.std.length; i++) {
-            //                 let aaa =  this.std[i]['students'][i]['emotions'][i]['happy'];
-            //
-            //                 console.log(aaa);
-            //
-            //                 // for(let j=0; j < this.aaa.length; j++){
-            //                 //     this.bbb =  this.aaa[j].emotions[j]['happy'];
-            //                 //
-            //                 //     console.log(this.bbb);
-            //                 // }
-            //             }
-            //
-            //         })
-            //
-            //     }
-            // },
-
-            requestEmotionData(){
+            requestEmotionData() {
                 if (this.$session.exists('data')) {
                     this.sessionData = this.$session.get('data');
                     console.log(this.sessionData['id']);
-
-                    axios.get('emotion').then(response => {
-                        this.emotionsCollection = response.data.data;
-                        console.log(this.emotionsCollection);
-
-                        var HAPPY = [];
-                        var SAD = [];
-                        var ANGRY = [];
-                        var CONFUSED = [];
-                        var DISGUSTED = [];
-                        var SURPRISED = [];
-                        var CALM = [];
-                        var FEAR = [];
-
-                        for (let i = 0; i < this.emotionsCollection.length; i++) {
-                            let happy = this.emotionsCollection[i]['happy'];
-                            let sad = this.emotionsCollection[i]['sad'];
-                            let angry = this.emotionsCollection[i]['angry'];
-                            let confused = this.emotionsCollection[i]['confused'];
-                            let disgusted = this.emotionsCollection[i]['disgusted'];
-                            let surprised = this.emotionsCollection[i]['surprised'];
-                            let calm = this.emotionsCollection[i]['calm'];
-                            let fear = this.emotionsCollection[i]['fear'];
-
-                            HAPPY.push(happy);
-                            SAD.push(sad);
-                            ANGRY.push(angry);
-                            CONFUSED.push(confused);
-                            DISGUSTED.push(disgusted);
-                            SURPRISED.push(surprised);
-                            CALM.push(calm);
-                            FEAR.push(fear);
-
-                            function calcSum(arr) {
-                                var sum = 0;
-                                sum = arr.reduce(function (a, b) {
-                                    return a + b;
-                                });
-                                return sum;
-                            };
-
-                            var total_happy = calcSum(HAPPY);
-                            var percent_happy = ((total_happy / (HAPPY.length * 100) * 100).toFixed(2));
-                            var total_sad = calcSum(SAD);
-                            var percent_sad = ((total_sad / (SAD.length * 100) * 100).toFixed(2));
-                            var total_angry = calcSum(ANGRY);
-                            var percent_angry = ((total_angry / (ANGRY.length * 100) * 100).toFixed(2));
-                            var total_confused = calcSum(CONFUSED);
-                            var percent_confused = ((total_confused / (CONFUSED.length * 100) * 100).toFixed(2));
-                            var total_disgusted = calcSum(DISGUSTED);
-                            var percent_disgusted = ((total_disgusted / (DISGUSTED.length * 100) * 100).toFixed(2));
-                            var total_suprised = calcSum(SURPRISED);
-                            var percent_suprised = ((total_suprised / (SURPRISED.length * 100) * 100).toFixed(2));
-                            var total_calm = calcSum(CALM);
-                            var percent_calm = ((total_calm / (CALM.length * 100) * 100).toFixed(2));
-                            var total_fear = calcSum(FEAR);
-                            var percent_fear = ((total_fear / (FEAR.length * 100) * 100).toFixed(2));
-
-                        }
-
-                        this.emotionsCollection = {
-                            labels: ['Happy', 'Sad', 'Angry', 'Confused', 'Disgusted', 'Surprised', 'Calm', 'Fear'],
-
-                            datasets: [{
-                                label: "Emotions",
-                                backgroundColor: "#3c8af8",
-                                borderColor: "#3c8af0",
-                                borderWidth: 2,
-                                fill: false,
-                                data: [percent_happy, percent_sad, percent_angry, percent_confused,
-                                    percent_disgusted, percent_suprised, percent_calm, percent_fear]
-
-                            }]
-                        };
+                    axios.get('getStudentEmotion?lesson_id=' + this.sessionData['id']).then(response => {
+                        this.emotionsCollection = response.data;
+                        this.setChart(this.emotionsCollection);
                     });
                 }
 
+            },
+            setChart(data){
+                 this.emotionsCollection = data;
+                var HAPPY = this.emotionsCollection.happy_avg;
+                var SAD = this.emotionsCollection.sad_avg;
+                var ANGRY = this.emotionsCollection.angry_avg;
+                var CONFUSED = this.emotionsCollection.confused_avg;
+                var DISGUSTED = this.emotionsCollection.disgusted_avg;
+                var SURPRISED = this.emotionsCollection.surprised_avg;
+                var CALM = this.emotionsCollection.calm_avg;
+                var FEAR = this.emotionsCollection.fear_avg;
+
+                this.emotionsCollection = {
+                    labels: ['Happy', 'Sad', 'Angry', 'Confused', 'Disgusted', 'Surprised', 'Calm', 'Fear'],
+                    datasets: [{
+                        label: "Emotions",
+                        backgroundColor: ["#2D49CC", "#52CAFF", "#FF6832", "#FF2644", "#FFD361", "#17FFAF","#3FA8FF","#CCAE35"],
+                        // backgroundColor: "#f83269",
+                        // borderColor: "#ed574d",
+                        borderWidth: 2,
+                        fill: false,
+                        data: [HAPPY, SAD, ANGRY, CONFUSED, DISGUSTED, SURPRISED, CALM, FEAR]
+
+                    }]
+                };
+            },
+            getRealtimeData() {
+                window.Echo.channel('EmotionChannel')
+                    .listen('EmotionUpdateEvent', (e) => {
+                        this.data = e.key;
+                        this.setChart(this.data);
+                    })
             }
         }
     }

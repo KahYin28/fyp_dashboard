@@ -12,33 +12,12 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-//transformer
-use App\Http\Transformer\LessonTransformer;
-use League\Fractal;
-use League\Fractal\Resource\Collection;
-use League\Fractal\Resource\Item;
-use League\Fractal\Manager;
-use League\Fractal\Pagination\Cursor;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Contracts\Validation\Validator;
+
 
 
 class LessonController extends Controller
 {
-    public function __construct(Manager $manager)
-    {
-        $this->manager = $manager;
-    }
 
-    /**
-     * @return \League\Fractal\Manager
-     */
-    public function getManager()
-    {
-        return $this->manager;
-    }
 
     /**
      * Display a listing of the resource.
@@ -60,96 +39,12 @@ class LessonController extends Controller
                 }]);
             }])
            ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
-      // $resource =  $this->withCollection($lessons, new LessonTransformer());
 
-//        $lessons = Lesson ::filter($filter)
-//            ->select(['venues.name as venue_name', 'lesson_types.name as lesson_name','students.name as student_name'])
-//            ->leftJoin('venues', 'lessons.id', '=', 'venues.id')
-//            ->leftJoin('registers', 'registers.lesson_id', '=', 'lessons.id' )
-//            ->leftJoin('students', 'students.student_id', '=', 'registers.id' )
-////            ->with(['students'=>function($query){
-////             $query->with('faculty');
-////           }])
-//            ->leftJoin('lesson_types', 'lessons.lesson_type_id', '=', 'lesson_types.id')
-////            ->with(['lesson_type'])
-//            ->pageList($filter->perPage(),$filter->sortType(),$filter->sortBy());
-
-      //  $resource = new Fractal\Resource\Collection($lessons, new LessonTransformer);
        return $lessons;
     }
 
-    public function withItem($data, $transformer, $resourceKey = null, $meta = [], array $headers = [])
-    {
-        $resource = new Item($data, $transformer, $resourceKey);
-
-        foreach ($meta as $metaKey => $metaValue) {
-            $resource->setMetaValue($metaKey, $metaValue);
-        }
-
-        $rootScope = $this->manager->createData($resource);
-
-        return $this->withArray($rootScope->toArray(), $headers);
-    }
-
-    public function withArray(array $array, array $headers = [])
-    {
-        return response()->json($array, '200', $headers);
-    }
-
-    /**
-     * Respond with a paginator, and a transformer.
-     *
-     * @param LengthAwarePaginator $paginator
-     * @param callable|\League\Fractal\TransformerAbstract $transformer
-     * @param string $resourceKey
-     * @param array $meta
-     * @return ResponseFactory
-     */
-    public function withPaginator(LengthAwarePaginator $paginator, $transformer, $resourceKey = null, $meta = [])
-    {
-        $queryParams = array_diff_key($_GET, array_flip(['page']));
-        $paginator->appends($queryParams);
-
-        $resource = new Collection($paginator->items(), $transformer, $resourceKey);
-        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-
-        foreach ($meta as $metaKey => $metaValue) {
-            $resource->setMetaValue($metaKey, $metaValue);
-        }
-
-        $rootScope = $this->manager->createData($resource);
-
-        return $this->withArray($rootScope->toArray());
-    }
 
 
-    /**
-     * Response for collection of items
-     *
-     * @param $data
-     * @param callable|\League\Fractal\TransformerAbstract $transformer
-     * @param string $resourceKey
-     * @param Cursor $cursor
-     * @param array $meta
-     * @param array $headers
-     * @return mixed
-     */
-    public function withCollection($data, $transformer, $resourceKey = null, Cursor $cursor = null, $meta = [], array $headers = [])
-    {
-        $resource = new Collection($data, $transformer, $resourceKey);
-
-        foreach ($meta as $metaKey => $metaValue) {
-            $resource->setMetaValue($metaKey, $metaValue);
-        }
-
-        if (!is_null($cursor)) {
-            $resource->setCursor($cursor);
-        }
-
-        $rootScope = $this->manager->createData($resource);
-
-        return $this->withArray($rootScope->toArray(), $headers);
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -245,11 +140,11 @@ class LessonController extends Controller
 
         $haha= Lesson::findOrFail($id);
         if($haha->status == 1){
-            DB::commit();
+            DB::rollback();
             return $this->withArray([
                 'error' => [
                     'code' => 'error',
-                    'http_code' => 200,
+                    'http_code' => 400,
                     'message' => 'The status alrdy updated.'
                 ]
             ]);

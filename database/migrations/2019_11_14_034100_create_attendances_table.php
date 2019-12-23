@@ -20,6 +20,8 @@ class CreateAttendancesTable extends Migration
             $table->dateTime('starting_date_time');
             $table->dateTime('ending_date_time');
             $table->boolean('status');
+            $table->integer('replacement_id');
+            $table->string('type')->default('n');
             $table->timestamps();
         });
     }

@@ -68,7 +68,9 @@ class AttendanceController extends Controller
     public function show($id, AttendanceFilter $filter )    {
         $result = Attendance::filter($filter)
             ->with(['students'])
-            ->where('lesson_id', $id)->get();
+            ->where('lesson_id', $id)
+
+            ->get();
         //   ->paginate(5);
         return $result;
     }
@@ -115,7 +117,16 @@ class AttendanceController extends Controller
 
         $students = Attendance::where('student_id', $id)
             ->orderby(DB::raw('ABS(DATEDIFF(starting_date_time, NOW()))'))->first();
+        if(!$students){
+            return $this->withArray([
+                'error' => [
+                    'code' => 'error',
+                    'http_code' => 400,
+                    'message' => 'Invalid student ID.'
+                ]
+            ]);
 
+        }
 //        $aaa = $students->student_id;
 //        $bbb =$students->starting_date_time;
 
@@ -145,17 +156,17 @@ class AttendanceController extends Controller
             }else {
                 if ($beforeStart <= $date && $afterStart >= $date) {
                     $students->setAttribute('status', 1);
-                    $students->setAttribute('created_at', $date);
+                    $students->setAttribute('updated_at', $date);
                     $students->save();
                 }
                 else{
                     $students->setAttribute('status', 2);
-                    $students->setAttribute('created_at', $date);
+                    $students->setAttribute('updated_at', $date);
                     return $this->withArray([
                         'success' => [
                             'code' => 'success',
                             'http_code' => 200,
-                            'message' => 'The student is late.'
+                            'message' => 'The student '. $students['student_id'] .' is late.'
                         ]
                     ]);
                 }

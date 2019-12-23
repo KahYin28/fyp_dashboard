@@ -48,11 +48,39 @@
                         <p class="specs float-left">Connection</p>
                         <p class="ml-auto mb-0 text-success float-right">OK</p>
                     </b-list-group-item>
-                    <b-list-group-item>
-                        <p class="specs float-left">Power Consumption</p>
-                        <p class="ml-auto mb-0 float-right">24W</p>
-                    </b-list-group-item>
+<!--                    <b-list-group-item>-->
+<!--                        <p class="specs float-left">Power Consumption</p>-->
+<!--                        <p class="ml-auto mb-0 float-right">24W</p>-->
+<!--                    </b-list-group-item>-->
 
+                </b-list-group>
+                <!-- light details END -->
+            </div>
+        </b-card>
+        <!-- ON/OFF each interior lights  END -->
+        <div class="mt-3">
+        </div>
+
+        <b-card
+            title="Lights B"
+            style="max-width: 30rem;"
+            class="mb-3-float-left"
+        >
+            <div class="mb-3" data-controls="switch-lights-in">
+                <b-button data-action="all-on"  @click="switchOnLight" type="button" class="btn btn-primary">All <strong>ON</strong></b-button>
+                <b-button data-action="all-off" @click="switchOffLight"type="button" class="btn btn-secondary">All <strong>OFF</strong>
+                </b-button>
+            </div>
+
+            <hr class="my-0">
+
+            <div class="mt-3">
+                <!-- light details START -->
+                <b-list-group flush>
+                    <b-list-group-item>
+                        <p class="specs float-left">Connection</p>
+                        <p class="ml-auto mb-0 text-success float-right">OK</p>
+                    </b-list-group-item>
                 </b-list-group>
                 <!-- light details END -->
             </div>

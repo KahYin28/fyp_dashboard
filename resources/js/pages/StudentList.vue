@@ -80,7 +80,6 @@
         },
 
         methods: {
-
             /**get lesson id from register table to query student list**/
             getStudentList() {
                 if (this.$session.exists('data')) {
@@ -119,8 +118,6 @@
                         console.log(e.attendance_list);
                         this.registers.data = e.attendance_list;
 
-                        // console.log(this.registers.status);
-                     //   console.log(e.key['value']);
 
                     });
 

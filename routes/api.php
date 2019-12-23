@@ -58,8 +58,8 @@ Route::post('/getSensorData', 'SensorController@getSensorData');
 Route::get('/getSensorData', 'SensorController@getSensorData');
 
 
-Route::post('/getStudentEmotion', 'EmotionController@getStudentEmotion');
-
+Route::post('/updateStudentEmotion', 'EmotionController@updateStudentEmotion');
+Route::get('/getStudentEmotion', 'EmotionController@getStudentEmotion');
 
 Route::post('/getAttendanceReport', 'LessonController@getAttendanceReport');
 

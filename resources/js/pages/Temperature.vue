@@ -30,25 +30,6 @@
                 71 &#8457;
             </b-card-text>
 
-<!--            <VueSlideBar-->
-<!--                v-model="sliderValue"-->
-<!--                class="demo-demo"-->
-<!--                :min="16"-->
-<!--                :max="31"-->
-<!--                :showTooltip="true"-->
-<!--                :lineHeight="13"-->
-<!--                :tooltipStyles="{ backgroundColor: 'blue', borderColor: 'blue' }"-->
-<!--            />-->
-
-<!--            <div>-->
-<!--                <h6>Degree: {{ sliderValue }}</h6>-->
-<!--                <div class="center">-->
-
-<!--                    <b-button variant="outline-primary"  @click="sliderValue&#45;&#45;"><b> - </b></b-button>-->
-<!--                    <b-button variant="outline-primary"  @click="sliderValue++"><b> + </b></b-button>-->
-
-<!--                </div>-->
-<!--            </div>-->
             <div>
 
             </div>
@@ -67,25 +48,56 @@
 </template>
 
 <script>
-    import VueSlideBar from 'vue-slide-bar'
+    // // Create a client instance
+    // client = new Paho.MQTT.Client("192.168.137.2", Number(1883), "");
+    //
+    // // set callback handlers
+    // client.onConnectionLost = onConnectionLost;
+    // client.onMessageArrived = onMessageArrived;
+    //
+    // // connect the client
+    // client.connect({onSuccess:onConnect});
+    //
+    //
+    // // called when the client connects
+    // function onConnect() {
+    //     // Once a connection has been made, make a subscription and send a message.
+    //     console.log("onConnect");
+    //     message = new Paho.MQTT.Message("Hello");
+    //     message.destinationName = 'temperature';
+    //     client.subscribe("temperature");
+    //     client.send(message);
+    // }
+    //
+    // // called when the client loses its connection
+    // function onConnectionLost(responseObject) {
+    //     if (responseObject.errorCode !== 0) {
+    //         console.log("onConnectionLost:"+responseObject.errorMessage);
+    //     }
+    // }
+    //
+    // // called when a message arrives
+    // function onMessageArrived(message) {
+    //     console.log("onMessageArrived:"+message.payloadString);
+    // }
+
+
     import Chart from "./../chart.js";
 
     export default {
         components: {
             Chart,
-            VueSlideBar
 
         },
-        data() {
-            return {
-                sliderValue: 24
-            };
-        },
+        // data() {
+        //
+        // },
 
 
 
 
     }
+
 
 </script>
 

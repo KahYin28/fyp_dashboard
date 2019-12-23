@@ -1,37 +1,43 @@
 <template>
     <div>
-        <div class="mb-3">
-            <div class="card" style="width: 400px ;">
-                <div class="card-body">
-                    <div class="chart-container">
-                        <div class="float-left" style="width: 200px">
-                            <doughnut-chart v-if="loaded"
-                                            :chart-data="studentCollection" :option="options">
-                            </doughnut-chart>
+        <div class="card mb-3" style="max-width: 420px;">
+            <div class="row no-gutters">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <div class="float-left" style="width: 200px">
+                                <doughnut-chart v-if="loaded"
+                                                :chart-data="studentCollection" :option="options">
+                                </doughnut-chart>
+                            </div>
                         </div>
                     </div>
-                    <h1>{{ num }}</h1>
+                </div>
+                <div class="col-md-4">
+                    <h1 style="margin-top:5rem;">{{ num }}</h1>
                 </div>
             </div>
+
         </div>
+
 
         <div class="mt-3">
-        <div class="card" style="width: 700px;">
-<!--            <div class="chart-container" style="width: 700px">-->
-                <line-chart v-if="loaded"
-                            :chart-data="dataCollection"
-                         >
-                </line-chart>
-<!--            </div>-->
-        </div>
-        </div>
-
-            <div class="mt-3">
-                <div class="card" style="width: 700px ;">
+            <div class="card" style="width: 700px ;">
                 <app-class-emotions></app-class-emotions>
             </div>
+        </div>
+
+
+        <div class="mt-3">
+            <div class="card" style="width: 700px;">
+                <line-chart v-if="loaded"
+                            :chart-data="dataCollection"
+                >
+                </line-chart>
+
             </div>
         </div>
+    </div>
 
 </template>
 
@@ -93,12 +99,12 @@
                             console.log(response);
                             this.studentCollection = response.data;
 
-                            var numOfStd = [this.studentCollection.total];
+                            var numOfStd = this.studentCollection.total;
 
                             this.studentCollection = {
                                 datasets: [{
                                     backgroundColor: "#8C2EEB",
-                                    data: numOfStd,
+                                    data: [numOfStd],
                                 }],
                                 labels: [
                                     'Students',
@@ -111,16 +117,33 @@
             },
 
             getSensorID() {
-                this.formdata = {'venue_id': this.sessionData['venue_id']};
-                axios.post('getSensorData', this.formdata)
-                    .then(res => {
-                        console.log(res.data.sensor_id);
-                        this.sensor_id = res.data.sensor_id;
-                        this.$session.set('sensor', this.sensor_id);
-                    });
+                if (this.$session.exists('data')) {
+                    this.sessionData = this.$session.get('data');
+
+                    this.formdata = {'venue_id': this.sessionData['venue_id']};
+                    axios.post('getSensorData', this.formdata)
+                        .then(res => {
+                            console.log(res.data.sensor_id);
+                            this.sensor_id = res.data.sensor_id;
+                            this.$session.set('sensor', this.sensor_id);
+                        });
+                }
             },
 
             requestTemperatureData() {
+                // if(this.$session.exists('graph_data')){
+                //     this.temperatureArray =   this.$session.get('graph_data');
+                //     for (let i = 0; i < this.temperatureArray.length; i++) {
+                //         let degree = this.temperatureArray[i]['value'];
+                //         let date_time = this.temperatureArray[i]['created_at'];
+                //         DEG.push(degree);
+                //
+                //         DATE.push(date_time);
+                //
+                //     }
+                //     this.chartDate = DATE;
+                //     this.setChartData(this.temperatureArray,null, this.chartDate);
+                // }
                 if (this.$session.exists('sensor')) {
                     this.sensorData = this.$session.get('sensor');
                     console.log(this.sensorData)
@@ -137,17 +160,14 @@
                                 let degree = this.dataCollection[i]['value'];
                                 let date_time = this.dataCollection[i]['created_at'];
                                 DEG.push(degree);
-
                                 DATE.push(date_time);
 
                             }
-                            // console.log(DEG);
-                            // console.log(DATE);
-                            this.chartDate = DATE;
-                            this.chartDegree = DEG;
+                            // this.chartDate = DATE;
+                            // this.chartDegree = DEG;
 
-                            console.log(this.chartDegree);
-                            console.log(this.chartDate);
+                            // console.log(this.chartDegree);
+                            // console.log(this.chartDate);
 
                             axios.get('sensorData?sensor_id=' + this.sensorData + '&&field=Humidity(%)')
                                 .then(response => {
@@ -157,19 +177,14 @@
                                     for (let i = 0; i < this.dataCollection.length; i++) {
                                         let humid = this.dataCollection[i]['value'];
                                         HUMID.push(humid);
-
-
                                     }
-                                    this.chartHumid = HUMID;
-                                    console.log(this.chartHumid);
-
-                                    this.setChartData(this.chartDegree, this.chartHumid, this.chartDate);
+                                    // this.chartHumid = HUMID;
+                                    // console.log(this.chartHumid);
+                                    this.setChartData(DEG, HUMID, DATE);
                                 });
-
                         });
                 }
             },
-
             setChartData(DEG, HUMID, DATE) {
                 this.dataCollection = {
                     labels: DATE,
@@ -192,42 +207,36 @@
                         },
                     ],
                 };
-
-
-
-
             },
 
             getRealtimeData() {
                 window.Echo.channel('TemperatureChannel')
                     .listen('TemperatureUpdateEvent', (e) => {
-                        console.log(e.key);
-                        this.chartArray = e.key;
+                        // console.log(e.key);
+                        // this.$session.set('graph_data', e.key);
+                        this.temperatureArray = e.key;
                         var celsius = [];
                         var time = [];
-                        for (let i = 0; i < this.chartArray.length; i++) {
-                            let bb = this.chartArray[i]['value'];
-                            let cc = this.chartArray[i]['created_at'];
-
-                            celsius.push(bb);
-                            time.push(cc);
+                        for (let i = 0; i < this.temperatureArray.length; i++) {
+                            let value = this.temperatureArray[i]['value'];
+                            let datetime = this.temperatureArray[i]['created_at'];
+                            celsius.push(value);
+                            time.push(datetime);
                         }
+                        console.log(this.temperatureArray);
                         window.Echo.channel('HumidityChannel')
                             .listen('HumidityUpdateEvent', (e) => {
-                                this.arr = e.key;
-                                var hu = [];
+                                this.humidityArray = e.key;
+                                var humid = [];
 
-                                for (let i = 0; i < this.arr.length; i++) {
-                                    let dd = this.arr[i]['value'];
-                                    hu.push(dd);
+                                for (let i = 0; i < this.humidityArray.length; i++) {
+                                    let hum = this.humidityArray[i]['value'];
+                                    humid.push(hum);
                                 }
-                                // console.log(this.chartDate);
-                                this.setChartData(celsius, hu, time);
+                                this.setChartData(celsius, humid, time);
                             });
-                        // console.log(this.chartDate);
-                        // this.setChartData(celsius, this.chartHumid, time);
-                    });
 
+                    });
             }
         }
     }

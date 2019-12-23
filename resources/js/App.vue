@@ -189,7 +189,7 @@
     body {
         font-family: 'Source Sans Pro', sans-serif;
         font-size: 19px;
-        background-color: #f2f4f7;
+        /*background-color: #f2f4f7;*/
         color: #262626;
     }
 

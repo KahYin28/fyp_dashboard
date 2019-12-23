@@ -15,5 +15,11 @@ class AttendanceFilter  extends QueryFilter{
     public function status($value){
         return $this->builder->where('status', $value);
     }
+    public function replacement_id($value){
+        return $this->builder->where('replacement_id', $value);
+    }
+    public function type($value){
+        return $this->builder->where('type', $value);
+    }
 
 }

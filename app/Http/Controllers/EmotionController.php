@@ -32,8 +32,7 @@ class EmotionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
 
     }
 
@@ -46,21 +45,22 @@ class EmotionController extends Controller
     public function store(Request $request)
     {
         $data = [
-            'id' => $request -> id,
-            'student_id'=> $request -> student_id,
-            'happy' => $request -> happy,
-            'sad' => $request -> sad,
-            'angry' => $request -> angry,
-            'confused' => $request -> confused,
-            'disgusted' => $request -> disgusted,
-            'surprised' => $request -> surprised,
-            'calm' => $request -> calm,
-            'unknown' => $request -> unknown,
-            'fear' => $request -> fear,
-            'created_at' => $request -> created_at,
-            'updated_at' => $request ->updated_at
+            'id' => $request->id,
+            'student_id' => $request->student_id,
+            'happy' => $request->happy,
+            'sad' => $request->sad,
+            'angry' => $request->angry,
+            'confused' => $request->confused,
+            'disgusted' => $request->disgusted,
+            'surprised' => $request->surprised,
+            'calm' => $request->calm,
+            'unknown' => $request->unknown,
+            'fear' => $request->fear,
+            'created_at' => $request->created_at,
+            'updated_at' => $request->updated_at
         ];
         Emotion::create($data);
+
     }
 
     /**
@@ -95,9 +95,84 @@ class EmotionController extends Controller
      * @param  \App\Emotion  $emotion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateStudentEmotion(Request $request)
     {
-        //
+        $input = $request->all();
+
+        $students = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')->get();
+
+        $count_happy = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('happy');
+        $happy_avg = round($count_happy,2);
+
+        $count_sad = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('sad');
+        $sad_avg = round($count_sad,2);
+
+        $count_angry = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('angry');
+        $angry_avg = round($count_angry,2);
+
+        $count_confused = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('confused');
+        $confused_avg = round($count_confused,2);
+
+        $count_disgusted = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('disgusted');
+        $disgusted_avg = round($count_disgusted,2);
+
+
+        $count_surprised = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('surprised');
+        $surprised_avg = round($count_surprised,2);
+
+        $count_calm = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('calm');
+        $calm_avg = round($count_calm,2);
+
+        $count_fear = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('fear');
+        $fear_avg = round($count_fear,2);
+
+        $new_data =[
+            'happy_avg'=> $happy_avg,
+            'sad_avg'=> $sad_avg,
+            'angry_avg'=> $angry_avg,
+            'confused_avg'=> $confused_avg,
+            'disgusted_avg'=> $disgusted_avg,
+            'surprised_avg'=> $surprised_avg,
+            'calm_avg'=> $calm_avg,
+            'fear_avg'=> $fear_avg,
+            ];
+
+          event(new EmotionUpdateEvent($new_data));
     }
 
     /**
@@ -120,11 +195,78 @@ class EmotionController extends Controller
             ->join('students','students.student_id','registers.student_id')
             ->join('emotions','emotions.student_id','students.student_id')->get();
 
-//        event(new EmotionUpdateEvent($students));
+        $count_happy = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('happy');
+        $happy_avg = round($count_happy,2);
+
+        $count_sad = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('sad');
+        $sad_avg = round($count_sad,2);
+
+        $count_angry = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('angry');
+        $angry_avg = round($count_angry,2);
+
+        $count_confused = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('confused');
+        $confused_avg = round($count_confused,2);
+
+        $count_disgusted = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('disgusted');
+        $disgusted_avg = round($count_disgusted,2);
+
+
+        $count_surprised = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('surprised');
+        $surprised_avg = round($count_surprised,2);
+
+        $count_calm = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('calm');
+        $calm_avg = round($count_calm,2);
+
+        $count_fear = Lesson::where('lessons.id', $input["lesson_id"])
+            ->join('registers','lessons.id','registers.lesson_id')
+            ->join('students','students.student_id','registers.student_id')
+            ->join('emotions','emotions.student_id','students.student_id')
+            ->avg('fear');
+        $fear_avg = round($count_fear,2);
+
 
         return $this->withArray([
-            'studentData' => $students,
+//            'studentData' => $students,
+            'happy_avg'=> $happy_avg,
+            'sad_avg'=> $sad_avg,
+            'angry_avg'=> $angry_avg,
+            'confused_avg'=> $confused_avg,
+            'disgusted_avg'=> $disgusted_avg,
+            'surprised_avg'=> $surprised_avg,
+            'calm_avg'=> $calm_avg,
+            'fear_avg'=> $fear_avg,
+
         ]);
+
+
 
 
     }

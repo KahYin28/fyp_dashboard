@@ -25,7 +25,7 @@ class TemperatureUpdateEvent implements ShouldBroadcast
     public function __construct($temperature)
     {
         $this->temperature = $temperature;
-        var_dump($this->temperature);
+//        var_dump($this->temperature);
     }
 
     /**

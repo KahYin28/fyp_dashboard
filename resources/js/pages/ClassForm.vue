@@ -1,5 +1,10 @@
 <template>
     <div>
+
+        <div class="alert alert-danger" role="alert">
+           {{error}}
+        </div>
+
         <div role="tablist">
             <!-- Class Tab -->
             <b-card no-body class="mb-1">
@@ -56,7 +61,7 @@
 
                         <b-card-text>
                             <div class="col-sm">
-                                <button class="btn btn-primary" @click="getAttendance">Start Class</button>
+                                <button class="btn btn-primary" @click="startNormalAttendance">Start Class</button>
                             </div>
                         </b-card-text>
                     </b-card-body>
@@ -145,7 +150,7 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <button class="btn btn-primary" @click="onCreateReplacementClass">Create Class</button>
+                                        <button class="btn btn-primary" @click="onCreateReplacementClass" >Create Class</button>
                                     </div>
                                 </form>
                             </div>
@@ -195,16 +200,19 @@
                     format: 'YYYY/MM/DD H:mm',
                     // format: 'DD/MM/YYYY hh:mm LT', //AM PM
                     useCurrent: true,
-                    daysOfWeekDisabled: [0, 6],
+                    // daysOfWeekDisabled: [0, 6],
                     showClear: true,
                     showClose: true,
                 },
+                error:'',
+
             }
         },
         methods: {
             onChange(){
 
             },
+
             /**request lesson to start class**/
             getLessonCollection() {
                 this.user_id = 1;
@@ -220,10 +228,10 @@
                     })
             },
             /**pass params lesson_id to get Attendance List **/
-            getAttendance() {
+            startNormalAttendance() {
                 console.log(this.selectedLesson);
-                console.log(this.selectedLesson['id']);
-                console.log(this.selectedLesson['venue_id']);
+                console.log('start Normal');
+
                 this.$session.set('data', this.selectedLesson);
 
                 const formData = {
@@ -235,12 +243,21 @@
                         console.log(res);
                         if (res['data']['success']) {
                             console.log("alert success");
-                            this.createAttendancelist(this.selectedLesson['id']);
+                            this.type ='n';
+                            this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
                             this.postVenue(this.selectedLesson['venue_id']);
                             // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                         if (res['data']['error']) {
-                            console.log("alert error")
+                            console.log("alert error");
+
+                            this.error = res.data.error.message;
+                            this.type ='n';
+                            this.$session.set('type', this.type);
+                            this.try = this.$session.get('type');
+                            console.log(this.try);
+                            this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
+                            this.postVenue(this.selectedLesson['venue_id']);
                            // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
                         }
                     })
@@ -255,23 +272,24 @@
                         .then(res => {
                             console.log(res);
                             if (res['data']['success']) {
-                                // this.$router.push({path: '/attend', query: {lesson_id: lesson_id}})
                             }
                         })
-
             },
-
             /**get lesson_id and route to attendance page**/
-            createAttendancelist(lesson_id) {
-                console.log('updata_a');
+            getNormalAttendancelist(lesson_id , type) {
+
                 this.formdata = {'lesson_id': lesson_id};
+
                 axios.post('lesson', this.formdata)
                     .then(res => {
                         console.log(res);
                         if (res['data']['success']) {
-                            this.$router.push({path: '/attend', query: {lesson_id: lesson_id}})
+                this.$router.push({path: '/attend', query: {lesson_id: lesson_id ,type : type}})
                         }
                     })
+            },
+            getReplaceAttendancelist(lesson_id , type) {
+                 this.$router.push({path: '/attend', query: {lesson_id: lesson_id ,type : type}})
 
             },
 
@@ -286,8 +304,9 @@
             },
             /**create replacement class**/
             onCreateReplacementClass() {
+                console.log('start replace');
                 this.$session.set('data', this.selectedLesson);
-
+                this.type ='r';
                 const formData = {
                     user_id: this.user_id,
                     lesson_id: this.selectedLesson.id,
@@ -295,7 +314,8 @@
                     schedule_day: this.selectedReplacementDay,
                     starting_date_time: this.startingDateTime,
                     ending_date_time: this.endingDateTime,
-                    status: 1
+                    status: 1,
+                    type: this.type
                 };
                 console.log(formData);
 
@@ -304,9 +324,10 @@
                         console.log(res);
                         if (res['data']['success']) {
                             console.log("alert success")
-                            this.createAttendancelist(this.selectedLesson['id']);
-                            // this.getAttendance();
-                            // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
+
+                            this.$session.set('type', this.type);
+
+                            this.getReplaceAttendancelist(this.selectedLesson['id'] , this.type);
                         }
                         if (res['data']['error']) {
                             console.log("alert error")

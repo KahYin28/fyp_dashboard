@@ -57,7 +57,7 @@ class SensorDataController extends Controller
         ];
         SensorData::create($data);
 
-        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->get();
+        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->orderBy('id', 'desc')->take(10)->get();
 
         $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->get();
 
