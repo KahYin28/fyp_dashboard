@@ -66,42 +66,57 @@ class LessonController extends Controller
         $input = $request->all();
         $register = Register::where('lesson_id', $input['lesson_id'])->join('lessons','registers.lesson_id','lessons.id')->get();
 
+        $check_lesson = Lesson::where('id', $input['lesson_id'])->first();
         $now = Carbon::now();
 
-        $finalArray = array();
-        foreach($register as $key=>$value){
-            array_push($finalArray, array(
-              'lesson_id'=> $value['lesson_id'],
-              'student_id' => $value['student_id'],
-              'starting_date_time' => $value['starting_date_time'],
-              'ending_date_time' => $value['ending_date_time'],
-              'status' => 0,
-              'created_at'=> $now->toDateTimeString())
-            );
-        };
 
-       // Model::insert($finalArray);
-        if($register && $finalArray) {
-         //   dd($finalArray);
-            Attendance::insert($finalArray);
-            return $this->withArray([
-                'success' => [
-                    'code' => 'success',
-                    'http_code' => 200,
-                    'message' => ' success'
-                ]
-            ]);
-        }else{
+        //Status updated
+        if($check_lesson['status'] == '1') {
             return $this->withArray([
                 'error' => [
                     'code' => 'error',
                     'http_code' => 400,
-                    'message' => ' fail'
+                    'message' => 'The lesson has started'
                 ]
             ]);
+        }elseif($check_lesson['status'] == '0' && $check_lesson['status'] !== '1'){
+//            dd($check_lesson);
+            $finalArray = array();
+            foreach ($register as $key => $value) {
+                array_push($finalArray, array(
+                        'lesson_id' => $value['lesson_id'],
+                        'student_id' => $value['student_id'],
+                        'starting_date_time' => $value['starting_date_time'],
+                        'ending_date_time' => $value['ending_date_time'],
+                        'status' => 0,
+                        'created_at' => $now->toDateTimeString())
+                );
+            };
+
+            Lesson::where('id', $input['lesson_id'])->update(['status' => 1]);
+
+            // Model::insert($finalArray);
+            if ($register && $finalArray) {
+                //   dd($finalArray);
+                Attendance::insert($finalArray);
+                return $this->withArray([
+                    'success' => [
+                        'code' => 'success',
+                        'http_code' => 200,
+                        'message' => ' success'
+                    ]
+                ]);
+            } else {
+                return $this->withArray([
+                    'error' => [
+                        'code' => 'error',
+                        'http_code' => 400,
+                        'message' => ' fail'
+                    ]
+                ]);
+            }
+
         }
-
-
     }
 
     /**
@@ -145,7 +160,7 @@ class LessonController extends Controller
                 'error' => [
                     'code' => 'error',
                     'http_code' => 400,
-                    'message' => 'The status alrdy updated.'
+                    'message' => 'The lesson has already started.'
                 ]
             ]);
         }else {
@@ -158,7 +173,7 @@ class LessonController extends Controller
             'success' => [
                 'code' => 'success',
                 'http_code' => 200,
-                'message' => 'Transaction success'
+                'message' => 'The lesson is started.'
             ]
         ]);
     } catch (\Exception $e) {

@@ -99,7 +99,7 @@
                     let fear = this.dataCollection['fear'];
                     EMO.push(happy, sad, angry, confused, disgusted, surprised, calm, fear);
                     console.log(EMO);
-                    //    }
+
                     this.dataCollection = {
                         labels: ['Happy', 'Sad', 'Angry', 'Confused', 'Disgusted', 'Surprised', 'Calm', 'Fear'],
                         datasets: [{

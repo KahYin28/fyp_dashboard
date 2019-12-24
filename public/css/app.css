@@ -247,6 +247,18 @@
   margin-top: 0 !important;
 }
 
+.green {
+  background-color: green !important;
+}
+
+.grey {
+  background-color: grey !important;
+}
+
+.red {
+  background-color: red !important;
+}
+
 .v-sidebar-menu {
   background-color: #2a2a2e;
 }

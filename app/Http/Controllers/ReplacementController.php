@@ -57,7 +57,7 @@ class ReplacementController extends Controller
                 'status' => $request->status,
 
             ]);
-//           dd($replace_data);
+//           var_dump($replace_data);
 
             $registers = Register::where('lesson_id', $input['lesson_id'])->join('lessons', 'registers.lesson_id', 'lessons.id')->get();
             $now = Carbon::now();
@@ -79,7 +79,7 @@ class ReplacementController extends Controller
             };
             DB::commit();
 //           dd($finalArray);
-            // Model::insert($finalArray);
+
             if ($registers && $finalArray) {
                 //   dd($finalArray);
                 Attendance::insert($finalArray);
@@ -87,7 +87,7 @@ class ReplacementController extends Controller
                     'success' => [
                         'code' => 'success',
                         'http_code' => 200,
-                        'message' => ' success'
+                        'message' => ' Create replacement class successfully'
                     ]
                 ]);
             } else {
@@ -95,7 +95,7 @@ class ReplacementController extends Controller
                     'error' => [
                         'code' => 'error',
                         'http_code' => 400,
-                        'message' => ' fail'
+                        'message' => ' Fail to create'
                     ]
                 ]);
             }

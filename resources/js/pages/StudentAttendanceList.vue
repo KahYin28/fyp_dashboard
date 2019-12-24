@@ -9,11 +9,10 @@
             <b-tr>
                 <b-th>No</b-th>
                 <b-th>Matric No</b-th>
-
-                <b-th> Time</b-th>
+<!--                <b-th>Name</b-th>-->
+                <b-th>Last Update</b-th>
                 <b-th>Attend</b-th>
 
-<!--                <b-th>Name</b-th>-->
 <!--                <b-th>Programme</b-th>-->
 <!--                <b-th>Faculty</b-th>-->
             </b-tr>
@@ -23,17 +22,22 @@
                   :key="attend.id"
             >
                 <b-td>{{ index+1 }}</b-td>
-                <router-link :to="{path:'/emotion',query:{ id:attend.student_id }}">
-                    <b-td>{{attend.student_id}}</b-td>
-                </router-link>
-<!--                <b-td>{{attend.students.name}}</b-td>-->
+
+                    <b-td>
+                        <router-link :to="{path:'/emotion',query:{ id:attend.student_id }}">
+                        {{attend.student_id}}
+                        </router-link>
+                    </b-td>
+
+<!--                <b-td v-if="attend.students.name !== null" >{{attend.students.name}}</b-td>-->
 <!--                <b-td>{{attend.students.programme}}</b-td>-->
                 <!--<b-td>{{register.students.faculty.name}}</b-td>-->
 
                 <b-td>{{attend.updated_at}}</b-td>
                 <b-td>
-                    <label class="form-checkbox">
-                        <input type="checkbox" :value="attend.status" v-model="attend.status">
+                    <label class="form-checkbox" >
+                        <div class="dot" v-bind:class="{'grey' : attend.status == '0' , 'green':attend.status =='1', 'red': attend.status == '2' }"></div>
+<!--                        <input type="checkbox" :value="attend.status" v-model="attend.status">-->
                     </label>
                 </b-td>
             </b-tr>
@@ -64,7 +68,6 @@
                 currentPage: 1,
                 now: new Date(),
                 error: '',
-
             }
         },
         mounted() {
@@ -114,9 +117,9 @@
             getRealtimeData() {
                 window.Echo.channel('AttendanceChannel')
                     .listen('AttendanceUpdateEvent', (e) => {
-                        console.log(e.attendance_list);
+                      //  console.log(e);
                         this.attends.data = e.attendance_list;
-
+                        console.log(this.attends)
                         // this.$session.set('data', this.sessionData['id']);
 
                     });
@@ -127,5 +130,11 @@
 </script>
 
 <style scoped>
-
+    .dot {
+        height: 30px;
+        width: 30px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+    }
 </style>

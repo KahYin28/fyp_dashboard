@@ -111,16 +111,6 @@ class SensorDataController extends Controller
         $data->delete();
     }
 
-//    public function updateSensorDataEvent(Request $request){
-//
-//        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->get();
-//
-//        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->get();
-//
-//        event(new TemperatureUpdateEvent($temperatureData));
-//        event(new HumidityUpdateEvent($humidityData));
-//
-//
-//    }
+
 
 }

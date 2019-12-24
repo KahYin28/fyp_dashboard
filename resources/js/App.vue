@@ -101,13 +101,11 @@
                         title: 'Lights',
                         icon: 'fa fa-lightbulb'
                     },
-                    {
-                        href: '/temperature',
-                        title: 'Temperature',
-                        icon: 'fa fa-thermometer-half '
-                    },
-
-
+                    // {
+                    //     href: '/temperature',
+                    //     title: 'Temperature',
+                    //     icon: 'fa fa-thermometer-half '
+                    // },
 
                     // {
                     //     href: '/page',

@@ -48,6 +48,7 @@ class SensorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+
     }
 
     /**
@@ -87,6 +88,8 @@ class SensorController extends Controller
     public function destroy($id){
     }
 
+
+
     public function getSensorData(Request $request) {
         $input = $request->all();
         $sensor_types = SensorType::where('name','Temperature')->get();
@@ -101,6 +104,7 @@ class SensorController extends Controller
             ->join('sensor_data','sensor_data.sensor_id','sensors.id')->get();
 
         echo $sensors;
+
         foreach($sensors as $sensor){
            $sensor_id = $sensor->sensor_id;
         }

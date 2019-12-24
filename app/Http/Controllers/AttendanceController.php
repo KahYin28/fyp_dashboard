@@ -55,6 +55,7 @@ class AttendanceController extends Controller
             'ending_date_time'=>$request -> ending_date_time,
             'created_at' => $request -> created_at,
             'updated_at' => $request ->updated_at
+
         ];
         Attendance::create($data);
     }
@@ -69,9 +70,8 @@ class AttendanceController extends Controller
         $result = Attendance::filter($filter)
             ->with(['students'])
             ->where('lesson_id', $id)
-
             ->get();
-        //   ->paginate(5);
+
         return $result;
     }
 
@@ -105,6 +105,7 @@ class AttendanceController extends Controller
     public function destroy($id){
     }
 
+
     /**api to update attendance**/
     public function updateAttendance(Request $request,AttendanceFilter $filter ){
         $id = $request->input("student_id");
@@ -127,8 +128,6 @@ class AttendanceController extends Controller
             ]);
 
         }
-//        $aaa = $students->student_id;
-//        $bbb =$students->starting_date_time;
 
         $beforeStart = Carbon::parse($students->starting_date_time)->subMinutes(60)->format('Y-m-d H:i:s');
         $afterStart = Carbon::parse($students->starting_date_time)->addMinutes(60)->format('Y-m-d H:i:s');
@@ -138,12 +137,13 @@ class AttendanceController extends Controller
         $lesson_id = $students->lesson_id;
         $lesson_date_time =$students->starting_date_time;
 
-        $list = Attendance::where('lesson_id',$lesson_id)->where('starting_date_time', $lesson_date_time)
-            ->get();
+        $list = Attendance::where('lesson_id',$lesson_id)->where('starting_date_time', $lesson_date_time)->get();
+//            ->with(['Students'])
 
+       // dd($list);
         try {
             DB::beginTransaction();
-            if ($students->status == 1) {
+            if ($students->status == 1 || $students->status == 2) {
                 DB::commit();
                 return $this->withArray([
                     'error' => [
@@ -158,34 +158,40 @@ class AttendanceController extends Controller
                     $students->setAttribute('status', 1);
                     $students->setAttribute('updated_at', $date);
                     $students->save();
+                    $msg = "The attendance is updated.";
+                    event(new AttendanceUpdateEvent($list));
+                    DB::commit();
                 }
                 else{
                     $students->setAttribute('status', 2);
                     $students->setAttribute('updated_at', $date);
-                    return $this->withArray([
-                        'success' => [
-                            'code' => 'success',
-                            'http_code' => 200,
-                            'message' => 'The student '. $students['student_id'] .' is late.'
-                        ]
-                    ]);
+                    $students->save();
+                    $msg = "The student ". $students['student_id'] ." is late.";
+                    DB::commit();
+
+
                 }
             }
 
-            DB::commit();
 
-            event(new AttendanceUpdateEvent($list));
 
             return $this->withArray([
                 'success' => [
                     'code' => 'success',
                     'http_code' => 200,
-                    'message' => 'The attendance is taken.'
+                    'message' => $msg
                 ]
             ]);
 
         } catch (\Exception $e) {
             DB::rollback();
+            return $this->withArray([
+                'fail' => [
+                    'code' => 'fail',
+                    'http_code' => 400,
+                    'message' => 'Please try again later.'
+                ]
+            ]);
         }
     }
 

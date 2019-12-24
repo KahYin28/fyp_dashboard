@@ -1,9 +1,16 @@
 <template>
+
+
     <div>
 
-        <div class="alert alert-danger" role="alert">
-           {{error}}
-        </div>
+        <!--        <b-modal id="error-modal" title="BootstrapVue">-->
+        <!--            <p class="my-4">{{error}}</p>-->
+
+        <!--        </b-modal>-->
+        <!--        <div v-if="error" class="alert alert-danger" role="alert">-->
+        <!--          <p >{{error}}</p>-->
+        <!--        </div>-->
+
 
         <div role="tablist">
             <!-- Class Tab -->
@@ -42,14 +49,24 @@
                                         <b-card>
                                             <b-card-text>
                                                 <div class="container">
-                                                    <div>Semester:<strong>{{this.selectedLesson['semester']}}</strong></div>
-                                                    <div>Course:<strong>{{this.selectedLesson['course_code']}}</strong></div>
-                                                    <div>Lesson Type:<strong>{{this.selectedLesson['lesson_type_id']}}</strong></div>
+                                                    <div>Semester:<strong>{{this.selectedLesson['semester']}}</strong>
+                                                    </div>
+                                                    <div>Course:<strong>{{this.selectedLesson['course_code']}}</strong>
+                                                    </div>
+                                                    <div>Lesson
+                                                        Type:<strong>{{this.selectedLesson['lesson_type_id']}}</strong>
+                                                    </div>
                                                     <div>Group: <strong>{{this.selectedLesson['group']}}</strong></div>
-                                                    <div>Venue: <strong>{{this.selectedLesson['venue_id']}}</strong></div>
-                                                    <div>Schedule Day:<strong>{{this.selectedLesson['schedule_day']}}</strong></div>
-                                                    <div>Start Time:<strong>{{this.selectedLesson['starting_date_time']}}</strong></div>
-                                                    <div>End Time: <strong>{{this.selectedLesson['ending_date_time']}}</strong></div>
+                                                    <div>Venue: <strong>{{this.selectedLesson['venue_id']}}</strong>
+                                                    </div>
+                                                    <div>Schedule
+                                                        Day:<strong>{{this.selectedLesson['schedule_day']}}</strong>
+                                                    </div>
+                                                    <div>Start Time:<strong>{{this.selectedLesson['starting_date_time']}}</strong>
+                                                    </div>
+                                                    <div>End Time:
+                                                        <strong>{{this.selectedLesson['ending_date_time']}}</strong>
+                                                    </div>
                                                 </div>
 
                                             </b-card-text>
@@ -136,10 +153,12 @@
                                         <b-card>
                                             <b-card-text>
                                                 <div class="container">
-                                                    <div>Semester:<strong>{{this.selectedLesson['semester']}}</strong></div>
-                                                    <div>Course:<strong>{{this.selectedLesson['course_code']}}</strong></div>
+                                                    <div>Semester:<strong>{{this.selectedLesson['semester']}}</strong>
+                                                    </div>
+                                                    <div>Course:<strong>{{this.selectedLesson['course_code']}}</strong>
+                                                    </div>
                                                     <div>Group: <strong>{{this.selectedLesson['group']}}</strong></div>
-<!--                                                    <div>Lesson Type: <strong>{{this.selectedLesson['group']}}</strong></div>-->
+                                                    <!--                                                    <div>Lesson Type: <strong>{{this.selectedLesson['group']}}</strong></div>-->
                                                     <div>Venue :<strong>{{selectedReplacementVenue}}</strong></div>
                                                     <div>Day :<strong>{{selectedReplacementDay}}</strong></div>
                                                     <div>Start Time :<strong>{{startingDateTime}}</strong></div>
@@ -150,7 +169,8 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <button class="btn btn-primary" @click="onCreateReplacementClass" >Create Class</button>
+                                        <button class="btn btn-primary" @click="onCreateReplacementClass">Create Class
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -190,7 +210,7 @@
                 selectedReplacementVenue: '',
                 selectedReplacementDay: '',
                 days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-                typeName: ['Lecture', 'Lab','Test'],
+                typeName: ['Lecture', 'Lab', 'Test'],
                 startingDateTime: null,
                 endingDateTime: null,
                 venueID: '',
@@ -204,12 +224,13 @@
                     showClear: true,
                     showClose: true,
                 },
-                error:'',
+                error: '',
+                success: '',
 
             }
         },
         methods: {
-            onChange(){
+            onChange() {
 
             },
 
@@ -234,62 +255,113 @@
 
                 this.$session.set('data', this.selectedLesson);
 
-                const formData = {
-                    status: 1
-                };
-                console.log(formData);
-                axios.put('lesson/' + this.selectedLesson['id'], formData)
-                    .then(res => {
-                        console.log(res);
-                        if (res['data']['success']) {
-                            console.log("alert success");
-                            this.type ='n';
-                            this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
-                            this.postVenue(this.selectedLesson['venue_id']);
-                            // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
-                        }
-                        if (res['data']['error']) {
-                            console.log("alert error");
-
-                            this.error = res.data.error.message;
-                            this.type ='n';
-                            this.$session.set('type', this.type);
-                            this.try = this.$session.get('type');
-                            console.log(this.try);
-                            this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
-                            this.postVenue(this.selectedLesson['venue_id']);
-                           // this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id']}})
-                        }
-                    })
-                    .catch(error => console.log(error))
-            },
-
-            /**pass venue_id to get Sensor Data**/
-            postVenue(venue_id) {
-                console.log('update venue');
-                    this.formdata = {'venue_id': venue_id};
-                    axios.post('getSensorData', this.formdata)
-                        .then(res => {
-                            console.log(res);
-                            if (res['data']['success']) {
-                            }
-                        })
-            },
-            /**get lesson_id and route to attendance page**/
-            getNormalAttendancelist(lesson_id , type) {
-
-                this.formdata = {'lesson_id': lesson_id};
+                this.formdata = {'lesson_id': this.selectedLesson['id']};
 
                 axios.post('lesson', this.formdata)
                     .then(res => {
                         console.log(res);
                         if (res['data']['success']) {
-                this.$router.push({path: '/attend', query: {lesson_id: lesson_id ,type : type}})
+                            this.postVenue(this.selectedLesson['venue_id']);
+
+                            this.success = res.data.success.message;
+                            this.$bvModal.msgBoxOk(this.success).then(
+                                value => {
+                                    console.log(value);
+                                    this.type = 'n';
+                                  //  this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
+                                    this.postVenue(this.selectedLesson['venue_id']);
+                                    this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id'], type: this.type}})
+
+
+                                })
+                        }else {
+                            if (res['data']['error']) {
+                                console.log("alert error");
+
+                                this.error = res.data.error.message;
+                                // this.$bvModal.show('error-modal');
+                                this.$bvModal.msgBoxOk(this.error).then(
+                                    value => {
+                                        console.log(value);
+                                        this.type = 'n';
+                                        this.postVenue(this.selectedLesson['venue_id']);
+                                        // this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
+
+                                        this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id'], type: this.type}})
+
+                                    }
+                                );
+                                this.type = 'n';
+                                this.$session.set('type', this.type);
+                                this.try = this.$session.get('type');
+                            }
+                        }
+                        }
+                    )
+                // axios.put('lesson/' + this.selectedLesson['id'], formData)
+                //     .then(res => {
+                //         console.log(res);
+                //         if (res['data']['success']) {
+                //             console.log("alert success");
+                //             this.success = res.data.success.message;
+                //             this.$bvModal.msgBoxOk(this.success).then(
+                //                 value=>{
+                //                     console.log(value);
+                //                     this.type ='n';
+                //                     this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
+                //                     this.postVenue(this.selectedLesson['venue_id']);
+                //                 }
+                //             );
+                //
+                //
+                //         }
+                //         if (res['data']['error']) {
+                //             console.log("alert error");
+                //
+                //             this.error = res.data.error.message;
+                //             // this.$bvModal.show('error-modal');
+                //             this.$bvModal.msgBoxOk(this.error).then(
+                //                 value=>{
+                //                     console.log(value);
+                //                     this.postVenue(this.selectedLesson['venue_id']);
+                //                     this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
+                //                 }
+                //             );
+                //             this.type ='n';
+                //             this.$session.set('type', this.type);
+                //             this.try = this.$session.get('type');
+                //
+                //         }
+                //     })
+                //     .catch(error => console.log(error))
+            },
+
+            /**pass venue_id to get Sensor Data**/
+            postVenue(venue_id) {
+                console.log('update venue');
+                this.formdata = {'venue_id': venue_id};
+                axios.post('getSensorData', this.formdata)
+                    .then(res => {
+                        console.log(res);
+                        if (res['data']['success']) {
                         }
                     })
             },
-            getReplaceAttendancelist(lesson_id , type) {
-                 this.$router.push({path: '/attend', query: {lesson_id: lesson_id ,type : type}})
+            // /**get lesson_id and route to attendance page**/
+            // getNormalAttendancelist(lesson_id , type) {
+            //
+            //     this.formdata = {'lesson_id': lesson_id};
+            //
+            //     axios.post('lesson', this.formdata)
+            //         .then(res => {
+            //             console.log(res);
+            //             if (res['data']['success']) {
+            //                 this.$router.push({path: '/attend', query: {lesson_id: lesson_id, type: type}})
+            //             }
+            //         })
+            // },
+            getReplaceAttendancelist(lesson_id, type) {
+                this.$router.push({path: '/attend', query: {lesson_id: lesson_id, type: type}})
 
             },
 
@@ -306,7 +378,7 @@
             onCreateReplacementClass() {
                 console.log('start replace');
                 this.$session.set('data', this.selectedLesson);
-                this.type ='r';
+                this.type = 'r';
                 const formData = {
                     user_id: this.user_id,
                     lesson_id: this.selectedLesson.id,
@@ -324,10 +396,8 @@
                         console.log(res);
                         if (res['data']['success']) {
                             console.log("alert success")
-
                             this.$session.set('type', this.type);
-
-                            this.getReplaceAttendancelist(this.selectedLesson['id'] , this.type);
+                            this.getReplaceAttendancelist(this.selectedLesson['id'], this.type);
                         }
                         if (res['data']['error']) {
                             console.log("alert error")
