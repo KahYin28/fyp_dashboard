@@ -233,11 +233,10 @@
             onChange() {
 
             },
-
             /**request lesson to start class**/
             getLessonCollection() {
-                this.user_id = 1;
-                axios.get('lesson?user_id=' + this.user_id)
+                this.lecturer_id = 1;
+                axios.get('lesson?lecturer_id=' + this.lecturer_id)
                 // ,{
                 //     headers:{
                 //             'Accept':'application/json'

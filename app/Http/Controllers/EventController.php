@@ -18,8 +18,11 @@ class EventController extends Controller
 {
     /**api to update attendance**/
     public function updateAttendanceEvent(Request $request,AttendanceFilter $filter ){
+        echo "success";
         $data = $request->input("data");
+//        dd($data);
         event(new AttendanceUpdateEvent($data));
+
 
     }
 

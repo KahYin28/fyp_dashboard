@@ -24,7 +24,7 @@ class EmotionUpdateEvent implements ShouldBroadcast
     public function __construct($emotion)
     {
         $this->emotion = $emotion;
-        var_dump($this->emotion);
+//        var_dump($this->emotion);
     }
 
     /**

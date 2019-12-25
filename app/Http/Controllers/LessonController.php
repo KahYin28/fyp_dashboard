@@ -69,7 +69,6 @@ class LessonController extends Controller
         $check_lesson = Lesson::where('id', $input['lesson_id'])->first();
         $now = Carbon::now();
 
-
         //Status updated
         if($check_lesson['status'] == '1') {
             return $this->withArray([

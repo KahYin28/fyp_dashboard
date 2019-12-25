@@ -87,7 +87,7 @@
                 if (this.$session.exists('data')) {
                     this.sessionData = this.$session.get('data');
                     console.log(this.sessionData['data']);
-                        axios.get('attendance/lesson_id=' + this.sessionData['id'] + '?type=' + this.type)
+                        axios.get('attendance?lesson_id=' + this.sessionData['id'] + '&type=' + this.type)
                             .then(data => {
                                 this.attends = data.data;
                                 console.log(this.attends)
@@ -102,7 +102,7 @@
                     console.log(this.sessionData['id']);
 
                     // this.lesson_id = this.$route.query.lesson_id;
-                    axios.get('attendance/lesson_id=' + this.sessionData['id'] + '?page=' + page)
+                    axios.get('attendance?lesson_id=' + this.sessionData['id'] + '&page=' + page)
                         .then(response => {
                             this.attends = response.data;
                             console.log(this.attends)
