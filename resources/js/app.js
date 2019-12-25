@@ -70,9 +70,9 @@ const router = new VueRouter({
     // mode:'history',
 });
 
-axios.defaults.baseURL = "http://localhost:8000/api/";
+ // axios.defaults.baseURL = "http://localhost:8000/api/";
 
-// axios.defaults.baseURL = "https://pure-headland-78653.herokuapp.com/api/resources/"
+ axios.defaults.baseURL = "https://pure-headland-78653.herokuapp.com/api/resources/"
 
 jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
     icons: {

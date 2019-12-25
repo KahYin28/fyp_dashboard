@@ -65,7 +65,7 @@
                     //     icon: 'fa fa-id-card'
                     // },
                     {
-                        href: '/attend',
+                        href: '/attendance',
                         title: 'Attendance',
                         icon: 'fa fa-id-card',
                         //

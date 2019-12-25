@@ -62,3 +62,7 @@ Route::get('/getStudentEmotion', 'EmotionController@getStudentEmotion');
 Route::post('/getAttendanceReport', 'LessonController@getAttendanceReport');
 
 
+Route::post('/updateAttendanceEvent', 'EventController@updateAttendanceEvent');
+Route::post('/updateTemperatureEvent', 'EventController@updateTemperatureEvent');
+
+Route::post('/updateStudentEmotionEvent', 'EventController@updateStudentEmotionEvent');

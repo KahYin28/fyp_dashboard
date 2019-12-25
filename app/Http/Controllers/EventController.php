@@ -17,19 +17,21 @@ use Illuminate\Support\Facades\DB;
 class EventController extends Controller
 {
     /**api to update attendance**/
-    public function updateAttendance(Request $request,AttendanceFilter $filter ){
+    public function updateAttendanceEvent(Request $request,AttendanceFilter $filter ){
         $data = $request->input("data");
         event(new AttendanceUpdateEvent($data));
 
-
     }
 
-    public function updateStudentEmotion(Request $request)
-    {
+    public function updateTemperatureEvent(Request $request){
         $data = $request->input("data");
-
         event(new TemperatureUpdateEvent($data));
         event(new HumidityUpdateEvent($data));
+    }
+
+    public function updateStudentEmotionEvent(Request $request){
+        $data = $request->input("data");
+       event(new EmotionUpdateEvent($data));
     }
 
 }

@@ -13,8 +13,7 @@ use App\Temperature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class SensorController extends Controller
-{
+class SensorController extends Controller{
     /**
      * Display a listing of the resource.
      *

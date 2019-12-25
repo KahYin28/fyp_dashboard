@@ -30,7 +30,7 @@ export const routes = [
     //     component: StudentList
     // },
     {
-        path: '/attend',
+        path: '/attendance',
         name: 'StudentAttendanceList',
         component: StudentAttendanceList
     },

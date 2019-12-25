@@ -167,6 +167,7 @@ class AttendanceController extends Controller
                     $students->setAttribute('updated_at', $date);
                     $students->save();
                     $msg = "The student ". $students['student_id'] ." is late.";
+                    event(new AttendanceUpdateEvent($list));
                     DB::commit();
 
 

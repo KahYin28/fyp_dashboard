@@ -270,7 +270,7 @@
                                     this.type = 'n';
                                   //  this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
                                     this.postVenue(this.selectedLesson['venue_id']);
-                                    this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id'], type: this.type}})
+                                    this.$router.push({path: '/attendance', query: {lesson_id: this.selectedLesson['id'], type: this.type}})
 
 
                                 })
@@ -287,7 +287,7 @@
                                         this.postVenue(this.selectedLesson['venue_id']);
                                         // this.getNormalAttendancelist(this.selectedLesson['id'], this.type);
 
-                                        this.$router.push({path: '/attend', query: {lesson_id: this.selectedLesson['id'], type: this.type}})
+                                        this.$router.push({path: '/attendance', query: {lesson_id: this.selectedLesson['id'], type: this.type}})
 
                                     }
                                 );
@@ -361,7 +361,7 @@
             //         })
             // },
             getReplaceAttendancelist(lesson_id, type) {
-                this.$router.push({path: '/attend', query: {lesson_id: lesson_id, type: type}})
+                this.$router.push({path: '/attendance', query: {lesson_id: lesson_id, type: type}})
 
             },
 
