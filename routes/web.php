@@ -19,6 +19,6 @@ Route::get('*', function () {
     return view('welcome');
 });
 
-Route::get('publish',function(){
-   Redis::publish('temperatureChannel',"hello");
-});
+//Route::get('publish',function(){
+//   Redis::publish('temperatureChannel',"hello");
+//});
