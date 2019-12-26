@@ -54,17 +54,6 @@
 
                     },
                     {
-                        href: '/dashboard',
-                        title: 'Dashboard',
-                        icon: 'fa fa-chart-bar'
-
-                    },
-                    // {
-                    //     href: '/register',
-                    //     title: 'Attendance',
-                    //     icon: 'fa fa-id-card'
-                    // },
-                    {
                         href: '/attendance',
                         title: 'Attendance',
                         icon: 'fa fa-id-card',
@@ -79,15 +68,27 @@
                         //     ]
                     },
                     {
+                        href: '/dashboard',
+                        title: 'Dashboard',
+                        icon: 'fa fa-chart-bar'
+
+                    },
+                    // {
+                    //     href: '/register',
+                    //     title: 'Attendance',
+                    //     icon: 'fa fa-id-card'
+                    // },
+
+                    {
                         href: '/emotion',
                         title: 'Facial Expression',
                         icon: 'fa fa-smile'
                     },
-                    {
-                        href: '/classemo',
-                        title: 'Class Emotion',
-                        icon: 'fa fa-smile'
-                    },
+                    // {
+                    //     href: '/classemo',
+                    //     title: 'Class Emotion',
+                    //     icon: 'fa fa-smile'
+                    // },
                     {
                         component: separator
                     },

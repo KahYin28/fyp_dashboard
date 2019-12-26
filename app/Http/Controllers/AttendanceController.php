@@ -174,8 +174,6 @@ class AttendanceController extends Controller
                 }
             }
 
-
-
             return $this->withArray([
                 'success' => [
                     'code' => 'success',

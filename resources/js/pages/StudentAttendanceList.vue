@@ -18,7 +18,7 @@
             </b-tr>
         </b-thead>
         <b-tbody>
-            <b-tr v-for="(attend,index) in attends.data"
+            <b-tr v-for="(attend,index) in attends"
                   :key="attend.id"
             >
                 <b-td>{{ index+1 }}</b-td>
@@ -43,15 +43,19 @@
             </b-tr>
         </b-tbody>
         <b-tfoot>
-            <b-tr>
-                <b-td colspan="7" variant="secondary" class="text-right">
-                    Total Students: <b>{{attends.total}}</b>
-                </b-td>
-            </b-tr>
+<!--            <b-tr>-->
+<!--                <b-td colspan="7" variant="secondary" class="text-right">-->
+<!--                    Total Students: <b>{{attends.total}}</b>-->
+<!--                </b-td>-->
+<!--            </b-tr>-->
         </b-tfoot>
 
     </b-table-simple>
+<!--        <pagination :data="attends"-->
+<!--                    @pagination-change-page="getResults">-->
+<!--        </pagination>-->
     </div>
+
 </template>
 
 <script>
@@ -73,6 +77,7 @@
         mounted() {
             this.getStudentList();
             this.getRealtimeData();
+            // this.getResults();
         },
         methods: {
             /**get lesson id from attendance table to query student list**/
@@ -92,33 +97,32 @@
                                 this.attends = data.data;
                                 console.log(this.attends)
                             })
-
                 }
             },
             /**pagination for student list result**/
-            getResults(page = 1) {
-                if (this.$session.exists('data')) {
-                    this.sessionData = this.$session.get('data');
-                    console.log(this.sessionData['id']);
+            // getResults(page = 1) {
+            //     if (this.$session.exists('data')) {
+            //         this.sessionData = this.$session.get('data');
+            //         console.log(this.sessionData['id']);
+            //
+            //         // this.lesson_id = this.$route.query.lesson_id;
+            //         axios.get('attendance?lesson_id=' + this.sessionData['id'] + '&page=' + page)
+            //             .then(response => {
+            //                 this.attends = response.data;
+            //                 console.log(this.attends)
+            //             })
+            //             .catch(err => {
+            //                 this.loading = false;
+            //                 this.error = err;
+            //             });
+            //     }
 
-                    // this.lesson_id = this.$route.query.lesson_id;
-                    axios.get('attendance?lesson_id=' + this.sessionData['id'] + '&page=' + page)
-                        .then(response => {
-                            this.attends = response.data;
-                            console.log(this.attends)
-                        })
-                        .catch(err => {
-                            this.loading = false;
-                            this.error = err;
-                        });
-                }
-
-            },
+            // },
             getRealtimeData() {
                 window.Echo.channel('AttendanceChannel')
                     .listen('AttendanceUpdateEvent', (e) => {
-                      //  console.log(e);
-                        this.attends.data = e.attendance_list;
+                        console.log(e);
+                        this.attends = e.attendance_list.data;
                         console.log(this.attends)
                         // this.$session.set('data', this.sessionData['id']);
 

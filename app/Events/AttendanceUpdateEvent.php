@@ -22,10 +22,9 @@ class AttendanceUpdateEvent implements ShouldBroadcast
      */
     public $list;
 
-    public function __construct($list)
-    {
+    public function __construct($list){
         $this->list = $list;
-//        var_dump($this->list);
+        var_dump($this->list);
     }
 
     /**

@@ -5,7 +5,7 @@ import Emotions from "./pages/Emotions";
 import Lights from "./pages/Lights.vue"
 import Temperature from "./pages/Temperature";
 import Hello from "./pages/Hello";
-import ClassEmotions from "./pages/ClassEmotions";
+// import ClassEmotions from "./pages/ClassEmotions";
 import StudentAttendanceList from "./pages/StudentAttendanceList";
 
 export const routes = [
@@ -49,11 +49,11 @@ export const routes = [
         name: 'Temperature',
         component: Temperature
     },
-    {
-        path: '/classemo',
-        name: 'ClassEmotions',
-        component: ClassEmotions
-    },
+    // {
+    //     path: '/classemo',
+    //     name: 'ClassEmotions',
+    //     component: ClassEmotions
+    // },
 ]
 
 

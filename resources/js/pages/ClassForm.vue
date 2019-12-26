@@ -379,7 +379,7 @@
                 this.$session.set('data', this.selectedLesson);
                 this.type = 'r';
                 const formData = {
-                    user_id: this.user_id,
+                    lecturer_id: this.lecturer_id,
                     lesson_id: this.selectedLesson.id,
                     venue_id: this.selectedReplacementVenue,
                     schedule_day: this.selectedReplacementDay,

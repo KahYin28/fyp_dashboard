@@ -17,24 +17,27 @@ use Illuminate\Support\Facades\DB;
 class EventController extends Controller
 {
     /**api to update attendance**/
-    public function updateAttendanceEvent(Request $request,AttendanceFilter $filter ){
-        echo "success";
-        $data = $request->input("data");
-//        dd($data);
-        event(new AttendanceUpdateEvent($data));
+    public function updateAttendanceEvent(Request $request){
 
+//        return json_encode($request->has('data'));
+        $data = $request->input("data");
+
+//          dd($request);
+        event(new AttendanceUpdateEvent(json_decode($data)));
+//        return json_code($request);
+//        return "hello";
 
     }
 
     public function updateTemperatureEvent(Request $request){
         $data = $request->input("data");
-        event(new TemperatureUpdateEvent($data));
-        event(new HumidityUpdateEvent($data));
+        event(new TemperatureUpdateEvent(json_decode($data)));
+        event(new HumidityUpdateEvent(json_decode($data)));
     }
 
     public function updateStudentEmotionEvent(Request $request){
         $data = $request->input("data");
-       event(new EmotionUpdateEvent($data));
+       event(new EmotionUpdateEvent(json_decode($data)));
     }
 
 }

@@ -28,24 +28,24 @@
 
         mounted() {
             this.requestEmotionData();
-            this.getStudent();
+            // this.getStudent();
             this.getRealtimeData();
 
         },
         methods: {
-            getStudent() {
-                if (this.$session.exists('data')) {
-                    this.sessionData = this.$session.get('data');
-                    console.log(this.sessionData)
-
-                    this.formdata = {'lesson_id': this.sessionData['id']};
-                    axios.post('getStudentEmotion', this.formdata)
-                        .then(res => {
-                            console.log(res.data);
-
-                        });
-                }
-            },
+            // getStudent() {
+            //     if (this.$session.exists('data')) {
+            //         this.sessionData = this.$session.get('data');
+            //         console.log(this.sessionData)
+            //
+            //         this.formdata = {'lesson_id': this.sessionData['id']};
+            //         axios.post('update', this.formdata)
+            //             .then(res => {
+            //                 console.log(res.data);
+            //
+            //             });
+            //     }
+            // },
             requestEmotionData() {
                 if (this.$session.exists('data')) {
                     this.sessionData = this.$session.get('data');
@@ -72,7 +72,7 @@
                     labels: ['Happy', 'Sad', 'Angry', 'Confused', 'Disgusted', 'Surprised', 'Calm', 'Fear'],
                     datasets: [{
                         label: "Emotions",
-                        backgroundColor: ["#2D49CC", "#52CAFF", "#FF6832", "#FF2644", "#FFD361", "#17FFAF","#3FA8FF","#CCAE35"],
+                        backgroundColor: ["#ffff1a", "#00008b", "#ff1a1a", "#787878", "#32cd32", "#ff69b4","#52CAFF","#9370db"],
                         // backgroundColor: "#f83269",
                         // borderColor: "#ed574d",
                         borderWidth: 2,
@@ -86,6 +86,7 @@
                 window.Echo.channel('EmotionChannel')
                     .listen('EmotionUpdateEvent', (e) => {
                         this.data = e.key;
+                        console.log(this.data);
                         this.setChart(this.data);
                     })
             }

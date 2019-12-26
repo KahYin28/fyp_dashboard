@@ -68,8 +68,8 @@ class ReplacementController extends Controller
                         'lesson_id' => $value['lesson_id'],
                         'replacement_id' => $replace_data['id'],
                         'student_id' => $value['student_id'],
-                        'starting_date_time' => $value['starting_date_time'],
-                        'ending_date_time' => $value['ending_date_time'],
+                        'starting_date_time' => $replace_data['starting_date_time'],
+                        'ending_date_time' => $replace_data['ending_date_time'],
                         'status' => 0,
                         'created_at' => $now->toDateTimeString(),
                         'type'=> $input['type']

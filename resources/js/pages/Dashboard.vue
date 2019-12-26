@@ -103,7 +103,7 @@
 
                             this.studentCollection = {
                                 datasets: [{
-                                    backgroundColor: "#8C2EEB",
+                                    backgroundColor: "#1e90ff",
                                     data: [numOfStd],
                                 }],
                                 labels: [
