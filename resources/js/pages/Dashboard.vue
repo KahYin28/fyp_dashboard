@@ -165,10 +165,8 @@
                             }
                             // this.chartDate = DATE;
                             // this.chartDegree = DEG;
-
                             // console.log(this.chartDegree);
                             // console.log(this.chartDate);
-
                             axios.get('sensorData?sensor_id=' + this.sensorData + '&&field=Humidity(%)')
                                 .then(response => {
                                     this.dataCollection = response.data.data;
@@ -212,9 +210,9 @@
             getRealtimeData() {
                 window.Echo.channel('TemperatureChannel')
                     .listen('TemperatureUpdateEvent', (e) => {
-                        // console.log(e.key);
+                        console.log(e.key);
                         // this.$session.set('graph_data', e.key);
-                        this.temperatureArray = e.key;
+                        this.temperatureArray = e.key[0];
                         var celsius = [];
                         var time = [];
                         for (let i = 0; i < this.temperatureArray.length; i++) {
@@ -226,7 +224,7 @@
                         console.log(this.temperatureArray);
                         window.Echo.channel('HumidityChannel')
                             .listen('HumidityUpdateEvent', (e) => {
-                                this.humidityArray = e.key;
+                                this.humidityArray = e.key[1];
                                 var humid = [];
 
                                 for (let i = 0; i < this.humidityArray.length; i++) {

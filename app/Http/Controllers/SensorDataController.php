@@ -59,7 +59,7 @@ class SensorDataController extends Controller
 
         $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->orderBy('id', 'desc')->take(10)->get();
 
-        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->get();
+        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->orderBy('id', 'desc')->take(10)->get();
 
 
         event(new TemperatureUpdateEvent($temperatureData));

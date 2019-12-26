@@ -108,14 +108,12 @@ class SensorController extends Controller{
            $sensor_id = $sensor->sensor_id;
         }
 
-        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->get();
-
-        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->get();
-
-
-        event(new TemperatureUpdateEvent($temperatureData));
-        event(new HumidityUpdateEvent($humidityData));
-
+//        $temperatureData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Temperature(C)')->get();
+//
+//        $humidityData = SensorData::where('sensor_id',$request->sensor_id)->where('field','Humidity(%)')->get();
+//
+//        event(new TemperatureUpdateEvent($temperatureData));
+//        event(new HumidityUpdateEvent($humidityData));
 
         return $this->withArray([
             'sensor_id' => $sensor_id,

@@ -44,7 +44,7 @@ export default {
                        //              dataset.data.push({
                        //                  x: Date.now(),
                        //                  y: Math.random()
-                       //
+                       //s
                        //              });
                        //
                        //          });
@@ -59,7 +59,7 @@ export default {
                        //  display: true,
                         scaleLabel:{
                             display: true,
-                            labelString:'Date'
+                            labelString:'Date and Time'
                         },
                         gridLines: {
                             display: false

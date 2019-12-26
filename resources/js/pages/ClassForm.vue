@@ -239,7 +239,7 @@
                 axios.get('lesson?lecturer_id=' + this.lecturer_id)
                 // ,{
                 //     headers:{
-                //             'Accept':'application/json'
+                //             Authorization:token
                 //     }
                 // }
                     .then(response => {

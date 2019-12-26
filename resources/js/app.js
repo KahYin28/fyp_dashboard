@@ -72,7 +72,46 @@ const router = new VueRouter({
 
  // axios.defaults.baseURL = "http://localhost:8000/api/";
 
- axios.defaults.baseURL = "https://pure-headland-78653.herokuapp.com/api/resources/"
+axios.defaults.baseURL = "https://pure-headland-78653.herokuapp.com/api/resources/"
+// axios.defaults.headers.common = {
+//     'Authorization': token
+// };
+// Vue.prototype.$http = axios;
+// const token = localStorage.getItem('token');
+// if (token) {
+//     Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+// }
+// axios.create({
+//     baseURL: "https://pure-headland-78653.herokuapp.com/api/resources/",
+//     headers: {
+//         Authorization: token
+//     }
+// })
+// create: function() {
+//     axios.interceptors.request.use((config) => {
+//         config.headers.client = window.localStorage.getItem('client')
+//         config.headers['access-token'] = window.localStorage.getItem('access-token')
+//         config.headers.uid = window.localStorage.getItem('uid')
+//         config.headers['token-type'] = window.localStorage.getItem('token-type')
+//
+//         return config
+//     })
+//
+//     axios.interceptors.response.use((response) => {
+//         // Set user headers only if they are not blank.
+//         // If DTA gets a lot of request quickly, it won't return headers for some requests
+//         // so you need a way to keep headers in localStorage to getting set to undefined
+//         if (response.headers['access-token']) {
+//             localStorage.setItem('access-token', response.headers['access-token'])
+//             localStorage.setItem('client', response.headers.client)
+//             localStorage.setItem('uid', response.headers.uid)
+//             localStorage.setItem('token-type', response.headers['token-type'])
+//         }
+//         // You have to return the response here or you won't have access to it
+//         // later
+//         return response
+//     })
+// }
 
 jQuery.extend(true, jQuery.fn.datetimepicker.defaults, {
     icons: {

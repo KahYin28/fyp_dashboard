@@ -1,47 +1,12 @@
 <template>
     <div>
-        <h1>Facial Expression</h1>
-
-<!--        <select v-model="selectedStudent" class="custom-select" size="10" >-->
-<!--            <option v-for="attend in attends.data"-->
-<!--                    :value="attend.student_id" :key="attend.id">-->
-<!--           {{attend.student_id}}-->
-<!--            </option>-->
-
-<!--        </select>-->
-<!--        <div class="mt-3">Selected: <strong>{{ selectedStudent }}</strong></div>-->
-
-
-
-
-
-
-
-
-
+        <div><h5>Facial expression of student: {{std}}</h5></div>
         <div class="chart-container" style="width: 700px">
             <radar-chart v-if="loaded"
                          :chart-data="dataCollection">
             </radar-chart>
         </div>
-        <div>
-            <b-card class="mt-3" title="Happy" width="30px">
-            </b-card>
-            <b-card class="mt-3" title="Sad"width="30px">
-            </b-card>
-            <b-card class="mt-3" title="Angry"width="30px">
-            </b-card>
-            <b-card class="mt-3" title="Confused"width="30px">
-            </b-card>
-            <b-card class="mt-3" title="Disgusted"width="30px">
-            </b-card>
-            <b-card class="mt-3" title="Surprised"width="30px">
-            </b-card>
-            <b-card class="mt-3" title="Calm"width="30px">
-            </b-card>
-            <b-card class="mt-3" title="Fear"width="30px">
-            </b-card>
-        </div>
+
     </div>
 
 </template>
@@ -60,23 +25,18 @@
             return {
                 loaded: true,
                 dataCollection: null,
-
-
-                attends: {},
-                perPage: 5,
-                currentPage: 1,
-                now: new Date(),
-                error: '',
-
-
+                timer:'',
+                std:'',
 
             };
         },
 
         mounted() {
             this.requestData();
-
-            this.getStudentList();
+            this.timer = setInterval(this.requestData, 2000)
+        },
+        beforeDestroy () {
+            clearInterval(this.timer)
         },
         methods: {
 
@@ -114,38 +74,22 @@
                 });
             },
 
+            // getRealtimeData() {
+            //     window.Echo.channel('EmotionChannel')
+            //         .listen('EmotionUpdateEvent', (e) => {
+            //             this.data = e.key;
+            //             console.log(this.data);
+            //
+            //             // if(this.data)
+            //
+            //         })
+            // }
 
-            getStudentList() {
-                if (this.$session.exists('data')) {
-                    this.sessionData = this.$session.get('data');
-                    console.log(this.sessionData['id']);
 
-                    axios.get('attend?lesson_id=' + this.sessionData['id'])
-                        .then(data => {
-                            this.attends = data.data;
-                            console.log(this.attends)
-                        })
-                }
-            },
-            /**pagination for student list result**/
-            getResults(page = 1) {
-                if (this.$session.exists('data')) {
-                    this.sessionData = this.$session.get('data');
-                    console.log(this.sessionData['id']);
 
-                    // this.lesson_id = this.$route.query.lesson_id;
-                    axios.get('attend?lesson_id=' + this.sessionData['id'] + '&page=' + page)
-                        .then(response => {
-                            this.attends = response.data;
-                            console.log(this.attends)
-                        })
-                        .catch(err => {
-                            this.loading = false;
-                            this.error = err;
-                        });
-                }
 
-            },
+
+
         }
     }
 </script>

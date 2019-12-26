@@ -1,5 +1,20 @@
 <template>
     <div>
+        <h6>Indicator:</h6>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    <div class="dot" style="background-color:green"></div><small>Presence</small>
+                </div>
+                <div class="col-sm">
+                    <div class="dot" style="background-color:red"></div><small>Late</small>
+                </div>
+                <div class="col-sm">
+                    <div class="dot"></div><small>Absence</small>
+                </div>
+            </div>
+        </div>
+
     <b-table-simple hover small caption-top responsive
                     :attends = "attends"
                     :per-page="perPage"
